@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import analizator.Rule;
 
@@ -31,6 +33,7 @@ public class GLA {
 
       // STATES
       String[] states = line.split(" ", 0);  // sve osim prvog elementa
+
 
       // LEX UNITS
       if(!(line = reader.readLine()).startsWith(PREFIX_LEX_UNIT)){
@@ -92,8 +95,37 @@ public class GLA {
    }
 
 
-   
+   // generates or overwrites analizator/State.java
+   private static void generateStateEnum(String[] states){
+      StringBuilder code = new StringBuilder()
+      .append("package analizator;\n")
+      .append("enum State{\n");
 
+      for (int i = 1; i< states.length; i++){
+          if (i!=1) code.append(",");
+          code.append(states[i]);
+      }
+      code.append(";");
+      code.append("\n}");
+
+      try {
+          // Creates a FileWriter
+          FileWriter file = new FileWriter("analizator/State.java", false); // false overwrite
+
+          // Creates a BufferedWriter
+          BufferedWriter output = new BufferedWriter(file);
+
+          // Writes the string to the file
+          output.write(code.toString());
+
+          // Closes the writer
+          output.close();
+      }
+
+      catch (IOException e) {
+          System.err.println("couldnt make State.java");;
+      } 
+  }   
 
 
 
