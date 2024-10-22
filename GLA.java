@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import analizator.Rule;
+import structures.Rule;
 
 public class GLA {
 
@@ -92,7 +92,7 @@ public class GLA {
    }
 
 
-   
+
 
 
 

@@ -4,22 +4,21 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Map;
 
-import analizator.Rule;
+import analizator.generated.State;
+
+import structures.Rule;
 
 public class Lekser {
 
-  public static enum State {
-    // TODO: get states from generator
-    S_pocetno,
-    S_komentar,
-    S_unarni
-  }
+  
 
   private char activeChar;
   private ArrayList<State> activeStates, nextStates;
   private Reader reader;
   private String readCache;       // string from *start to *end
   private int lastValidLen;       // distance from *start to *last
+  
+  private Rule[] lastAccepted; 
 
   private Map<State, Rule[]> rules;
 
@@ -33,6 +32,7 @@ public class Lekser {
     readCache = "";
     lastValidLen = 0;
 
+
     lexUntis = new ArrayList<LexUnit>();
   }
 
@@ -41,19 +41,41 @@ public class Lekser {
     for(;;){
       nextChar();
       
-      boolean anyAccepted = false;
+      boolean anyActive = false;
+      ArrayList<Rule> accepts = new ArrayList<Rule>();
+      
       for(State state : activeStates){
         for(Rule rule : rules.get(state)){
-          anyAccepted = anyAccepted || rule.automat.doTransition(activeChar);
+          anyActive = anyActive || rule.automat.doTransition(activeChar);
           if(rule.automat.isAccepted()){
-
+            accepts.add(rule);
+          }
+        }
+      }
+      if(!accepts.isEmpty()){
+        lastAccepted = accepts.toArray(new Rule[0]);
+      }
+      if(anyActive){
+        // TODO: handle EOF
+        continue;
+      }
+      if(lastAccepted.length == 0){
+        //TODO: error recovery
+        System.err.println("ERROR: TODO: RECOVER");
+      }
+      else{
+        Rule priorityRule = lastAccepted[0];
+        for(Rule rule : lastAccepted){
+          if(rule.priority > priorityRule.priority){
+            priorityRule = rule;
           }
         }
       }
 
       /*(
-       * for each regex (rule) tied to one of the active states:
-       *  check if regex accepts
+       *  for each regex (rule) tied to one of the active states:
+       *   check if regex accepts
+       *   note what regexes accept in array lastAccepted
        *  if all reject:
        *    if len(lastAccepted) == 0:
        *      error recovery 
@@ -61,7 +83,6 @@ public class Lekser {
        *      only consider the regex tied to the uppermost rule
        *    deal with the transition tied to the last regex that accepted => accept()
        *    reset relevant data structures
-       *  note what regexes accept in array lastAccepted
       ) */
 
 
