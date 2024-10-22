@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import structures.Rule;
+import structures.GeneratorRule;
 
 public class GLA {
 
@@ -40,12 +40,12 @@ public class GLA {
 
 
       // RULES
-      ArrayList<Rule> rules = new ArrayList<Rule>();
+      ArrayList<GeneratorRule> rules = new ArrayList<GeneratorRule>();
       while(null != (line = reader.readLine()) && line.length() != 0){
 
          // line format : <State>regex
          String[] parts = line.split(">", 0);
-         Rule rule = new Rule();
+         GeneratorRule rule = new GeneratorRule();
          rule.stateFrom = parts[0].substring(1);
          rule.regex = parts[1];
          
@@ -82,7 +82,7 @@ public class GLA {
          }
       }
       for(Map.Entry<String, String> r1 : regexes.entrySet()){
-         for(Rule rule : rules){
+         for(GeneratorRule rule : rules){
             rule.regex = rule.regex.replace(r1.getKey(), '('+r1.getValue()+')');
          }
       }

@@ -1,4 +1,4 @@
-package analizator.generated;
+package analizator.example_generated;
 
 import java.util.HashMap;
 import java.util.Map;

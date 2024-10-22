@@ -5,35 +5,40 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import analizator.generated.State;
-
-import structures.Rule;
+import analizator.structures.LexUnit;
+import analizator.structures.Rule;
 
 public class Lekser {
 
-  
+  private static final int LEX_UNIT_MAX_LENGTH = 256;   // Lexical units longer than 256 chars will cause undefined behavior
 
   private char activeChar;
-  private ArrayList<State> activeStates, nextStates;
+  private State activeState;
   private Reader reader;
-  private String readCache;       // string from *start to *end
+  private int readLen;            // number of chars read since last accept()
   private int lastValidLen;       // distance from *start to *last
+
+  private int newLines;
+  private int lineNumber;
   
   private Rule[] lastAccepted; 
 
   private Map<State, Rule[]> rules = Rules.getRules();  // TODO: get rules from generated file
 
-  private ArrayList<LexUnit> lexUntis;
+  private ArrayList<LexUnit> lexUnits;
 
   public Lekser(Reader _reader){
     reader = _reader;
-    activeStates = new ArrayList<State>();
-    activeStates.add(State.S_pocetno);
-    nextStates = new ArrayList<State>();
-    readCache = "";
+    reader.mark(LEX_UNIT_MAX_LENGTH);
+
+    readLen = 0;
     lastValidLen = 0;
 
+    lineNumber = 1;
 
-    lexUntis = new ArrayList<LexUnit>();
+    activeState = State.S_pocetno;
+
+    lexUnits = new ArrayList<LexUnit>();
   }
 
   // TODO: change return type or return through getters of private properties
@@ -44,16 +49,15 @@ public class Lekser {
       boolean anyActive = false;
       ArrayList<Rule> accepts = new ArrayList<Rule>();
       
-      for(State state : activeStates){
-        for(Rule rule : rules.get(state)){
-          anyActive = anyActive || rule.automat.doTransition(activeChar);
-          if(rule.automat.isAccepted()){
-            accepts.add(rule);
-          }
+      for(Rule rule : rules.get(activeState)){
+        anyActive = anyActive || rule.automat.doTransition(activeChar);
+        if(rule.automat.isAccepted()){
+          accepts.add(rule);
         }
       }
       if(!accepts.isEmpty()){
         lastAccepted = accepts.toArray(new Rule[0]);
+        lastValidLen = readLen;
       }
       if(anyActive){
         // TODO: handle EOF
@@ -64,29 +68,27 @@ public class Lekser {
         System.err.println("ERROR: TODO: RECOVER");
       }
       else{
-        Rule priorityRule = lastAccepted[0];
-        for(Rule rule : lastAccepted){
-          if(rule.priority > priorityRule.priority){
-            priorityRule = rule;
-          }
-        }
+        // TODO: test, potential source of errors
+        Rule priorityRule = lastAccepted[0]; // because of ordering, first rule has highest priority
+
+        accept(priorityRule);
       }
-
-      /*(
-       *  for each regex (rule) tied to one of the active states:
-       *   check if regex accepts
-       *   note what regexes accept in array lastAccepted
-       *  if all reject:
-       *    if len(lastAccepted) == 0:
-       *      error recovery 
-       *    if len(lastAccepted) > 1:
-       *      only consider the regex tied to the uppermost rule
-       *    deal with the transition tied to the last regex that accepted => accept()
-       *    reset relevant data structures
-      ) */
-
-
+      resetAutomatons();
     }
+
+    /*(
+      *  for each regex (rule) tied to one of the active states:
+      *   check if regex accepts
+      *   note what regexes accept in array lastAccepted
+      *  if all reject:
+      *    if len(lastAccepted) == 0:
+      *      error recovery 
+      *    if len(lastAccepted) > 1:
+      *      only consider the regex tied to the uppermost rule
+      *    deal with the transition tied to the last regex that accepted => accept()
+      *    reset relevant data structures
+    ) */
+
   }
 
   private int nextChar() throws IOException{
@@ -94,17 +96,47 @@ public class Lekser {
     if(activeChar == -1){
       return 1;
     }
+    // else
+    readLen ++;
     return 0;
   }
 
-  private void accept(LexUnit.lexClass klasa){
-    // TODO: accept only start to last, not entire readCache
-    // https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html#mark-int-
-    // https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html#reset--
-    // leksJeds.add(new LeksJed(klasa, readCache));
+  private void accept(Rule rule){
+
+    reader.reset();
+    int acceptLen;
+    if(rule.goBack != -1){
+      acceptLen = rule.goBack;
+    }
+    else{
+      acceptLen = lastValidLen;
+    }
+    char[] lexUnitCharArr = new char[acceptLen];
+    reader.read(lexUnitCharArr, 0, lastValidLen);
+    String lexUnitString = new String(lexUnitCharArr);
+
+    if(rule.newLine){
+      lineNumber++;
+    }
+
+    if(rule.lexClass != null){
+      lexUnits.add(new LexUnit(rule.lexClass, lexUnitString));
+    }
+
+    if(rule.stateTo != null){
+      this.activeState = rule.stateTo;
+    }
+    
+
+    reader.mark(LEX_UNIT_MAX_LENGTH);
+    
   }
 
-  void reject(){
+  private void resetAutomatons(){
+    // TODO:
+  }
+
+  void handleError(){
     /*
      * TODO:
      * return readCache to reader
