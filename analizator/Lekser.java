@@ -20,7 +20,7 @@ public class Lekser {
   
   private Rule[] lastAccepted; 
 
-  private Map<State, Rule[]> rules;
+  private Map<State, Rule[]> rules = Rules.getRules();  // TODO: get rules from generated file
 
   private ArrayList<LexUnit> lexUntis;
 
