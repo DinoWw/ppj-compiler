@@ -91,6 +91,7 @@ public class GLA {
             rule.regex = rule.regex.replace(r1.getKey(), '('+r1.getValue()+')');
          }
       }
+<<<<<<< HEAD
 
       // System.err.println(rules.toString());
       // System.err.println(regexes.entrySet().toString());
@@ -98,6 +99,8 @@ public class GLA {
       generateRules(rules);
       System.err.println("generated rules");
       
+=======
+>>>>>>> develop
    }
 
 
@@ -177,7 +180,7 @@ public class GLA {
 
 
       catch (IOException e) {
-          System.err.println("couldnt make State.java");;
+         System.err.println("Generator error: couldn't make State.java");;
       } 
   }   
 

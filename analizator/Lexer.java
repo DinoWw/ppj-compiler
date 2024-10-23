@@ -9,9 +9,11 @@ import analizator.structures.LexUnit;
 import analizator.structures.Rule;
 import analizator.generated.Rules;
 
-public class Lekser {
+public class Lexer {
 
   private static final int LEX_UNIT_MAX_LENGTH = 256;   // Lexical units longer than 256 chars will cause undefined behavior
+
+  private boolean lastChar = false;
 
   private char activeChar;
   private State activeState;
@@ -28,7 +30,7 @@ public class Lekser {
 
   private ArrayList<LexUnit> lexUnits;
 
-  public Lekser(Reader _reader){
+  public Lexer(Reader _reader){
     reader = _reader;
     try{
     reader.mark(LEX_UNIT_MAX_LENGTH);
@@ -49,10 +51,9 @@ public class Lekser {
   }
 
   // TODO: change return type or return through getters of private properties
-  public void analyse() throws IOException{
-    for(;;){
-      nextChar();
-      
+  public ArrayList<LexUnit> analyse() throws IOException{
+    for(nextChar(); !lastChar; nextChar()){
+           
       boolean anyActive = false;
       ArrayList<Rule> accepts = new ArrayList<Rule>();
       
@@ -71,16 +72,15 @@ public class Lekser {
         continue;
       }
       if(lastAccepted.length == 0){
-        //TODO: error recovery
-        System.err.println("ERROR: TODO: RECOVER");
+        handleError();
       }
       else{
         // TODO: test, potential source of errors
-        Rule priorityRule = lastAccepted[0]; // because of ordering, first rule has highest priority
+        final Rule priorityRule = lastAccepted[0]; // because of ordering, first rule has highest priority
 
+        // accept resets automatons
         accept(priorityRule);
       }
-      resetAutomatons();
     }
 
     /*(
@@ -98,19 +98,25 @@ public class Lekser {
 
   }
 
-  private int nextChar() throws IOException{
+  private void nextChar() throws IOException{
+    if(lastChar){
+      System.err.println("Lekser error: read past end of input");
+      return;
+    }
     activeChar = (char) reader.read();
     if(activeChar == -1){
-      return 1;
+      lastChar = true;
     }
     // else
     readLen ++;
-    return 0;
   }
 
   private void accept(Rule rule){
     try{
     reader.reset();
+    // reset automatons before change of state so only relevant automatons are touched
+    resetAutomatons();
+
     int acceptLen;
     if(rule.goBack != -1){
       acceptLen = rule.goBack;
@@ -127,14 +133,14 @@ public class Lekser {
     }
 
     if(rule.lexClass != null){
-      lexUnits.add(new LexUnit(rule.lexClass, lexUnitString));
+      lexUnits.add(new LexUnit(rule.lexClass, this.lineNumber, lexUnitString));
     }
 
     if(rule.stateTo != null){
       this.activeState = rule.stateTo;
     }
-    
 
+    resetPointers();
     reader.mark(LEX_UNIT_MAX_LENGTH);
   }
     catch(IOException e){
@@ -142,16 +148,26 @@ public class Lekser {
     }
   }
 
+  private void resetPointers(){
+    readLen = 0;
+    lastValidLen = 0;
+  } 
+
+
   private void resetAutomatons(){
-    // TODO:
+    for(Rule rule : rules.get(this.activeState)){
+      rule.automat.reset();
+    }
   }
 
   void handleError(){
-    /*
-     * TODO:
-     * return readCache to reader
-     * reset relevant data structures
-     */
+    System.err.println(String.format("Greska na liniji %d", lineNumber));
+    
+    reader.reset();
+    nextChar();
+    resetAutomatons();
+    resetPointers();
+    reader.mark(LEX_UNIT_MAX_LENGTH);
   }
 
 }

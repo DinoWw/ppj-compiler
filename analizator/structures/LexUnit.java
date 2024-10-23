@@ -10,10 +10,12 @@ public class LexUnit{
 
    private LexClass className;
    private String content;
+   private int lineNumber;
    
-   public LexUnit(LexClass className, String content){
+   public LexUnit(LexClass className, int lineNumber, String content){
       this.className = className;
       this.content = content;
+      this.lineNumber = lineNumber;
    }
 
    public LexClass getClasssName(){
@@ -24,8 +26,12 @@ public class LexUnit{
       return content;
    }
 
+   public int getLineNumber(){
+      return lineNumber;
+   }
+
    public String toString(){
-      return String.format("%s: %s", className.toString(), content);
+      return String.format("%s %d %s", className.toString(), lineNumber, content);
    }
 
 }
