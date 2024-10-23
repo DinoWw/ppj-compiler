@@ -109,16 +109,9 @@ public class GLA {
       code.append("\n}");
 
       try {
-          // Creates a FileWriter
-          FileWriter file = new FileWriter("analizator/State.java", false); // false overwrite
-
-          // Creates a BufferedWriter
+          FileWriter file = new FileWriter("analizator/generated/State.java", false); // false - overwrite
           BufferedWriter output = new BufferedWriter(file);
-
-          // Writes the string to the file
           output.write(code.toString());
-
-          // Closes the writer
           output.close();
       }
 
