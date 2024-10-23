@@ -33,8 +33,6 @@ public class GLA {
 
       // STATES
       String[] states = line.split(" ", 0);  // sve osim prvog elementa
-      generateStateEnum(states);
-      System.err.println("generated states");
 
 
       // LEX UNITS
@@ -42,7 +40,6 @@ public class GLA {
          throw new IOException();
       };
       String[] lexUnits = line.split(" ", 0);  // sve osim prvog elementa
-      generateLexClassEnum(lexUnits);
 
       // RULES
       ArrayList<GeneratorRule> rules = new ArrayList<GeneratorRule>();
@@ -61,7 +58,7 @@ public class GLA {
 
          line = reader.readLine();
          // line format: - or lexUnit
-         rule.lexUnit = line;
+         rule.lexClass = line;
 
          while(!(line = reader.readLine()).startsWith("}")){
             if(line.startsWith("NOVI_REDAK")){
@@ -95,8 +92,9 @@ public class GLA {
       // System.err.println(rules.toString());
       // System.err.println(regexes.entrySet().toString());
 
+      generateStateEnum(states);
+      generateLexClassEnum(lexUnits);
       generateRules(rules);
-      System.err.println("generated rules");
       
    }
 
@@ -105,7 +103,7 @@ public class GLA {
    private static void generateStateEnum(String[] states){
       StringBuilder code = new StringBuilder()
       .append("package analizator.generated;\n")
-      .append("enum State{\n");
+      .append("public enum State{\n");
 
       for (int i = 1; i< states.length; i++){
           if (i!=1) code.append(",");
@@ -130,7 +128,7 @@ public class GLA {
    private static void generateLexClassEnum(String[] lexUnits){
       StringBuilder code = new StringBuilder()
       .append("package analizator.generated;\n")
-      .append("enum LexClass{\n");
+      .append("public enum LexClass{\n");
 
       for (int i = 1; i< lexUnits.length; i++){
           if (i!=1) code.append(",");
@@ -156,26 +154,42 @@ public class GLA {
       StringBuilder code = new StringBuilder()
       .append("package analizator.generated;\n")
       .append("import analizator.generated.State;\n")
+      .append("import analizator.generated.LexClass;\n")
       .append("import analizator.structures.Rule;\n")
+      .append("import analizator.structures.Automat;\n")
+      .append("import java.util.EnumMap;\n")
+      .append("import java.util.Map;\n")
       .append("public class Rules{\n")
-      .append("public static EnumMap<State, Rule[]> getRules(){\n")
-      .append("EnumMap<State, Rule[]> tmp = new EnumMap<>(State.class);");
+      .append("public static Map<State, Rule[]> getRules(){\n")
+      .append("Map<State, Rule[]> tmp = new EnumMap<>(State.class);");
+      
+      
 
       // unsure if works
+      Map<String, ArrayList<GeneratorRule>> ruleMap = new HashMap<>();
       for (GeneratorRule grule : rules){
-          code.append("tmp.put(" + grule.toNewRule() + ");");
+          if(ruleMap.get(grule.stateFrom) == null){
+            ruleMap.put(grule.stateFrom, new ArrayList<>());
+          }
+          ruleMap.get(grule.stateFrom).add(grule);
       }
-      code.append(";");
+
+      for(ArrayList<GeneratorRule> gruleArr : ruleMap.values()){
+         code.append(String.format("tmp.put( State.%s, new Rule[] {", gruleArr.get(0).stateFrom));
+         for(GeneratorRule grule : gruleArr){
+            code.append(String.format("%s,\n", grule.toNewRule()));
+         }
+         code.append("});\n");
+      }
+
       code.append("return tmp;\n};\n}");
 
       try {
-          FileWriter file = new FileWriter("analizator/generated/State.java", false); // false - overwrite
+          FileWriter file = new FileWriter("analizator/generated/Rules.java", false); // false - overwrite
           BufferedWriter output = new BufferedWriter(file);
           output.write(code.toString());
           output.close();
       }
-
-
       catch (IOException e) {
          System.err.println("Generator error: couldn't make State.java");;
       } 

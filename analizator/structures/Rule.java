@@ -2,13 +2,12 @@ package analizator.structures;
 
 import analizator.generated.State;
 import analizator.generated.LexClass;
-import structures.Automat;
 
 public class Rule
 {
    public State stateFrom;          // not null
    public Automat automat;          // not null
-   public LexClass lexClass;           // default to null
+   public LexClass lexClass;        // default to null
    public boolean newLine = false;  // default to false
    public State stateTo;            // default to stateFrom
    public int goBack;               // has to be default -1
@@ -19,7 +18,12 @@ public class Rule
       this.automat = automat;
       this.lexClass = lexClass;
       this.newLine = newLine;
-      this.stateTo = stateTo;
+      if(stateTo == null || stateTo.equals("")){
+         this.stateTo = null;
+      }
+      else{
+         this.stateTo = stateTo;
+      }
       this.goBack = goBack;
    }
  

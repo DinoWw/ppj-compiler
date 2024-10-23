@@ -13,7 +13,7 @@ public class Lexer {
 
   private static final int LEX_UNIT_MAX_LENGTH = 256;   // Lexical units longer than 256 chars will cause undefined behavior
 
-  private boolean lastChar = false;
+  private boolean lastChar;
 
   private char activeChar;
   private State activeState;
@@ -21,7 +21,6 @@ public class Lexer {
   private int readLen;            // number of chars read since last accept()
   private int lastValidLen;       // distance from *start to *last
 
-  private int newLines;
   private int lineNumber;
   
   private Rule[] lastAccepted; 
@@ -32,16 +31,18 @@ public class Lexer {
 
   public Lexer(Reader _reader){
     reader = _reader;
-    try{
-    reader.mark(LEX_UNIT_MAX_LENGTH);
+
     readLen = 0;
     lastValidLen = 0;
-
     lineNumber = 1;
+
+    lastChar = false;
 
     activeState = State.S_pocetno;
 
     lexUnits = new ArrayList<LexUnit>();
+    try{
+    reader.mark(LEX_UNIT_MAX_LENGTH);
 
     }
     catch(IOException e){
@@ -68,7 +69,6 @@ public class Lexer {
         lastValidLen = readLen;
       }
       if(anyActive){
-        // TODO: handle EOF
         continue;
       }
       if(lastAccepted.length == 0){
@@ -82,6 +82,8 @@ public class Lexer {
         accept(priorityRule);
       }
     }
+
+    return this.lexUnits;
 
     /*(
       *  for each regex (rule) tied to one of the active states:
@@ -99,6 +101,7 @@ public class Lexer {
   }
 
   private void nextChar() throws IOException{
+    
     if(lastChar){
       System.err.println("Lekser error: read past end of input");
       return;
@@ -160,7 +163,7 @@ public class Lexer {
     }
   }
 
-  void handleError(){
+  private void handleError() throws IOException{
     System.err.println(String.format("Greska na liniji %d", lineNumber));
     
     reader.reset();
