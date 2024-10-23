@@ -17,6 +17,7 @@ public class GLA {
       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
+
       // REGEX 
       Map<String, String> regexes = new HashMap<String, String>();
       String line = reader.readLine();
@@ -42,7 +43,6 @@ public class GLA {
       };
       String[] lexUnits = line.split(" ", 0);  // sve osim prvog elementa
       generateLexClassEnum(lexUnits);
-      System.err.println("generated lexunits");
 
       // RULES
       ArrayList<GeneratorRule> rules = new ArrayList<GeneratorRule>();
@@ -91,7 +91,6 @@ public class GLA {
             rule.regex = rule.regex.replace(r1.getKey(), '('+r1.getValue()+')');
          }
       }
-<<<<<<< HEAD
 
       // System.err.println(rules.toString());
       // System.err.println(regexes.entrySet().toString());
@@ -99,8 +98,6 @@ public class GLA {
       generateRules(rules);
       System.err.println("generated rules");
       
-=======
->>>>>>> develop
    }
 
 
@@ -183,9 +180,6 @@ public class GLA {
          System.err.println("Generator error: couldn't make State.java");;
       } 
   }   
-
-  
-  
 
   
  
