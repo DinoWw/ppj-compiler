@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import analizator.generated.State;
-import structures.GeneratorRule;
+import analizator.structures.Rule;
 
 
-class Rules {
-   public Map<State, GeneratorRule[]> getRules(){
-      Map<State, GeneratorRule[]> tmp  = new HashMap<State, GeneratorRule[]>();
+public class Rules {
+   public static Map<State, Rule[]> getRules(){
+      Map<State, Rule[]> tmp  = new HashMap<State, Rule[]>();
 
       // tmp.add(new Rule);
       // tmp.add();

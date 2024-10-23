@@ -7,6 +7,7 @@ import java.util.Map;
 import analizator.generated.State;
 import analizator.structures.LexUnit;
 import analizator.structures.Rule;
+import analizator.generated.Rules;
 
 public class Lekser {
 
@@ -29,8 +30,8 @@ public class Lekser {
 
   public Lekser(Reader _reader){
     reader = _reader;
+    try{
     reader.mark(LEX_UNIT_MAX_LENGTH);
-
     readLen = 0;
     lastValidLen = 0;
 
@@ -39,6 +40,12 @@ public class Lekser {
     activeState = State.S_pocetno;
 
     lexUnits = new ArrayList<LexUnit>();
+
+    }
+    catch(IOException e){
+      System.err.println("couldnt mark");
+    }
+   
   }
 
   // TODO: change return type or return through getters of private properties
@@ -102,7 +109,7 @@ public class Lekser {
   }
 
   private void accept(Rule rule){
-
+    try{
     reader.reset();
     int acceptLen;
     if(rule.goBack != -1){
@@ -129,7 +136,10 @@ public class Lekser {
     
 
     reader.mark(LEX_UNIT_MAX_LENGTH);
-    
+  }
+    catch(IOException e){
+      System.err.println("reader error");
+    }
   }
 
   private void resetAutomatons(){
