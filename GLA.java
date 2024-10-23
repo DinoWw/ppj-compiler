@@ -33,14 +33,14 @@ public class GLA {
 
       // STATES
       String[] states = line.split(" ", 0);  // sve osim prvog elementa
-
+      generateStateEnum(states);
 
       // LEX UNITS
       if(!(line = reader.readLine()).startsWith(PREFIX_LEX_UNIT)){
          throw new IOException();
       };
       String[] lexUnits = line.split(" ", 0);  // sve osim prvog elementa
-
+      generateLexClassEnum(lexUnits);
 
       // RULES
       ArrayList<GeneratorRule> rules = new ArrayList<GeneratorRule>();
@@ -89,16 +89,16 @@ public class GLA {
             rule.regex = rule.regex.replace(r1.getKey(), '('+r1.getValue()+')');
          }
       }
-      System.err.println(rules.toString());
-      System.err.println(regexes.entrySet().toString());
+      // System.err.println(rules.toString());
+      // System.err.println(regexes.entrySet().toString());
          
    }
 
 
-   // generates or overwrites analizator/State.java
+   // generates or overwrites analizator/generated/State.java
    private static void generateStateEnum(String[] states){
       StringBuilder code = new StringBuilder()
-      .append("package analizator;\n")
+      .append("package analizator.generated;\n")
       .append("enum State{\n");
 
       for (int i = 1; i< states.length; i++){
@@ -115,11 +115,37 @@ public class GLA {
           output.close();
       }
 
-
       catch (IOException e) {
           System.err.println("couldnt make State.java");;
       } 
   }   
+
+   // generates or overwrites analizator/generated/LexClass.java
+   private static void generateLexClassEnum(String[] lexUnits){
+      StringBuilder code = new StringBuilder()
+      .append("package analizator.generated;\n")
+      .append("enum LexClass{\n");
+
+      for (int i = 1; i< lexUnits.length; i++){
+          if (i!=1) code.append(",");
+          code.append(lexUnits[i]);
+      }
+      code.append(";");
+      code.append("\n}");
+
+      try {
+          FileWriter file = new FileWriter("analizator/generated/LexClass.java", false); // false - overwrite
+          BufferedWriter output = new BufferedWriter(file);
+          output.write(code.toString());
+          output.close();
+      }
+
+      catch (IOException e) {
+          System.err.println("couldnt make LexClass.java");;
+      } 
+  }   
+
+  
 
   
  
