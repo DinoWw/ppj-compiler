@@ -1,23 +1,22 @@
-package analizator;
+package analizator.structures;
+
+import analizator.generated.LexClass;
+
 public class LexUnit{
    
-   public enum lexClass {
-      OPERAND,
-      OP_MINUS,
-      UMINUS,
-      LIJEVA_ZAGRADA,
-      DESNA_ZAGRADA
-   }
 
-   private lexClass className;
+   // TODO: extractati lexClass generatoru
+   // TODO: dodati line number mozda
+
+   private LexClass className;
    private String content;
    
-   public LexUnit(lexClass className, String content){
+   public LexUnit(LexClass className, String content){
       this.className = className;
       this.content = content;
    }
 
-   public lexClass getClasssName(){
+   public LexClass getClasssName(){
       return className;
    }
 

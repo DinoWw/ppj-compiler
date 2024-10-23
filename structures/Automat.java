@@ -13,7 +13,6 @@ public class Automat {
     private int startState, endState;
 
     public Automat(String regEx){
-        // todo
         this.epsTransitions = new ArrayList<Automat.StatePair>();
         this.allTransitions = new ArrayList<Automat.Transition>();
         this.currStates = new ArrayList<Integer>();
