@@ -1,0 +1,803 @@
+CHAR: #
+CHAR: |
+ACCEPTED S_pocetno -> S_komentar
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: #
+CHAR: |
+Greska na liniji 1
+CHAR: |
+CHAR:  
+CHAR: o
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: o
+CHAR: v
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: o
+CHAR: v
+CHAR: o
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: v
+CHAR: o
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: o
+CHAR:  
+CHAR: j
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: j
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: j
+CHAR: e
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR:  
+CHAR: p
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: p
+CHAR: r
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: p
+CHAR: r
+CHAR: i
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: r
+CHAR: i
+CHAR: m
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: i
+CHAR: m
+CHAR: j
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: m
+CHAR: j
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: j
+CHAR: e
+CHAR: r
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR: r
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: r
+CHAR:  
+CHAR: |
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: |
+Greska na liniji 1
+CHAR: |
+CHAR: #
+CHAR: 
+ACCEPTED S_komentar -> S_pocetno
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: #
+CHAR: 
+Greska na liniji 1
+CHAR: 
+CHAR: 
+
+CHAR: 3
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: true
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 
+
+CHAR: 3
+CHAR:  
+ACCEPTED S_pocetno -> null
+	prihvati: OPERAND
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 3
+CHAR:  
+CHAR: -
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: -
+CHAR:  
+CHAR:  
+CHAR: -
+CHAR: 0
+ACCEPTED S_pocetno -> S_unarni
+	prihvati: OP_MINUS
+	novi red: false
+	vrati se: 1
+LastValidLen 4
+ReadLen      5
+LEX string: -
+CHAR:  
+CHAR:  
+ACCEPTED S_unarni -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR:  
+CHAR: -
+ACCEPTED S_unarni -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: -
+CHAR: 0
+ACCEPTED S_unarni -> S_pocetno
+	prihvati: UMINUS
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: -
+CHAR: 0
+CHAR: x
+CHAR: 1
+CHAR: 2
+CHAR:  
+ACCEPTED S_pocetno -> null
+	prihvati: OPERAND
+	novi red: false
+	vrati se: -1
+LastValidLen 4
+ReadLen      5
+LEX string: 0x12
+CHAR:  
+CHAR: -
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: -
+CHAR:  
+CHAR: (
+ACCEPTED S_pocetno -> null
+	prihvati: OP_MINUS
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      3
+LEX string: -
+CHAR:  
+CHAR: (
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: (
+CHAR:  
+CHAR: #
+ACCEPTED S_pocetno -> null
+	prihvati: LIJEVA_ZAGRADA
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      3
+LEX string: (
+CHAR:  
+CHAR: #
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: #
+CHAR: |
+ACCEPTED S_pocetno -> S_komentar
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: #
+CHAR: |
+Greska na liniji 2
+CHAR: |
+CHAR:  
+CHAR: o
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: o
+CHAR: v
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: o
+CHAR: v
+CHAR: d
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: v
+CHAR: d
+CHAR: j
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: d
+CHAR: j
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: j
+CHAR: e
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR:  
+CHAR: c
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: c
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: c
+CHAR: e
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR:  
+CHAR: d
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: d
+CHAR: o
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: d
+CHAR: o
+CHAR: c
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: o
+CHAR: c
+CHAR: i
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: c
+CHAR: i
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: i
+CHAR:  
+CHAR: g
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: g
+CHAR: r
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: g
+CHAR: r
+CHAR: u
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: r
+CHAR: u
+CHAR: p
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: u
+CHAR: p
+CHAR: i
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: p
+CHAR: i
+CHAR: r
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: i
+CHAR: r
+CHAR: a
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: r
+CHAR: a
+CHAR: n
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: a
+CHAR: n
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: n
+CHAR: e
+CHAR: 
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR: 
+Greska na liniji 2
+CHAR: 
+CHAR: 
+
+CHAR: 	
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: true
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 
+
+CHAR: 	
+CHAR: 	
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 	
+CHAR: 	
+CHAR: o
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 	
+CHAR: o
+CHAR: p
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: o
+CHAR: p
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: p
+CHAR: e
+CHAR: r
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR: r
+CHAR: a
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: r
+CHAR: a
+CHAR: c
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: a
+CHAR: c
+CHAR: i
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: c
+CHAR: i
+CHAR: j
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: i
+CHAR: j
+CHAR: e
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: j
+CHAR: e
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: e
+CHAR:  
+CHAR: |
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: |
+Greska na liniji 3
+CHAR: |
+CHAR: #
+CHAR: 
+ACCEPTED S_komentar -> S_pocetno
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: #
+CHAR: 
+Greska na liniji 3
+CHAR: 
+CHAR: 
+
+CHAR: 3
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: true
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 
+
+CHAR: 3
+CHAR: -
+ACCEPTED S_pocetno -> null
+	prihvati: OPERAND
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 3
+CHAR: -
+CHAR:  
+CHAR: -
+CHAR: 
+ACCEPTED S_pocetno -> S_unarni
+	prihvati: OP_MINUS
+	novi red: false
+	vrati se: 1
+LastValidLen 3
+ReadLen      4
+LEX string: -
+CHAR:  
+CHAR: -
+ACCEPTED S_unarni -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: -
+CHAR: 
+ACCEPTED S_unarni -> S_pocetno
+	prihvati: UMINUS
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: -
+CHAR: 
+Greska na liniji 4
+CHAR: 
+CHAR: 
+
+CHAR: -
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: true
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: 
+
+CHAR: -
+CHAR: -
+CHAR: 0
+ACCEPTED S_pocetno -> S_unarni
+	prihvati: OP_MINUS
+	novi red: false
+	vrati se: 1
+LastValidLen 2
+ReadLen      3
+LEX string: -
+CHAR: -
+CHAR: 0
+ACCEPTED S_unarni -> S_pocetno
+	prihvati: UMINUS
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: -
+CHAR: 0
+CHAR: 7
+CHAR: 6
+CHAR: )
+ACCEPTED S_pocetno -> null
+	prihvati: OPERAND
+	novi red: false
+	vrati se: -1
+LastValidLen 3
+ReadLen      4
+LEX string: 076
+CHAR: )
+CHAR:  
+ACCEPTED S_pocetno -> null
+	prihvati: DESNA_ZAGRADA
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: )
+CHAR:  
+CHAR: #
+ACCEPTED S_pocetno -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: #
+CHAR: |
+ACCEPTED S_pocetno -> S_komentar
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string: #
+CHAR: |
+Greska na liniji 5
+CHAR: |
+CHAR:  
+CHAR: 3
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
+LEX string:  
+CHAR: 3
+CHAR:  
+ACCEPTED S_komentar -> null
+	prihvati: null
+	novi red: false
+	vrati se: -1
+LastValidLen 1
+ReadLen      2
