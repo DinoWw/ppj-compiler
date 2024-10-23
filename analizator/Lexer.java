@@ -66,7 +66,6 @@ public class Lexer {
       }
       if(lastAccepted.length == 0){
         handleError();
-        System.err.println("ERROR: TODO: RECOVER");
       }
       else{
         // TODO: test, potential source of errors
@@ -94,7 +93,7 @@ public class Lexer {
 
   private void nextChar() throws IOException{
     if(lastChar){
-      System.err.println("read past EOF");
+      System.err.println("Lekser error: read past end of input");
       return;
     }
     activeChar = (char) reader.read();
