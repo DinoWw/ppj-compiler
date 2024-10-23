@@ -7,8 +7,8 @@ import analizator.generated.State;
 import analizator.structures.Rule;
 
 
-class Rules {
-   public Map<State, Rule[]> getRules(){
+public class Rules {
+   public static Map<State, Rule[]> getRules(){
       Map<State, Rule[]> tmp  = new HashMap<State, Rule[]>();
 
       // tmp.add(new Rule);

@@ -13,6 +13,16 @@ public class Rule
    public State stateTo;            // default to stateFrom
    public int goBack;               // has to be default -1
 
+   public Rule(State stateFrom, Automat automat, LexClass lexClass, boolean newLine,
+         State stateTo, int goBack) {
+      this.stateFrom = stateFrom;
+      this.automat = automat;
+      this.lexClass = lexClass;
+      this.newLine = newLine;
+      this.stateTo = stateTo;
+      this.goBack = goBack;
+   }
+ 
    public void reset(){
       //TODO: reset automaton
    }
