@@ -33,6 +33,8 @@ public class GLA {
 
       // STATES
       String[] states = line.split(" ", 0);  // sve osim prvog elementa
+      generateStateEnum(states);
+      System.err.println("generated states");
 
 
       // LEX UNITS
@@ -40,7 +42,7 @@ public class GLA {
          throw new IOException();
       };
       String[] lexUnits = line.split(" ", 0);  // sve osim prvog elementa
-
+      generateLexClassEnum(lexUnits);
 
       // RULES
       ArrayList<GeneratorRule> rules = new ArrayList<GeneratorRule>();
@@ -89,13 +91,20 @@ public class GLA {
             rule.regex = rule.regex.replace(r1.getKey(), '('+r1.getValue()+')');
          }
       }
+
+      // System.err.println(rules.toString());
+      // System.err.println(regexes.entrySet().toString());
+
+      generateRules(rules);
+      System.err.println("generated rules");
+      
    }
 
 
-   // generates or overwrites analizator/State.java
+   // GENERATE FILE analizator/generated/State.java
    private static void generateStateEnum(String[] states){
       StringBuilder code = new StringBuilder()
-      .append("package analizator;\n")
+      .append("package analizator.generated;\n")
       .append("enum State{\n");
 
       for (int i = 1; i< states.length; i++){
@@ -104,6 +113,60 @@ public class GLA {
       }
       code.append(";");
       code.append("\n}");
+
+      try {
+          FileWriter file = new FileWriter("analizator/generated/State.java", false); // false - overwrite
+          BufferedWriter output = new BufferedWriter(file);
+          output.write(code.toString());
+          output.close();
+      }
+
+      catch (IOException e) {
+          System.err.println("couldnt make State.java");
+      } 
+  }   
+
+   // GENERATE FILE analizator/generated/LexClass.java
+   private static void generateLexClassEnum(String[] lexUnits){
+      StringBuilder code = new StringBuilder()
+      .append("package analizator.generated;\n")
+      .append("enum LexClass{\n");
+
+      for (int i = 1; i< lexUnits.length; i++){
+          if (i!=1) code.append(",");
+          code.append(lexUnits[i]);
+      }
+      code.append(";");
+      code.append("\n}");
+
+      try {
+          FileWriter file = new FileWriter("analizator/generated/LexClass.java", false); // false - overwrite
+          BufferedWriter output = new BufferedWriter(file);
+          output.write(code.toString());
+          output.close();
+      }
+
+      catch (IOException e) {
+          System.err.println("couldnt make LexClass.java");
+      } 
+  }   
+
+   // GENERATE FILE analizator/generated/Rules.java
+   private static void generateRules(ArrayList<GeneratorRule> rules){
+      StringBuilder code = new StringBuilder()
+      .append("package analizator.generated;\n")
+      .append("import analizator.generated.State;\n")
+      .append("import analizator.structures.Rule;\n")
+      .append("public class Rules{\n")
+      .append("public static EnumMap<State, Rule[]> getRules(){\n")
+      .append("EnumMap<State, Rule[]> tmp = new EnumMap<>(State.class);");
+
+      // unsure if works
+      for (GeneratorRule grule : rules){
+          code.append("tmp.put(" + grule.toNewRule() + ");");
+      }
+      code.append(";");
+      code.append("return tmp;\n};\n}");
 
       try {
           FileWriter file = new FileWriter("analizator/generated/State.java", false); // false - overwrite

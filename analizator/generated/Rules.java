@@ -4,7 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import analizator.generated.State;
-import structures.GeneratorRule;
+import analizator.structures.Rule;
 
 
 class Rules {
