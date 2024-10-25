@@ -54,6 +54,8 @@ public class Lexer {
   // TODO: change return type or return through getters of private properties
   public ArrayList<LexUnit> analyse() throws IOException{
     for(nextChar(); !lastChar; nextChar()){
+
+      System.out.println("");
            
       boolean anyActive = false;
       ArrayList<Rule> accepts = new ArrayList<Rule>();
@@ -64,9 +66,14 @@ public class Lexer {
           accepts.add(rule);
         }
       }
-      System.out.println("Those that accept: " + accepts.toString());;
+      if(activeState != State.S_komentar){
+
+        System.out.println("Those that accept: " + accepts.toString());;
+      }
+      else {
+        System.out.println("komentar");
+      }
       if(!accepts.isEmpty()){
-        System.out.println("Accepts is empty.");
         lastAccepted = accepts.toArray(new Rule[0]);
         lastValidLen = readLen;
       }
@@ -108,20 +115,37 @@ public class Lexer {
       System.err.println("Lekser error: read past end of input");
       return;
     }
-    activeChar = (char) reader.read();
-    if(activeChar == -1){
-      lastChar = true;
+    // windows represents a newline character with \r\n, \r is redundant
+    if('\r' == (activeChar = readChar())){
+      nextChar();
     }
+    
     readLen ++;
 
+    
     System.out.println("CHAR: " + activeChar + " readLen: " + readLen);
 
   }
 
+  private char readChar() throws IOException{
+    int nextCharInt = reader.read();
+    if(nextCharInt == -1){
+      System.out.println("EOF EOF EOF");
+      lastChar = true;
+    }
+    return (char) nextCharInt;
+  }
+
   private void accept(Rule rule){
-    System.out.println("ACCEPTED " + rule.toString());
-    System.out.println("LastValidLen " + lastValidLen);
-    System.out.println("ReadLen      " + readLen);
+    if(activeState != State.S_komentar){
+
+      System.out.println("ACCEPTED " + rule.toString());
+      System.out.println("LastValidLen " + lastValidLen);
+      System.out.println("ReadLen      " + readLen);
+    }
+    else{
+      System.out.println("accepted komentar");
+    }
     try{
     reader.reset();
     // reset automatons before change of state so only relevant automatons are touched
