@@ -53,10 +53,7 @@ public class Lexer {
 
   // TODO: change return type or return through getters of private properties
   public ArrayList<LexUnit> analyse() throws IOException{
-    for(nextChar(); !lastChar; nextChar()){
-
-      System.out.println("");
-           
+    for(nextChar(); !lastChar; nextChar()){           
       boolean anyActive = false;
       ArrayList<Rule> accepts = new ArrayList<Rule>();
       
@@ -65,13 +62,6 @@ public class Lexer {
         if(rule.automat.isAccepted()){
           accepts.add(rule);
         }
-      }
-      if(activeState != State.S_komentar){
-
-        System.out.println("Those that accept: " + accepts.toString());;
-      }
-      else {
-        System.out.println("komentar");
       }
       if(!accepts.isEmpty()){
         lastAccepted = accepts.toArray(new Rule[0]);
@@ -122,30 +112,17 @@ public class Lexer {
     
     readLen ++;
 
-    
-    System.out.println("CHAR: " + activeChar + " readLen: " + readLen);
-
   }
 
   private char readChar() throws IOException{
     int nextCharInt = reader.read();
     if(nextCharInt == -1){
-      System.out.println("EOF EOF EOF");
       lastChar = true;
     }
     return (char) nextCharInt;
   }
 
   private void accept(Rule rule){
-    if(activeState != State.S_komentar){
-
-      System.out.println("ACCEPTED " + rule.toString());
-      System.out.println("LastValidLen " + lastValidLen);
-      System.out.println("ReadLen      " + readLen);
-    }
-    else{
-      System.out.println("accepted komentar");
-    }
     try{
     reader.reset();
     // reset automatons before change of state so only relevant automatons are touched
@@ -165,7 +142,6 @@ public class Lexer {
     char[] lexUnitCharArr = new char[acceptLen];
     reader.read(lexUnitCharArr, 0, acceptLen);
     String lexUnitString = new String(lexUnitCharArr);
-    System.out.println("LEX string: "+ lexUnitString);
 
     if(rule.lexClass != null){
       lexUnits.add(new LexUnit(rule.lexClass, this.lineNumber, lexUnitString));
@@ -180,7 +156,6 @@ public class Lexer {
     }
 
     //nextChar();
-    //System.out.println("SkippedChar: "+ (char)reader.read());
     resetPointers();
     reader.mark(LEX_UNIT_MAX_LENGTH);
     }
@@ -205,7 +180,6 @@ public class Lexer {
 
   private void handleError() throws IOException{
     System.err.println(String.format("Greska na liniji %d", lineNumber));
-    System.out.println(String.format("Greska na liniji %d", lineNumber));
     
     reader.reset();
     nextChar();
