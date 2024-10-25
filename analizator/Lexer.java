@@ -64,7 +64,9 @@ public class Lexer {
           accepts.add(rule);
         }
       }
+      System.out.println("Those that accept: " + accepts.toString());;
       if(!accepts.isEmpty()){
+        System.out.println("Accepts is empty.");
         lastAccepted = accepts.toArray(new Rule[0]);
         lastValidLen = readLen;
       }
@@ -112,7 +114,7 @@ public class Lexer {
     }
     readLen ++;
 
-    System.out.println("CHAR: " + activeChar);
+    System.out.println("CHAR: " + activeChar + " readLen: " + readLen);
 
   }
 

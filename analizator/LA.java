@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import analizator.generated.State;
+import analizator.structures.Automat;
 import analizator.structures.LexUnit;
+import analizator.structures.Rule;
 
 
 
@@ -16,10 +19,17 @@ public class LA {
 
     Lexer lexer = new Lexer(reader);
 
-    ArrayList<LexUnit> lexUnitList = lexer.analyse();
+    Automat a = new Automat("#\\|");
 
-    for(LexUnit lexUnit : lexUnitList){
-      System.out.println(lexUnit.toString());
-    }
+    System.out.println(a.doTransition('#'));
+    System.out.println(a.isAccepted());
+    System.out.println(a.doTransition('|'));
+    System.out.println(a.isAccepted());
+
+    //ArrayList<LexUnit> lexUnitList = lexer.analyse();
+
+    // for(LexUnit lexUnit : lexUnitList){
+    //   System.out.println(lexUnit.toString());
+    // }
   }
 }
