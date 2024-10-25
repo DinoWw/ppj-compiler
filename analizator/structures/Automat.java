@@ -1,3 +1,5 @@
+package analizator.structures;
+
 import java.util.ArrayList;
 
 /**
