@@ -82,6 +82,17 @@ public class Lexer {
       }
     }
 
+    if(lastAccepted.length == 0){
+      handleError();
+    }
+    else{
+      // TODO: test, potential source of errors
+      final Rule priorityRule = lastAccepted[0]; // because of ordering, first rule has highest priority
+
+      // accept resets automatons
+      accept(priorityRule);
+    }
+
     return this.lexUnits;
 
     /*(
@@ -101,10 +112,6 @@ public class Lexer {
 
   private void nextChar() throws IOException{
     
-    if(lastChar){
-      System.err.println("Lekser error: read past end of input");
-      return;
-    }
     // windows represents a newline character with \r\n, \r is redundant
     if('\r' == (activeChar = readChar())){
       nextChar();
@@ -182,6 +189,7 @@ public class Lexer {
     System.err.println(String.format("Greska na liniji %d", lineNumber));
     
     reader.reset();
+    lastChar = false;
     nextChar();
     resetAutomatons();
     resetPointers();
