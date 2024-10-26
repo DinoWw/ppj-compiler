@@ -38,7 +38,7 @@ public class Lexer {
 
     lastChar = false;
 
-    activeState = State.S_pocetno;
+    activeState = State.values()[0];
 
     lexUnits = new ArrayList<LexUnit>();
     try{
