@@ -1,4 +1,5 @@
-package structures;
+package analizator.structures;
+
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ public class Automat {
      */
     public boolean isOperator(String regEx, int i){
         int numOfSlashes = 0;
-        while(i-1>0 &&  regEx.charAt(i)=='\\'){
+        while(i-1>=0 &&  regEx.charAt(i-1)=='\\'){
             numOfSlashes++;
             i--; 
         }
@@ -79,7 +80,7 @@ public class Automat {
         int leftState = newState(); 
         int rightState = newState();
 
-        if (end!=0){ // recursively invokes pretvori for each sub-expression
+        if (end!=0){ // recursively invokes transform for each sub-expression
             for(int i = 0; i<choices.size(); i++){
                 StatePair temp = transform(choices.get(i));
                 addEpsTransition(leftState,temp.leftState);
@@ -116,6 +117,7 @@ public class Automat {
                 }
                 else{
                     // slucaj 2
+
                     if(regEx.charAt(i) == '\\'){
                         prefixed = true;
                         i++;
@@ -142,7 +144,7 @@ public class Automat {
                 }
 
                 // checks if repeating
-                if (i+1<regEx.length() && regEx.charAt(i+1) == '*'){
+                if (i+1<regEx.length() && regEx.charAt(i+1) == '*' && isOperator(regEx, i+1)){
                     int x = a;
                     int y = b;
                     a = newState();
@@ -220,10 +222,10 @@ public class Automat {
     private int indexOfClosedBracket(int i, String regEx){
         int opened = 0;
         for (int a = i+1; a<regEx.length(); a++){
-            if (regEx.charAt(a) == '('){ 
+            if (regEx.charAt(a) == '(' && isOperator(regEx, a)){ 
                 opened++;
             }
-            else if (regEx.charAt(a) == ')'){
+            else if (regEx.charAt(a) == ')' && isOperator(regEx, a)){
                 if (opened==0) {
                     return a;
                 }
