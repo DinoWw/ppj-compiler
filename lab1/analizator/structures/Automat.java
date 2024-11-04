@@ -1,3 +1,5 @@
+package analizator.structures;
+
 import java.util.ArrayList;
 
 /**
@@ -93,7 +95,6 @@ public class Automat {
             while(i<regEx.length()){
                 int a, b;
                 if (prefixed){
-                    System.out.println("found prefixed "+regEx.charAt(i));
                     // slucaj 1
                     prefixed = false;
                     char transChar;
@@ -116,7 +117,6 @@ public class Automat {
                 }
                 else{
                     // slucaj 2
-                    System.out.println("found nn "+regEx.charAt(i));
 
                     if(regEx.charAt(i) == '\\'){
                         prefixed = true;
