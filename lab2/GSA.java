@@ -4,11 +4,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 import java.util.HashMap;
+import java.util.HashSet;
 
-//import Stavka;
-
-import javax.print.DocFlavor.STRING;
 
 public class GSA{
     private static final String PREFIX_NONFINAL_SIGN = "%V";
@@ -61,29 +60,43 @@ public class GSA{
 
         }
 
-        generateStavke(productions);
+        ArrayList<Stavka> stavke = generateStavke(productions);
+        //stavke = createBeginsSets(stavke);
+
+        //Automat epsNKA = Automat(stavke);
     }
 
 
-    // maybe return list or smtn
-    private static void generateStavke(Map<String, ArrayList<ArrayList<String>>> productions){
+    private static ArrayList<Stavka> generateStavke(Map<String, ArrayList<ArrayList<String>>> productions){
         ArrayList<Stavka> stavke = new ArrayList<Stavka>();
 
         for (String left : productions.keySet()){
+            
             for (ArrayList<String> right : productions.get(left)){
                 int maxNum = right.size()+1;
+                ArrayList<String> beginsSet = beginsSet(right, productions);
+               
                 for (int i = 0; i<maxNum-1; i++){
                     Stavka tmp = new Stavka(left, right, i, false);
                     stavke.add(tmp);
                 }
+
                 stavke.add(new Stavka(left, right, maxNum, true));
 
             }
         }
 
-        for (Stavka s : stavke){
-            System.out.println(s.toString());
-        }
+        return stavke;
     }
 
+    private static ArrayList<String> beginsSet (ArrayList<String> product, Map<String, ArrayList<ArrayList<String>>> productions){
+        Set<String> set = new HashSet<>();
+        int index = 0;
+        String firstElem = product.get(index);
+        while (true) {
+            if()
+        }
+
+        return new ArrayList<>();
+    }
 }
