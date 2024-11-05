@@ -4,10 +4,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 
+=======
+import java.util.HashMap;
+
+//import Stavka;
+
+import javax.print.DocFlavor.STRING;
+>>>>>>> develop
 
 public class GSA{
     private static final String PREFIX_NONFINAL_SIGN = "%V";
@@ -60,6 +68,7 @@ public class GSA{
 
         }
 
+<<<<<<< HEAD
         ArrayList<Stavka> stavke = generateStavke(productions);
         //stavke = createBeginsSets(stavke);
 
@@ -76,16 +85,33 @@ public class GSA{
                 int maxNum = right.size()+1;
                 ArrayList<String> beginsSet = beginsSet(right, productions);
                
+=======
+        generateStavke(productions);
+    }
+
+
+    // maybe return list or smtn
+    private static void generateStavke(Map<String, ArrayList<ArrayList<String>>> productions){
+        ArrayList<Stavka> stavke = new ArrayList<Stavka>();
+
+        for (String left : productions.keySet()){
+            for (ArrayList<String> right : productions.get(left)){
+                int maxNum = right.size()+1;
+>>>>>>> develop
                 for (int i = 0; i<maxNum-1; i++){
                     Stavka tmp = new Stavka(left, right, i, false);
                     stavke.add(tmp);
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
                 stavke.add(new Stavka(left, right, maxNum, true));
 
             }
         }
 
+<<<<<<< HEAD
         return stavke;
     }
 
@@ -99,4 +125,11 @@ public class GSA{
 
         return new ArrayList<>();
     }
+=======
+        for (Stavka s : stavke){
+            System.out.println(s.toString());
+        }
+    }
+
+>>>>>>> develop
 }

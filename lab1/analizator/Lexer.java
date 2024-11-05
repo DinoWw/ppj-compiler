@@ -11,7 +11,7 @@ import analizator.generated.Rules;
 
 public class Lexer {
 
-  private static final int LEX_UNIT_MAX_LENGTH = 256;   // Lexical units longer than 256 chars will cause undefined behavior
+  private static final int LEX_UNIT_MAX_LENGTH = 255;   // Lexical units longer than 256 chars will cause undefined behavior
 
   private boolean lastChar;
 
@@ -25,7 +25,7 @@ public class Lexer {
   
   private Rule[] lastAccepted; 
 
-  private Map<State, Rule[]> rules = Rules.getRules();  // TODO: get rules from generated file
+  private Map<State, Rule[]> rules = Rules.getRules();
 
   private ArrayList<LexUnit> lexUnits;
 
@@ -38,7 +38,7 @@ public class Lexer {
 
     lastChar = false;
 
-    activeState = State.S_pocetno;
+    activeState = State.values()[0];
 
     lexUnits = new ArrayList<LexUnit>();
     try{
@@ -53,13 +53,12 @@ public class Lexer {
 
   // TODO: change return type or return through getters of private properties
   public ArrayList<LexUnit> analyse() throws IOException{
-    for(nextChar(); !lastChar; nextChar()){
-           
+    for(nextChar(); !lastChar; nextChar()){           
       boolean anyActive = false;
       ArrayList<Rule> accepts = new ArrayList<Rule>();
       
       for(Rule rule : rules.get(activeState)){
-        anyActive = anyActive || rule.automat.doTransition(activeChar);
+        anyActive = (rule.automat.doTransition(activeChar) || anyActive);
         if(rule.automat.isAccepted()){
           accepts.add(rule);
         }
@@ -83,6 +82,17 @@ public class Lexer {
       }
     }
 
+    if(lastAccepted.length == 0){
+      handleError();
+    }
+    else{
+      // TODO: test, potential source of errors
+      final Rule priorityRule = lastAccepted[0]; // because of ordering, first rule has highest priority
+
+      // accept resets automatons
+      accept(priorityRule);
+    }
+
     return this.lexUnits;
 
     /*(
@@ -102,16 +112,21 @@ public class Lexer {
 
   private void nextChar() throws IOException{
     
-    if(lastChar){
-      System.err.println("Lekser error: read past end of input");
-      return;
+    // windows represents a newline character with \r\n, \r is redundant
+    if('\r' == (activeChar = readChar())){
+      nextChar();
     }
-    activeChar = (char) reader.read();
-    if(activeChar == -1){
+    
+    readLen ++;
+
+  }
+
+  private char readChar() throws IOException{
+    int nextCharInt = reader.read();
+    if(nextCharInt == -1){
       lastChar = true;
     }
-    // else
-    readLen ++;
+    return (char) nextCharInt;
   }
 
   private void accept(Rule rule){
@@ -127,31 +142,38 @@ public class Lexer {
     else{
       acceptLen = lastValidLen;
     }
-    char[] lexUnitCharArr = new char[acceptLen];
-    reader.read(lexUnitCharArr, 0, lastValidLen);
-    String lexUnitString = new String(lexUnitCharArr);
 
-    if(rule.newLine){
-      lineNumber++;
-    }
+    // reading acceptLen characters is absolutely required regardles
+    //  of weatther or not thely will be written to a lexUnit as
+    //  we can not skip reader.reset() due to potential goBack
+    char[] lexUnitCharArr = new char[acceptLen];
+    reader.read(lexUnitCharArr, 0, acceptLen);
+    String lexUnitString = new String(lexUnitCharArr);
 
     if(rule.lexClass != null){
       lexUnits.add(new LexUnit(rule.lexClass, this.lineNumber, lexUnitString));
+    }
+
+    if(rule.newLine){
+      lineNumber++;
     }
 
     if(rule.stateTo != null){
       this.activeState = rule.stateTo;
     }
 
+    //nextChar();
     resetPointers();
     reader.mark(LEX_UNIT_MAX_LENGTH);
-  }
+    }
     catch(IOException e){
       System.err.println("reader error");
     }
   }
 
+  // TODO: rename method to better reflect function
   private void resetPointers(){
+    lastAccepted = new Rule[0];
     readLen = 0;
     lastValidLen = 0;
   } 
@@ -167,6 +189,7 @@ public class Lexer {
     System.err.println(String.format("Greska na liniji %d", lineNumber));
     
     reader.reset();
+    lastChar = false;
     nextChar();
     resetAutomatons();
     resetPointers();

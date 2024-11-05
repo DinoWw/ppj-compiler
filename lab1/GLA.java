@@ -46,7 +46,7 @@ public class GLA {
       while(null != (line = reader.readLine()) && line.length() != 0){
 
          // line format : <State>regex
-         String[] parts = line.split(">", 0);
+         String[] parts = line.split(">", 2);
          GeneratorRule rule = new GeneratorRule();
          rule.stateFrom = parts[0].substring(1);
          rule.regex = parts[1];

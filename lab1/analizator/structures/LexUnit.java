@@ -4,10 +4,6 @@ import analizator.generated.LexClass;
 
 public class LexUnit{
    
-
-   // TODO: extractati lexClass generatoru
-   // TODO: dodati line number mozda
-
    private LexClass className;
    private String content;
    private int lineNumber;
