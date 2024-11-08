@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -17,6 +18,8 @@ public class GSA{
     private static ArrayList<String> nonTerminalSigns;
     private static ArrayList<String> terminalSigns;
     private static ArrayList<String> synSigns;
+
+    private static Map<String, Set<String>> BeginsMap;
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -55,53 +58,64 @@ public class GSA{
             else{
                 if (productions.containsKey(key)){
                     productions.get(key).add( new ArrayList<String>(Arrays.asList(line.substring(1).split(" "))) );
-                    // depends how we want to write $
-                    //productions.get(key).add( line.substring(1).equals("$") ? "" : line.substring(1) ); 
                 }
                 else{
                     productions.put(key, new ArrayList<ArrayList<String>>(Arrays.asList(new ArrayList<String>(Arrays.asList( line.substring(1).split(" ") )))));
-                    //productions.put(key, new ArrayList<String>(Arrays.asList( line.substring(1).equals("$") ? "" : line.substring(1) )));
                 }
             }
 
         }
 
-        beginsTable(productions);
 
+        BeginsMap = createBeginsMap(productions);
+    
         ArrayList<Stavka> stavke = generateStavke(productions);
 
-        //Automat epsNKA = Automat(stavke);
+        eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
+
+
     }
 
+    /**
+     * create ArrayList<Stavke> with empty beginsSet
+     * @param productions
+     * @return ArrayList<Stavke>
+     */
 
     private static ArrayList<Stavka> generateStavke(Map<String, ArrayList<ArrayList<String>>> productions){
-        ArrayList<Stavka> stavke = new ArrayList<Stavka>();
-        Map<String,Set<String>> beginsTable = beginsTable(productions);
+        ArrayList<Stavka> stavke = new ArrayList<Stavka>(); 
 
         for (String left : productions.keySet()){
             
             for (ArrayList<String> right : productions.get(left)){
-                int maxNum = right.size()+1;
+
+                // if complete stavka
+                if (right.get(0).equals("$")){
+                    stavke.add(new Stavka(left, new ArrayList<>(Arrays.asList("")), 0, new HashSet<String>(), true));
+                    continue;
+                }
+                
+                int maxNum = right.size();
                
-                for (int i = 0; i<maxNum-1; i++){
-                    Stavka tmp = new Stavka(left, right, i, beginsTable.get(left), false);
+                for (int i = 0; i<maxNum; i++){
+                    Stavka tmp = new Stavka(left, right, i, new HashSet<String>(), false);
                     stavke.add(tmp);
                 }
 
-                stavke.add(new Stavka(left, right, maxNum, beginsTable.get(left), true));
+                stavke.add(new Stavka(left, right, maxNum, new HashSet<String>(), true));
 
             }
         }
 
-        for (Stavka s : stavke){
-            System.out.println(s.toString());
-        }
-
         return stavke;
     }
-// TODO trhere should be more elems i think idk
-    private static Map<String,Set<String>> beginsTable (Map<String, ArrayList<ArrayList<String>>> productions){
-        Map<String,Set<String>> table = new HashMap<String,Set<String>>();
+
+    private static Map<String,Set<String>> createBeginsMap (Map<String, ArrayList<ArrayList<String>>> productions){
+
+        Map<String,Set<String>> table = new HashMap<String,Set<String>>(); // table ZAPOCINJE
+        ArrayList<String> producesEmpty = new ArrayList<String>(); // contains all chars that can produce empty sequence
+
+        // init all arrays for nonterminal signs
         for (String left : nonTerminalSigns){
             table.put(left, new HashSet<String>(Arrays.asList(left)));
         }
@@ -112,8 +126,11 @@ public class GSA{
             for (ArrayList<String> production : productions.get(key)){
 
                 String leftestElem = production.get(0);
-                if (!table.get(key).contains(leftestElem)){// better if set but ok :(
+                if (!table.get(key).contains(leftestElem)){
                     table.get(key).add(leftestElem);
+                }
+                if (leftestElem.equals("$")){
+                    producesEmpty.add(key);
                 }
 
             }
@@ -129,10 +146,17 @@ public class GSA{
                 for (String sign : table.get(key)){ 
                     if (nonTerminalSigns.contains(sign)){
                         for (ArrayList<String> production : productions.get(sign)){
-                            if ( !table.get(key).contains(production.get(0)) ){
+                            // if produces empty array add the sufix
+                            if (producesEmpty.contains(production.get(0)) && 1<production.size() && !table.get(key).contains(production.get(1))){
+                                tmp.add(production.get(1));
                                 changed = true;
-                                tmp.add(production.get(0));
                             }
+                            // if its not added, add
+                            if ( !table.get(key).contains(production.get(0)) ){
+                                tmp.add(production.get(0));
+                                changed = true;
+                            }
+                            
                         }
                     }   
                 }
@@ -152,11 +176,7 @@ public class GSA{
             table.put(key, tmp);
         }
 
-        //print
-        // for(String key : table.keySet()){
-        //     System.err.println(key+"  "+table.get(key).toString());
-        // }
-
         return table;
     }
+
 }
