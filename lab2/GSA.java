@@ -71,6 +71,22 @@ public class GSA{
         ArrayList<Stavka> stavke = generateStavke(productions);
 
         //Automat epsNKA = Automat(stavke);
+
+
+        /// PARSING ENDS HERE.
+
+        ArrayList<String> allSigns = new ArrayList<String>(nonTerminalSigns);
+        allSigns.addAll(terminalSigns);
+        Transformer transformer = new Transformer(stavke, allSigns.toArray(new String[0]));
+
+        System.out.println(allSigns);
+        Map<Stavka, Map<String, Stavka[]>> enka = transformer.generateENKA();
+        System.out.println(enka);
+        Map<Stavka, Map<String, Set<Stavka>>> nka = transformer.NKAfromENKA(enka);
+        System.out.println(nka);
+        ArrayList<Transformer.TransitionSet> dka = transformer.DKAfromNKA(nka);
+        System.out.println(dka);
+
     }
 
 
