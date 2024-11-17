@@ -92,7 +92,7 @@ public class GSA{
         Transformer transformer = new Transformer(stavke, allSigns.toArray(new String[0]));
 
         System.out.println(allSigns);
-        Map<Stavka, Map<String, Stavka[]>> enka = transformer.generateENKA();
+        Map<Stavka, Map<String, Stavka[]>> enka = transformer.ENKAtoENKAMap(eNKA);
         System.out.println("ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA :");
         for(Entry<Stavka, Map<String, Stavka[]>> e1 : enka.entrySet()){
             System.out.println(e1.getKey());
