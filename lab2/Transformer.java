@@ -63,7 +63,7 @@ public class Transformer{
                      break;   // should only be one such transition
                   }
                }
-               catch(ArrayIndexOutOfBoundsException e){
+               catch(IndexOutOfBoundsException e){
                   continue;
                }
             }
