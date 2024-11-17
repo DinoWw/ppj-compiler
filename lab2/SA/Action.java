@@ -1,14 +1,13 @@
-
-import java.util.Set;
-
+package SA; 
+import java.util.ArrayList;
 public class Action {
 
     ActionEnum whatToDo = null;
-    String nextState = null;
-    Stavka reduction = null;
+    Integer nextState = null;
+    String left = null;
+    ArrayList<String> right = null;
 
-
-    public Action(String nextState, boolean isNewState){
+    public Action(int nextState, boolean isNewState){
         if (isNewState){
             this.whatToDo = ActionEnum.STAVI;
             this.nextState = nextState;
@@ -18,10 +17,10 @@ public class Action {
             this.nextState = nextState;
         }
     }
-    public Action(Stavka reduction){
+    public Action( String left, ArrayList<String> right){
         this.whatToDo = ActionEnum.REDUCIRAJ;
-        this.reduction = reduction; 
-        // extract left and right from stavka
+        this.left = left;
+        this.right = right;
     }
     public Action(){
         this.whatToDo = ActionEnum.PRIHVATI;

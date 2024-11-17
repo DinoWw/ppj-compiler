@@ -72,12 +72,18 @@ public class GSA{
         }
 
 
+        // used in generateStavke
         BeginsMap = createBeginsMap(productions);
     
         ArrayList<Stavka> stavke = generateStavke(productions);
 
-        //eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
+        // neccessary to generate begins Sets for stavke
+        eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
 
+
+        for (Stavka s : stavke){
+            System.err.println(s.toString());
+        }
 
         /// PARSING ENDS HERE.
 
@@ -86,7 +92,7 @@ public class GSA{
         Transformer transformer = new Transformer(stavke, allSigns.toArray(new String[0]));
 
         System.out.println(allSigns);
-        Map<Stavka, Map<String, Stavka[]>> enka = transformer.generateENKA();
+        Map<Stavka, Map<String, Stavka[]>> enka = transformer.ENKAtoENKAMap(eNKA);
         System.out.println("ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA :");
         for(Entry<Stavka, Map<String, Stavka[]>> e1 : enka.entrySet()){
             System.out.println(e1.getKey());
@@ -112,9 +118,12 @@ public class GSA{
         System.out.println("DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  :");
         System.out.println(dka);
 
+        ActionTableGenerator a = new ActionTableGenerator(dka, firstSign, terminalSigns,nonTerminalSigns);
 
 
     }
+
+
 
     /**
      * create ArrayList<Stavke> with empty beginsSet
@@ -149,6 +158,7 @@ public class GSA{
         return stavke;
     }
 
+    // generates map from nonterminal sign to all that could come after it
     private static Map<String,Set<String>> createBeginsMap (Map<String, ArrayList<ArrayList<String>>> productions){
 
         Map<String,Set<String>> table = new HashMap<String,Set<String>>(); // table ZAPOCINJE

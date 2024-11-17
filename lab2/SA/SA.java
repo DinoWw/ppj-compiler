@@ -31,5 +31,4 @@ public class SA {
         Syntaxer syntaxer = new Syntaxer(table, syncSymbols);
         syntaxer.setInputArray(lexUnits);
     }
- 
 }
