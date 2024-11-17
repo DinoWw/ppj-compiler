@@ -20,4 +20,13 @@ public class SyntaxTreeNode {
       this.isLeaf = true;
    }
 
+   @Override
+   public String toString(){
+      StringBuilder s = new StringBuilder();
+      s.append("Symbol: " + this.symbol + "{");
+      for (SyntaxTreeNode node : this.children){
+         s.append(node.toString());
+      }
+      return (s.append("}").toString());
+   }
 }
