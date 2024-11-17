@@ -80,7 +80,7 @@ public class GSA{
 
         // dka = generirajDka(enka)
 
-        ActionTable tablica = new ActionTable(null, firstSign, nonTerminalSigns);
+        ActionTableGenerator tablica = new ActionTableGenerator("Dka", firstSign, terminalSigns, nonTerminalSigns);
 
     }
 
