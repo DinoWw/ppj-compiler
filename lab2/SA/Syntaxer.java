@@ -88,7 +88,8 @@ public class Syntaxer {
       
       ArrayList<SyntaxTreeNode> children = new ArrayList<SyntaxTreeNode>();
       System.out.println("REDUKCIJA:");
-      
+      System.out.println("stack prije redukcije:");
+      System.out.println(stack);
       for(int i = right.length -1; i >= 0; i--){
          String acceptSymbol = right[i];
          StackElem stackElem = stack.pop();
@@ -102,6 +103,9 @@ public class Syntaxer {
          children.add(stackElem.node);
          
       }
+      System.out.println("stack poslje redukcije:");
+      System.out.println(stack);
+
       SyntaxTreeNode newNode = new SyntaxTreeNode(left, children.toArray(new SyntaxTreeNode[0]));
       System.out.println("REDUKCIJA USPJESNA DO POLA:");
       System.out.println(stack.peek().stateIndex);
@@ -114,7 +118,7 @@ public class Syntaxer {
       else if(nextAction.whatToDo != ActionEnum.STAVI){
          System.out.println("WTF(frick), mislio sam da je uvijek stavi. jel moguce da je greska u ulaznom nizu ili ne?");
       }
-
+      System.out.println(newNode);
       Integer nextStateIndex = nextAction.nextState;
       stack.push(new StackElem(nextStateIndex, left, newNode));
 

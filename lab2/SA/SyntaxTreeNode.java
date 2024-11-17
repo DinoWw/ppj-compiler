@@ -16,6 +16,9 @@ public class SyntaxTreeNode {
       this.isLeaf = false;
    }
    public SyntaxTreeNode(LexUnit lexUnit){
+      if(lexUnit == null){
+         System.out.println("NE NULL ZA LEX UNIT pls");
+      }
       this.lexUnit = lexUnit;
       this.isLeaf = true;
    }
@@ -23,9 +26,15 @@ public class SyntaxTreeNode {
    @Override
    public String toString(){
       StringBuilder s = new StringBuilder();
-      s.append("Symbol: " + this.symbol + "{");
+      if(this.isLeaf){
+         s.append("Symbol: " + this.lexUnit.lexUnit);
+         return s.toString();
+      }
+      // else
+      s.append("Symbol: " + this.symbol);
+      s.append("\n{\n");         
       for (SyntaxTreeNode node : this.children){
-         s.append(node.toString());
+         s.append(node.toString()).append("\n");
       }
       return (s.append("}").toString());
    }

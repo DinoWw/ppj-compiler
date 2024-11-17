@@ -20,23 +20,43 @@ Calculating next action with:
 a
 Action@1eba861
 REDUKCIJA:
+stack prije redukcije:
+[0 , 10 a, 4 b]
 b
 b
+stack poslje redukcije:
+[0 , 10 a]
 REDUKCIJA USPJESNA DO POLA:
 10
 <B>
+Symbol: <B>
+{
+Symbol: b
+}
 Calculating next action with:
 2
 a
 Action@1480cf9
 REDUKCIJA:
+stack prije redukcije:
+[0 , 10 a, 2 <B>]
 <B>
 <B>
 a
 a
+stack poslje redukcije:
+[0 ]
 REDUKCIJA USPJESNA DO POLA:
 0
 <B>
+Symbol: <B>
+{
+Symbol: <B>
+{
+Symbol: b
+}
+Symbol: a
+}
 Calculating next action with:
 9
 a
@@ -183610,3 +183630,1506 @@ TODO: ODBIJ
 Calculating next action with:
 9
 a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:
+9
+a
+null
+TODO: ODBIJ
+Calculating next action with:

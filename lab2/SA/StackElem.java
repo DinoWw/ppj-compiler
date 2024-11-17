@@ -9,4 +9,8 @@ public class StackElem {
       this.node = node; 
    }
    
+   @Override
+   public String toString(){
+      return stateIndex + " " + stateString;
+   }
 }
