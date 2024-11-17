@@ -129,6 +129,7 @@ public class Transformer{
    public static class TransitionSet {
       public Set<Stavka> stateFrom;
       public Map <String, Set<Stavka>> transitions;
+      public int stateIndex;
       public TransitionSet(Set<Stavka> stateFrom, Map <String, Set<Stavka>> transitions){
          this.stateFrom = stateFrom;
          this.transitions = transitions;
@@ -189,6 +190,12 @@ public class Transformer{
 
          }
       }
+
+
+      for(int i = 0; i < dkaList.size(); i++){
+         dkaList.get(i).stateIndex = i;
+      }
+
 
       return dkaList;
 

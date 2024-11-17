@@ -10,6 +10,8 @@ public class eNKA {
     private ArrayList<Stavka> stavke;
     Map<String, Set<String>> beginsMap;
 
+    private String oznakaKrajaNiza = "$";
+
     public eNKA(ArrayList<Stavka> stavke, Map<String, Set<String>> beginsMap, String startSign){
 
         this.stavke = stavke;
@@ -22,7 +24,7 @@ public class eNKA {
 
         for (Stavka s : stavke){
             if ( s.left.equals(startSign) && s.dotIndex==0 ){
-                s.beginsSet.add("$");
+                s.beginsSet.add(oznakaKrajaNiza);
                 epsTransitions.add(new StatePair(startState, s));
                 // begin tree build
                 step(s);
