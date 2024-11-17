@@ -27,7 +27,7 @@ public class Syntaxer {
 
 
    public void analyse(){
-      stack.push(new StackElem(0, ""));    //state 0 and end of stack symbol
+      stack.push(new StackElem(0, "", syntaxTree));    //state 0 and end of stack symbol; ovdje fakat nije bitno ja msilim da je zandnji argumenti syntaxtree
 
       for(;;){
          Action nextAction = table.get(stack.peek().stateIndex).get(currentLexUnit.lexUnit);
@@ -37,16 +37,16 @@ public class Syntaxer {
          else{
             switch (nextAction.whatToDo) {
                case ActionEnum.POMAKNI:
-                  
+                  pomakni(nextAction.nextState);
                   break;
                case ActionEnum.PRIHVATI:
-                  
+                  prihvati();
                   break;
                case ActionEnum.STAVI:
-                  stavi(Action.stateIndex);
+                  stavi(nextAction.nextState);
                   break;
                case ActionEnum.REDUCIRAJ:
-                  reduciraj(Action.left, Action.right);  //TODO: check
+                  reduciraj(nextAction.left, nextAction.right.toArray(new String[0]));  //TODO: check
                   break;
 
             
@@ -60,7 +60,7 @@ public class Syntaxer {
 
    }
 
-   private boolean nextSymbol(){
+   private void nextSymbol(){
       currentLexUnit = inputArray.get(currentIndex);
       currentIndex ++;
    }
@@ -90,11 +90,11 @@ public class Syntaxer {
       if(nextAction == null){
          odbij();
       }
-      else if(nextAction.whatToDo != Action.STAVI){
+      else if(nextAction.whatToDo != ActionEnum.STAVI){
          System.out.println("WTF(frick), mislio sam da je uvijek stavi. jel moguce da je greska u ulaznom nizu ili ne?");
       }
 
-      Integer nextStateIndex = nextAction;
+      Integer nextStateIndex = nextAction.nextState;
       stack.push(new StackElem(nextStateIndex, left, newNode));
 
    }

@@ -28,7 +28,7 @@ public class SA {
 
         // TODO: run Syntaxer with lexUnits;
         // TODO: fetch table and suyncSymbols
-        Syntaxer syntaxer = new Syntaxer(table, syncSymbols);
+        Syntaxer syntaxer = new Syntaxer(new ActionTable().table, new String[0]);
         syntaxer.setInputArray(lexUnits);
     }
 }
