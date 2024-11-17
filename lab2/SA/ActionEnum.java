@@ -1,4 +1,3 @@
-package SA; 
 public enum ActionEnum {
     POMAKNI,
     REDUCIRAJ,

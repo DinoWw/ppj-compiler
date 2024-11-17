@@ -1,4 +1,3 @@
-package SA;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,6 +19,9 @@ public class Syntaxer {
    public Syntaxer(Map<Integer, Map<String, Action>> table, String[] syncSymbols){
       this.syncSymbols = syncSymbols;
       this.table = table;
+
+      stack = new Stack<StackElem>();
+
    }
    public void setInputArray(ArrayList<LexUnit> inputArray){
       this.inputArray = inputArray;
@@ -30,22 +32,31 @@ public class Syntaxer {
       stack.push(new StackElem(0, "", syntaxTree));    //state 0 and end of stack symbol; ovdje fakat nije bitno ja msilim da je zandnji argumenti syntaxtree
 
       for(;;){
-         Action nextAction = table.get(stack.peek().stateIndex).get(currentLexUnit.lexUnit);
+         System.out.println(stack.peek().stateIndex);
+         System.out.println(table.get(0));
+         Action nextAction;
+         try{
+            nextAction = table.get(stack.peek().stateIndex).get(currentLexUnit.lexUnit);
+         }
+         catch(NullPointerException e){
+            nextAction = null;
+            odbij();
+         }
          if(nextAction == null){
             odbij();
          }
          else{
             switch (nextAction.whatToDo) {
-               case ActionEnum.POMAKNI:
+               case POMAKNI:
                   pomakni(nextAction.nextState);
                   break;
-               case ActionEnum.PRIHVATI:
+               case PRIHVATI:
                   prihvati();
                   break;
-               case ActionEnum.STAVI:
+               case STAVI:
                   stavi(nextAction.nextState);
                   break;
-               case ActionEnum.REDUCIRAJ:
+               case REDUCIRAJ:
                   reduciraj(nextAction.left, nextAction.right.toArray(new String[0]));  //TODO: check
                   break;
 

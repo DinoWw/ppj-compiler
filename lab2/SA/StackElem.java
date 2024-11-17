@@ -1,4 +1,3 @@
-package SA;
 
 public class StackElem {
    public int stateIndex;

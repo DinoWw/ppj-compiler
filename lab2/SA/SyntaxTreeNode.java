@@ -1,4 +1,3 @@
-package SA;
 
 public class SyntaxTreeNode {
    public boolean isLeaf;

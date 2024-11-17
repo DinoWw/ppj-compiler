@@ -1,4 +1,3 @@
-package SA;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,12 +22,24 @@ public class SA {
         lexUnits.add(new LexUnit(0, "", ""));
 
         System.out.println("LEX UNTIS: ");
-        System.out.println(lexUnits);
-
+        for(LexUnit lu: lexUnits){
+            System.out.print(lu.contents);
+            System.out.print(" - ");
+            System.out.print(lu.lexUnit);
+            System.out.print(" - ");
+            System.out.print(lu.lineNumber);
+            System.out.println();
+        }
 
         // TODO: run Syntaxer with lexUnits;
         // TODO: fetch table and suyncSymbols
+        System.out.println("SYNTAXER BELOW: ");
         Syntaxer syntaxer = new Syntaxer(new ActionTable().table, new String[0]);
         syntaxer.setInputArray(lexUnits);
+
+        syntaxer.analyse();
+
+        System.out.println(syntaxer.syntaxTree);
+
     }
 }

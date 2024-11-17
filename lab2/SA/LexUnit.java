@@ -1,4 +1,3 @@
-package SA;
 
 public class LexUnit {
    public int lineNumber;
