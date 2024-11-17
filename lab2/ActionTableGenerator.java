@@ -35,11 +35,14 @@ public class ActionTableGenerator {
         // TODO change type
         for (Transformer.TransitionSet ts : DKA){
             int stateIndex = mapa.get(ts.stateFrom);
+
+            //add key for every stateFrom
+            checkForKey(ts.stateFrom);
+
             // Action table
             for (Stavka s : ts.stateFrom){
                 // case c) from PPJ 15 
                 if (s.complete && s.left.equals(firstSign)){
-                    checkForKey(ts.stateFrom);
                      // PRIHVATI
                     code.append("table.get(" + stateIndex + ").put(\"$\"," + "new Action()" + " );\n");
                     
@@ -49,7 +52,6 @@ public class ActionTableGenerator {
                 else if (s.complete){
                     for (String endSign : s.beginsSet){
                         
-                        checkForKey(ts.stateFrom);
 
                         // TODO PROVJERIT JEL OVJA TO STRING RADI
                         // REDUCIRAJ
@@ -62,7 +64,6 @@ public class ActionTableGenerator {
                 // case a)
                 else if (terminalSigns.contains(s.right.get(s.dotIndex)) && ts.transitions.keySet().contains(s.right.get(s.dotIndex))){
                     
-                    checkForKey(ts.stateFrom);
                     
                     // TODO is this correct?
                     // POMAKNI
@@ -77,7 +78,6 @@ public class ActionTableGenerator {
             for (String inpString : ts.transitions.keySet()){
                 
                 if (nonTerminalSigns.contains(inpString)){
-                    checkForKey(ts.stateFrom);
                    // STAVI
                     code.append("table.get(" + stateIndex + ").put(\"" + inpString + "\"," + "new Action(" + mapa.get(ts.transitions.get(inpString)) + ", true ));\n");
                    
