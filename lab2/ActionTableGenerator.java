@@ -29,7 +29,7 @@ public class ActionTableGenerator {
         code = new StringBuilder()
         .append("package SA;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.ArrayList;\n import java.util.Arrays;\n")
         .append("public class ActionTable{\n")
-        .append("private static Map<Integer, Map<String, Action>> table = new HashMap<>();\n")
+        .append("public Map<Integer, Map<String, Action>> table = new HashMap<>();\n")
         .append("public ActionTable(){\n");
 
         // TODO change type
