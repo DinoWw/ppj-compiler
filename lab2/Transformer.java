@@ -32,6 +32,9 @@ public class Transformer{
          if(!enkaMap.containsKey(t.currState)){
             enkaMap.put(t.currState, new HashMap<String, ArrayList<Stavka>>());
          }
+         if(!enkaMap.containsKey(t.nextState)){
+            enkaMap.put(t.nextState, new HashMap<String, ArrayList<Stavka>>());
+         }
          if(!enkaMap.get(t.currState).containsKey(t.inp)){
             enkaMap.get(t.currState).put(t.inp, new ArrayList<Stavka>());
          }
@@ -41,6 +44,9 @@ public class Transformer{
       for(eNKA.StatePair s : enka.epsTransitions){
          if(!enkaMap.containsKey(s.leftState)){
             enkaMap.put(s.leftState, new HashMap<String, ArrayList<Stavka>>());
+         }
+         if(!enkaMap.containsKey(s.rightState)){
+            enkaMap.put(s.rightState, new HashMap<String, ArrayList<Stavka>>());
          }
          if(!enkaMap.get(s.leftState).containsKey("")){
             enkaMap.get(s.leftState).put("", new ArrayList<Stavka>());
