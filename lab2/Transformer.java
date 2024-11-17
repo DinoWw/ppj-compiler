@@ -165,13 +165,12 @@ public class Transformer{
       }
       for(int stateIndex = 0; stateIndex < dkaList.size(); stateIndex++){
          TransitionSet ts = dkaList.get(stateIndex);
-
          // empty state
          if(ts.stateFrom.size() == 0){
             for(String a : ulZnakovi){
                ts.transitions.put(a, ts.stateFrom);
             }
-            break;
+            continue;
          }
          // else
 
