@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -81,10 +82,29 @@ public class GSA{
 
         System.out.println(allSigns);
         Map<Stavka, Map<String, Stavka[]>> enka = transformer.generateENKA();
-        System.out.println(enka);
+        System.out.println("ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA ENKA :");
+        for(Entry<Stavka, Map<String, Stavka[]>> e1 : enka.entrySet()){
+            System.out.println(e1.getKey());
+            for(Entry<String, Stavka[]> e2 : e1.getValue().entrySet()){
+                System.out.println("\t-> " + e2.getKey());
+                for( Stavka s : e2.getValue()){
+                    System.out.println("\t\t-> " + s);
+                }
+            }
+        }
         Map<Stavka, Map<String, Set<Stavka>>> nka = transformer.NKAfromENKA(enka);
-        System.out.println(nka);
+        System.out.println("NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  NKA  :");
+        for(Entry<Stavka, Map<String, Set<Stavka>>> e1 : nka.entrySet()){
+            System.out.println(e1.getKey());
+            for(Entry<String, Set<Stavka>> e2 : e1.getValue().entrySet()){
+                System.out.println("\t-> " + e2.getKey());
+                for( Stavka s : e2.getValue()){
+                    System.out.println("\t\t-> " + s);
+                }
+            }
+        }
         ArrayList<Transformer.TransitionSet> dka = transformer.DKAfromNKA(nka);
+        System.out.println("DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  :");
         System.out.println(dka);
 
     }
@@ -97,15 +117,21 @@ public class GSA{
         for (String left : productions.keySet()){
             
             for (ArrayList<String> right : productions.get(left)){
-                int maxNum = right.size()+1;
+                
+                // if complete stavka
+                if (right.get(0).equals("$")){
+                    stavke.add(new Stavka(left, new ArrayList<>(Arrays.asList("")), 0, new HashSet<String>(), true));
+                    continue;
+                }
+                
+                int maxNum = right.size();
                
-                for (int i = 0; i<maxNum-1; i++){
-                    Stavka tmp = new Stavka(left, right, i, beginsTable.get(left), false);
+                for (int i = 0; i<maxNum; i++){
+                    Stavka tmp = new Stavka(left, right, i, new HashSet<String>(), false);
                     stavke.add(tmp);
                 }
 
-                stavke.add(new Stavka(left, right, maxNum, beginsTable.get(left), true));
-
+                stavke.add(new Stavka(left, right, maxNum, new HashSet<String>(), true));
             }
         }
 
