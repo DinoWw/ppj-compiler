@@ -89,9 +89,9 @@ public class ActionTableGenerator {
 
         code.append("}\n");
         // todo write GETETR function
-        //code.append("public akcija ? getAction(state, inpSign){\n");
+        code.append("public Action getAction(int state, String input){\n return table.get(state).get(input);}");
 
-        code.append("}\n");
+       code.append("\n}");
 
 
         try {
