@@ -72,12 +72,18 @@ public class GSA{
         }
 
 
+        // used in generateStavke
         BeginsMap = createBeginsMap(productions);
     
         ArrayList<Stavka> stavke = generateStavke(productions);
 
-        //eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
+        // neccessary to generate begins Sets for stavke
+        eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
 
+
+        for (Stavka s : stavke){
+            System.err.println(s.toString());
+        }
 
         /// PARSING ENDS HERE.
 
@@ -149,6 +155,7 @@ public class GSA{
         return stavke;
     }
 
+    // generates map from nonterminal sign to all that could come after it
     private static Map<String,Set<String>> createBeginsMap (Map<String, ArrayList<ArrayList<String>>> productions){
 
         Map<String,Set<String>> table = new HashMap<String,Set<String>>(); // table ZAPOCINJE
