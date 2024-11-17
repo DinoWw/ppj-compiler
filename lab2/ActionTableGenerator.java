@@ -10,26 +10,38 @@ import java.util.Set;
 public class ActionTableGenerator {
     private static Map<Set<Stavka>, Map<String, Action>> table ;
     private static StringBuilder code; 
-
+    private static Map<Set<Stavka>, Integer> mapa;
+    
     public ActionTableGenerator(ArrayList<Transformer.TransitionSet> DKA, String firstSign, ArrayList<String> terminalSigns, ArrayList<String> nonTerminalSigns){
         table = new HashMap<>();
 
+        // Set<Stavka> -> integer
+        mapa = new HashMap<>();
+
+        int i = 0;
+        for (Transformer.TransitionSet ts : DKA){
+            mapa.put(ts.stateFrom, i);
+            i++;
+        }
+
+
         // write to file   
         code = new StringBuilder()
+        .append("package SA;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.ArrayList;\n import java.util.Arrays;\n")
         .append("public class ActionTable{\n")
-        .append("private static Map<Set<Stavka>, Map<String, Action>> table = new HashMap<>();\n")
+        .append("private static Map<Integer, Map<String, Action>> table = new HashMap<>();\n")
         .append("public ActionTable(){\n");
 
         // TODO change type
         for (Transformer.TransitionSet ts : DKA){
-            int stateIndex = getStateIndex (ts.stateFrom);
+            int stateIndex = mapa.get(ts.stateFrom);
             // Action table
             for (Stavka s : ts.stateFrom){
                 // case c) from PPJ 15 
                 if (s.complete && s.left.equals(firstSign)){
                     checkForKey(ts.stateFrom);
-                     // STAVI
-                    code.append("table.get(" + stateIndex + ").put('" + s.right.get(s.dotIndex) + "'," + "new Action()" + " );\n");
+                     // PRIHVATI
+                    code.append("table.get(" + stateIndex + ").put(\"$\"," + "new Action()" + " );\n");
                     
                     //addAction(table, ts.stateFrom, s.right.get(s.dotIndex), new Action());
                 }
@@ -41,7 +53,8 @@ public class ActionTableGenerator {
 
                         // TODO PROVJERIT JEL OVJA TO STRING RADI
                         // REDUCIRAJ
-                        code.append("table.get(" + stateIndex + ").put('" + endSign + "'," + "new Action('" + s.left + "' , " + s.right.toString() + " );\n");
+                        code.append("table.get(" + stateIndex + ").put(\"" + endSign + "\"," + "new Action(\"" + s.left + "\" , new ArrayList<>(\n" + //
+                                                        "    Arrays.asList" + arrayToString(s.right) + " )));\n");
 
                         //addAction(table, ts.stateFrom, endSign, new Action(s));
                     } 
@@ -53,7 +66,7 @@ public class ActionTableGenerator {
                     
                     // TODO is this correct?
                     // POMAKNI
-                    code.append("table.get(" + stateIndex + ").put('" + s.right.get(s.dotIndex) + "'," + "new Action('" + s.right.get(s.dotIndex) + "', false );\n");
+                    code.append("table.get(" + stateIndex + ").put(\"" + s.right.get(s.dotIndex) + "\"," + "new Action(" + mapa.get(ts.transitions.get(s.right.get(s.dotIndex))) + ", false));\n");
 
                     //addAction(table, ts.stateFrom, s.right.get(s.dotIndex), new Action(ts.transitions.get(s.right.get(s.dotIndex))));
                     
@@ -64,8 +77,9 @@ public class ActionTableGenerator {
             for (String inpString : ts.transitions.keySet()){
                 
                 if (nonTerminalSigns.contains(inpString)){
-                   
-                    code.append("table.get(" + stateIndex + ").put('" + inpString + "'," + "new Action('" + ts.transitions.get(inpString) + "', true );\n");
+                    checkForKey(ts.stateFrom);
+                   // STAVI
+                    code.append("table.get(" + stateIndex + ").put(\"" + inpString + "\"," + "new Action(" + mapa.get(ts.transitions.get(inpString)) + ", true ));\n");
                    
                    // addAction(table, ts.stateFrom, inpString, new Action(ts.transitions.get(inpString)));
                     
@@ -77,6 +91,8 @@ public class ActionTableGenerator {
         // todo write GETETR function
         //code.append("public akcija ? getAction(state, inpSign){\n");
 
+        code.append("}\n");
+
 
         try {
             FileWriter file = new FileWriter("SA/ActionTable.java", false); // false = overwrite
@@ -85,69 +101,7 @@ public class ActionTableGenerator {
             output.close();
         }
         catch (IOException e) {
-            System.err.println("Generator error: couldn't make ActionTable.java");;
-        } 
-
-        //----------------------------------------------
-
-        // write ActionEnum.java file
-        
-        code = new StringBuilder();
-        code.append("public enum ActionEnum {\n" + 
-                        "    POMAKNI,\n" + 
-                        "    REDUCIRAJ,\n" + 
-                        "    PRIHVATI,\n" + 
-                        "    STAVI\n" + 
-                        "\n" + 
-                        "}\n" + 
-                        "");
-        try {
-            FileWriter file = new FileWriter("SA/ActionEnum.java", false); // false = overwrite
-            BufferedWriter output = new BufferedWriter(file);
-            output.write(code.toString());
-            output.close();
-        }
-        catch (IOException e) {
-            System.err.println("Generator error: couldn't make ActionEnum.java");;
-        } 
-
-        //----------------------------------------------
-
-        // write Action.java file
-          
-        code = new StringBuilder();
-        code.append(  "public class Action {\n" + 
-                        "\n" + 
-                        "    ActionEnum whatToDo = null;\n" + 
-                        "    String nextState = null;\n" + 
-                        "    Stavka reduction = null;\n" + 
-                        "    public Action(String nextState, boolean isNewState){\n" + 
-                        "        if (isNewState){\n" + 
-                        "            this.whatToDo = ActionEnum.STAVI;\n" + 
-                        "            this.nextState = nextState;\n" + 
-                        "        }\n" + 
-                        "        else{\n" + 
-                        "            this.whatToDo = ActionEnum.POMAKNI;\n" + 
-                        "            this.nextState = nextState;\n" + 
-                        "        }\n" + 
-                        "    }\n" + 
-                        "    public Action(Stavka reduction){\n" + 
-                        "        this.whatToDo = ActionEnum.REDUCIRAJ;\n" + 
-                        "        this.reduction = reduction; \n" + 
-                        "        // extract left and right from stavka\n" + 
-                        "    }\n" + 
-                        "    public Action(){\n" + 
-                        "        this.whatToDo = ActionEnum.PRIHVATI;\n" + 
-                        "    }\n" + 
-                        "}\n" );
-        try {
-            FileWriter file = new FileWriter("SA/Action.java", false); // false = overwrite
-            BufferedWriter output = new BufferedWriter(file);
-            output.write(code.toString());
-            output.close();
-        }
-        catch (IOException e) {
-            System.err.println("Generator error: couldn't make Action.java");;
+            System.err.println("Generator error: couldn't make ActionTable.java");
         } 
 
 
@@ -166,15 +120,29 @@ public class ActionTableGenerator {
     private static void checkForKey(Set<Stavka> s){
         if (!table.keySet().contains(s)){
             
-            // TODO dino ce
-            int stateIndex = 0; //Transformer.getStateIndex(s); // s = set stavki
+            int stateIndex = mapa.get(s); 
 
-            // redundant but could be used for testing, then we can reconsider
             table.put(s, new HashMap<String, Action>());
             code.append("table.put(" + stateIndex + ", new HashMap<String, Action>());\n");
         }
 
     }
 
+    private static String arrayToString(ArrayList<String> ar){
+        StringBuilder s = new StringBuilder();
+        s.append("(");
+        boolean first = true;
+        for (String elem : ar){
+            if (!first){
+                s.append(",");
+
+            }
+            s.append("\"" + elem + "\"");
+            first = false;
+        }
+
+        s.append(")");
+        return s.toString();
+    }
 
 }

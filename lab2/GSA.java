@@ -118,9 +118,12 @@ public class GSA{
         System.out.println("DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  DKA  :");
         System.out.println(dka);
 
+        ActionTableGenerator a = new ActionTableGenerator(dka, firstSign, terminalSigns,nonTerminalSigns);
 
 
     }
+
+
 
     /**
      * create ArrayList<Stavke> with empty beginsSet
