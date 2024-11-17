@@ -90,9 +90,9 @@ public class eNKA {
         }
     }
 
-    private class StatePair{
-        private Stavka leftState;
-        private Stavka rightState;
+    public class StatePair{
+        public Stavka leftState;
+        public Stavka rightState;
 
         public StatePair(Stavka left, Stavka right) {
 			this.leftState = left;
@@ -122,10 +122,10 @@ public class eNKA {
     }
 
 
-    private class Transition{
-        private Stavka currState;
-        private Stavka nextState;
-        private String inp; 
+    public class Transition{
+        public Stavka currState;
+        public Stavka nextState;
+        public String inp; 
 
         public Transition(Stavka curr, Stavka next, String inp){
             this.currState = curr;

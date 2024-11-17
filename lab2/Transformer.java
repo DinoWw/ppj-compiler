@@ -23,61 +23,43 @@ public class Transformer{
       return s.startsWith("<");
    }
 
-   public Map<Stavka, Map<String, Stavka[]>> generateENKA(){
-      Map<Stavka, Map<String, Stavka[]>> enka = new HashMap<Stavka, Map<String, Stavka[]>>();
+   public Map<Stavka, Map<String, Stavka[]>> ENKAtoENKAMap(eNKA enka){
+
+      Map<Stavka, Map<String, ArrayList<Stavka>>> enkaMap = new HashMap<Stavka, Map<String, ArrayList<Stavka>>>();
 
 
-      
-   
-      for(Stavka s1 : stavkas){
-         // initialize map
-         Map<String, Stavka[]> tmpMap = new HashMap<String, Stavka[]>();
-         
-         if(s1.complete){
-            enka.put(s1, new HashMap<String, Stavka[]>());
-            continue;
+      for(eNKA.Transition t : enka.allTransitions){
+         if(!enkaMap.containsKey(t.currState)){
+            enkaMap.put(t.currState, new HashMap<String, ArrayList<Stavka>>());
          }
-
-         String nextSymbol = s1.right.get(s1.dotIndex);
-
-         // dodajemo epsilon prijelaze
-         if(zavrsni(nextSymbol))
-         {
-            ArrayList<Stavka> tmpList = new ArrayList<Stavka>();
-            for(Stavka s2 : stavkas)
-            {
-               if(nextSymbol.equals(s2.left) && s2.dotIndex == 0){
-                  tmpList.add(s2);
-               }
-            }
-            tmpMap.put("", tmpList.toArray(new Stavka[0]));
+         if(!enkaMap.get(t.currState).containsKey(t.inp)){
+            enkaMap.get(t.currState).put(t.inp, new ArrayList<Stavka>());
          }
-         else 
-         {
-            ArrayList<Stavka> tmpList = new ArrayList<Stavka>();
-            for(Stavka s2 : stavkas)
-            {
-               try{
-                  if(s2.left.equals(s1.left) && nextSymbol.equals(s2.right.get(s2.dotIndex-1))){
-                     tmpList.add(s2);
-                     break;   // should only be one such transition
-                  }
-               }
-               catch(IndexOutOfBoundsException e){
-                  continue;
-               }
-            }
-            tmpMap.put(nextSymbol, tmpList.toArray(new Stavka[0]));
-         }
-
-
-         enka.put(s1, tmpMap);
+         enkaMap.get(t.currState).get(t.inp).add(t.nextState);
       }
-      
-      return enka;
-      
+
+      for(eNKA.StatePair s : enka.epsTransitions){
+         if(!enkaMap.containsKey(s.leftState)){
+            enkaMap.put(s.leftState, new HashMap<String, ArrayList<Stavka>>());
+         }
+         if(!enkaMap.get(s.leftState).containsKey("")){
+            enkaMap.get(s.leftState).put("", new ArrayList<Stavka>());
+         }
+         enkaMap.get(s.leftState).get("").add(s.rightState);
+      }
+
+      Map<Stavka, Map<String, Stavka[]>> output = new HashMap<Stavka, Map<String, Stavka[]>>();
+
+      for(Entry<Stavka, Map<String, ArrayList<Stavka>>> m1 : enkaMap.entrySet()){
+         output.put(m1.getKey(), new HashMap<String, Stavka[]>());
+         for(Entry<String, ArrayList<Stavka>> m2 : m1.getValue().entrySet()){
+            output.get(m1.getKey()).put(m2.getKey(), m2.getValue().toArray(new Stavka[0]));
+         }
+      }
+
+      return output;
+
    }
-   
    
    public Map<Stavka, Map<String, Set<Stavka>>> NKAfromENKA (Map<Stavka, Map<String, Stavka[]>> enka){
       // izracuanj epsilon okoline svih stavki
@@ -231,6 +213,64 @@ public class Transformer{
    //          dodaj ga na vrh
    //       inace
    //          zapisi prijelaz u dka uz konstrukte sa stacka ( ne stvarati nova stanja )
+
+
+   /* THIS DOES NOT WORK
+   public Map<Stavka, Map<String, Stavka[]>> generateENKA(){
+      Map<Stavka, Map<String, Stavka[]>> enka = new HashMap<Stavka, Map<String, Stavka[]>>();
+
+
+      
+   
+      for(Stavka s1 : stavkas){
+         // initialize map
+         Map<String, Stavka[]> tmpMap = new HashMap<String, Stavka[]>();
+         
+         if(s1.complete){
+            enka.put(s1, new HashMap<String, Stavka[]>());
+            continue;
+         }
+
+         String nextSymbol = s1.right.get(s1.dotIndex);
+
+         // dodajemo epsilon prijelaze
+         if(zavrsni(nextSymbol))
+         {
+            ArrayList<Stavka> tmpList = new ArrayList<Stavka>();
+            for(Stavka s2 : stavkas)
+            {
+               if(nextSymbol.equals(s2.left) && s2.dotIndex == 0){
+                  tmpList.add(s2);
+               }
+            }
+            tmpMap.put("", tmpList.toArray(new Stavka[0]));
+         }
+         else 
+         {
+            ArrayList<Stavka> tmpList = new ArrayList<Stavka>();
+            for(Stavka s2 : stavkas)
+            {
+               try{
+                  if(s2.left.equals(s1.left) && nextSymbol.equals(s2.right.get(s2.dotIndex-1))){
+                     tmpList.add(s2);
+                     break;   // should only be one such transition
+                  }
+               }
+               catch(IndexOutOfBoundsException e){
+                  continue;
+               }
+            }
+            tmpMap.put(nextSymbol, tmpList.toArray(new Stavka[0]));
+         }
+
+
+         enka.put(s1, tmpMap);
+      }
+      
+      return enka;
+      
+   }
+      */
 }
 
 
