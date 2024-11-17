@@ -20,13 +20,16 @@ public class SA {
             String[] elems = line.split(" ", 3);
             lexUnits.add(new LexUnit(Integer.parseInt(elems[1]), elems[0], elems[2]));
         });
+        lexUnits.add(new LexUnit(0, "", ""));
 
         System.out.println("LEX UNTIS: ");
         System.out.println(lexUnits);
 
-        //TODO: run Syntaxer with lexUnits;
 
-
+        // TODO: run Syntaxer with lexUnits;
+        // TODO: fetch table and suyncSymbols
+        Syntaxer syntaxer = new Syntaxer(table, syncSymbols);
+        syntaxer.setInputArray(lexUnits);
     }
  
 }
