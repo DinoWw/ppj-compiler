@@ -26,9 +26,15 @@ public class Rule
       }
       this.goBack = goBack;
    }
- 
+   
+   public String toString(){
+      return String.format("%s -> %s\n\tprihvati: %s\n\tnovi red: %b\n\tvrati se: %d", 
+         stateFrom.name(), stateTo == null ? "null" : stateTo.name(), lexClass == null ? "null" : lexClass.name(), newLine, goBack);
+   }
+
+
    public void reset(){
-      //TODO: reset automaton
+      this.automat.reset();
    }
 
 };
