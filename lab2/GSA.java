@@ -19,8 +19,11 @@ public class GSA{
     private static ArrayList<String> nonTerminalSigns;
     private static ArrayList<String> terminalSigns;
     private static ArrayList<String> synSigns;
+    private static String firstSign;
 
     private static Map<String, Set<String>> BeginsMap;
+
+   
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,6 +35,7 @@ public class GSA{
             throw new IOException();
         }
         nonTerminalSigns.addAll(Arrays.asList(line.substring(3).split(" ")));
+        firstSign = nonTerminalSigns.get(0);
 
         // FINAL SIGNS
         terminalSigns = new ArrayList<String>();
@@ -213,5 +217,6 @@ public class GSA{
 
         return table;
     }
+
 
 }
