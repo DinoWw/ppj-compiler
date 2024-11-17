@@ -72,7 +72,7 @@ public class GSA{
     
         ArrayList<Stavka> stavke = generateStavke(productions);
 
-        eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
+        //eNKA eNKA = new eNKA(stavke, BeginsMap, nonTerminalSigns.get(0));
 
 
         /// PARSING ENDS HERE.
