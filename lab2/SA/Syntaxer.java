@@ -31,12 +31,16 @@ public class Syntaxer {
    public void analyse(){
       stack.push(new StackElem(0, "", syntaxTree));    //state 0 and end of stack symbol; ovdje fakat nije bitno ja msilim da je zandnji argumenti syntaxtree
 
+      nextSymbol();
+
       for(;;){
-         System.out.println(stack.peek().stateIndex);
-         System.out.println(table.get(0));
          Action nextAction;
          try{
+            System.out.println("Calculating next action with:");
+            System.out.println(stack.peek().stateIndex);
+            System.out.println(currentLexUnit.lexUnit);
             nextAction = table.get(stack.peek().stateIndex).get(currentLexUnit.lexUnit);
+            System.out.println(nextAction);
          }
          catch(NullPointerException e){
             nextAction = null;
@@ -83,11 +87,14 @@ public class Syntaxer {
    private void reduciraj(String left, String[] right){
       
       ArrayList<SyntaxTreeNode> children = new ArrayList<SyntaxTreeNode>();
+      System.out.println("REDUKCIJA:");
       
       for(int i = right.length -1; i >= 0; i--){
          String acceptSymbol = right[i];
          StackElem stackElem = stack.pop();
-         if(stackElem.stateString != acceptSymbol){
+         System.out.println(acceptSymbol);
+         System.out.println(stackElem.stateString);
+         if(!stackElem.stateString.equals(acceptSymbol)){
             System.out.println("NEKA FAKING GRESKA pri redukciji");
             return;
          }
@@ -96,9 +103,12 @@ public class Syntaxer {
          
       }
       SyntaxTreeNode newNode = new SyntaxTreeNode(left, children.toArray(new SyntaxTreeNode[0]));
-
+      System.out.println("REDUKCIJA USPJESNA DO POLA:");
+      System.out.println(stack.peek().stateIndex);
+      System.out.println(left);
       Action nextAction = table.get(stack.peek().stateIndex).get(left);
       if(nextAction == null){
+         System.out.println("nextAction is NULL");
          odbij();
       }
       else if(nextAction.whatToDo != ActionEnum.STAVI){

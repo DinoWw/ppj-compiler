@@ -31,6 +31,7 @@ public class SA {
             System.out.println();
         }
 
+        System.out.println(new ActionTable().table);
         // TODO: run Syntaxer with lexUnits;
         // TODO: fetch table and suyncSymbols
         System.out.println("SYNTAXER BELOW: ");
