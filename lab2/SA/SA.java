@@ -3,15 +3,30 @@ package SA;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
-import analizator.structures.LexUnit;
 
 public class SA {
-    public static void main(String[] args) throws IOException {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    
-    Syntax syntax = new Syntax(reader);
 
-    // print ? 
+    
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        
+        Stream<String> lexUnitsStream = reader.lines();
+        ArrayList<LexUnit> lexUnits = new ArrayList<LexUnit>();
+
+        lexUnitsStream.forEachOrdered((String line) -> {
+            String[] elems = line.split(" ", 3);
+            lexUnits.add(new LexUnit(Integer.parseInt(elems[1]), elems[0], elems[2]));
+        });
+
+        System.out.println("LEX UNTIS: ");
+        System.out.println(lexUnits);
+
+        //TODO: run Syntaxer with lexUnits;
+
+
+    }
  
 }
