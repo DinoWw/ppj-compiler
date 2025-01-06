@@ -1,14 +1,56 @@
 package lab3;
 
-import lab3.tip.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
 
+import lab3.tip.*;
 import lab3.znakovi.*;
+import lab3.Node;
+
+
 
 public class SemantickiAnalizator {
-    public static void main(String[] args){
-        // TODO: parsiraj input u stablo
+    public static void main(String[] args) throws IOException{
+                
+    // parsiraj input u stablo
+    // not tested
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    String line = reader.readLine();
+    int spaceCount = 0;
+    int newSpaceCount;
+    Stack<Node> s = new Stack<Node>();
+    Node parent;
+
+    Node root = Node.createNode(line.strip());
+    s.push(root);
+
+    while(null != (line = reader.readLine()) && line.length() != 0){
+        Node newnode = Node.createNode(line.strip()); // child node
+        newSpaceCount = line.replaceAll("^\\s+", "").length();
+
+    
+        if (spaceCount > newSpaceCount){
+            for (int i = 0; i< newSpaceCount - spaceCount; i++){
+                s.pop();
+                }
+        }
+    
+        spaceCount = newSpaceCount;
+
+        parent = s.pop();
+        parent.children.add(newnode);
+        s.push(parent);
+        s.push(newnode); // current level
+    }
+
+    
+        System.out.println(Node.createNode("<aditivni_izraz>"));
 
         // TODO: obidji stablo
+
 
 
     }
