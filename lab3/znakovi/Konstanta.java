@@ -5,5 +5,5 @@ public abstract class Konstanta extends Znak {
     public int lineN;
 
     public String vrijednost;
-    
+
 }

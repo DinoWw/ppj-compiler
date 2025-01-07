@@ -8,7 +8,6 @@ import java.util.Map;
 
 //import static java.util.Map.entry;
 
-
 public abstract class Node {
 
     public ArrayList<Node> children = new ArrayList<>();
@@ -27,7 +26,7 @@ public abstract class Node {
         switch (string) {
             case "<primarni_izraz>":
                 return new PrimarniIzraz();
-            case "<postfix_izraz>":
+            case "<postfiks_izraz>":
                 return new PostfiksIzraz();
             case "<lista_argumenata>":
                 return new ListaArgumenata();
@@ -113,6 +112,11 @@ public abstract class Node {
 
         // );
 
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString();
     }
 
 }

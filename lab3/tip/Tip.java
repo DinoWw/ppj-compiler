@@ -2,48 +2,71 @@ package lab3.tip;
 
 public class Tip {
     TipEnum tip;
-    
-    public Tip(TipEnum tip){
+
+    public Tip(TipEnum tip) {
         this.tip = tip;
     }
 
-    public boolean equals(Tip tip){
+    public Tip(String tipString) {
+        switch (tipString) {
+            case "KR_VOID":
+                this.tip = TipEnum.VOID;
+                break;
+            case "KR_CHAR":
+                this.tip = TipEnum.CHAR;
+                break;
+            case "KR_INT":
+                this.tip = TipEnum.INT;
+                break;
+            default:
+                this.tip = null;
+        }
+    }
+
+    public boolean equals(Tip tip) {
         throw new UnsupportedOperationException();
     }
 
-    
     // there must be a better way to do this...
-    public static boolean isX(Tip tip){
+    public static boolean isX(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isT(Tip tip){
+
+    public static boolean isT(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isNizX(Tip tip){
+
+    public static boolean isNizX(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isNizT(Tip tip){
+
+    public static boolean isNizT(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isConstX(Tip tip){
+
+    public static boolean isConstX(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isConstT(Tip tip){
+
+    public static boolean isConstT(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isNizConstX(Tip tip){
+
+    public static boolean isNizConstX(Tip tip) {
         throw new UnsupportedOperationException();
     }
-    public static boolean isNizConstT(Tip tip){
+
+    public static boolean isNizConstT(Tip tip) {
         throw new UnsupportedOperationException();
     }
 
     // TODO: promjenit ime, al ne znam opce u sta
-    public static boolean seMozeImplicitnoPretvoritiIzU(Tip t1, Tip t2){
+    public static boolean seMozeImplicitnoPretvoritiIzU(Tip t1, Tip t2) {
         throw new UnsupportedOperationException();
     }
+
     // u T
-    public static boolean seMozeImplicitnoPretvoritiUT(Tip t){
+    public static boolean seMozeImplicitnoPretvoritiUT(Tip t) {
         throw new UnsupportedOperationException();
     }
 }
