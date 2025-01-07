@@ -15,6 +15,8 @@ public class KompozitniTip extends Tip {
 
     @Override
     public boolean equals(Tip tip){
+        if( ! (tip instanceof KompozitniTip))
+            return false;
         throw new UnsupportedOperationException();
     }
 }

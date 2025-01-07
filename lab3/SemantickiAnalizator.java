@@ -10,6 +10,9 @@ import lab3.tip.*;
 import lab3.znakovi.*;
 
 public class SemantickiAnalizator {
+
+    private Djelokrug lokalniDjelokrug;
+
     public static void main(String[] args) throws IOException {
 
         // parsiraj input u stablo
@@ -623,6 +626,25 @@ public class SemantickiAnalizator {
         }
     }
 
+    public void provjeri(Naredba na) {
+        if (na.children.get(0) instanceof SlozenaNaredba) {
+            SlozenaNaredba naredba = (SlozenaNaredba) na.children.get(0);
+            provjeri(naredba);
+        } else if (na.children.get(0) instanceof IzrazNaredba) {
+            IzrazNaredba naredba = (IzrazNaredba) na.children.get(0);
+            provjeri(naredba);
+        } else if (na.children.get(0) instanceof NaredbaGrananja) {
+            NaredbaGrananja naredba = (NaredbaGrananja) na.children.get(0);
+            provjeri(naredba);
+        } else if (na.children.get(0) instanceof NaredbaPetlje) {
+            NaredbaPetlje naredba = (NaredbaPetlje) na.children.get(0);
+            provjeri(naredba);
+        } else if (na.children.get(0) instanceof NaredbaSkoka) {
+            NaredbaSkoka naredba = (NaredbaSkoka) na.children.get(0);
+            provjeri(naredba);
+        }
+    }
+
     public void provjeri(IzrazNaredba na) {
         if (na.children.get(0) instanceof GenerickaKonstanta) {
             // <izraz_naredba> ::= TOCKAZAREZ
@@ -736,6 +758,18 @@ public class SemantickiAnalizator {
 
             provjeri(prijevodnaJedinica);
             provjeri(vanjskaDeklaracija);
+        }
+    }
+
+    public void provjeri(VanjskaDeklaracija vd) {
+        if (vd.children.get(0) instanceof DefinicijaFunkcije) {
+            DefinicijaFunkcije definicijaFunkcije = (DefinicijaFunkcije) vd.children.get(0);
+
+            provjeri(definicijaFunkcije);
+        } else {
+            Deklaracija deklaracija = (Deklaracija) vd.children.get(0);
+
+            provjeri(deklaracija);
         }
     }
 
@@ -892,9 +926,124 @@ public class SemantickiAnalizator {
         }
     }
 
-    // TODO: remove
-    public void provjeri(Znak iz) {
-        throw new UnsupportedOperationException();
+    public void provjeri(IzravniDeklarator de) {
+        if (de.children.size() == 1) {
+            // <izravni_deklarator> ::= IDN
+            Identifikaror identifikator = (Identifikaror) de.children.get(0);
+
+            assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
+            assertOrError(lokalniDjelokrug.sadrziDeklaraciju(identifikator.vrijednost), de);
+            zabiljeziDeklaraciju(identifikator.vrijednost, de.ntip);
+
+            de.tip = de.ntip;
+        } else if (de.children.get(2) instanceof GenerickaKonstanta) {
+            GenerickaKonstanta konstanta = (GenerickaKonstanta) de.children.get(2);
+            if (konstanta.konstantaTip == KonstantaEnum.BROJ) {
+                // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
+                Identifikaror identifikator = (Identifikaror) de.children.get(0);
+                int broj = Integer.parseInt(konstanta.vrijednost);
+
+                assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
+                assertOrError(lokalniDjelokrug.sadrziDeklaraciju(identifikator.vrijednost), de);
+                assertOrError(broj >= 0 && broj < 1024, de);
+                Tip tip = new KompozitniTip(TipEnum.NIZ, de.ntip);
+                zabiljeziDeklaraciju(identifikator.vrijednost, tip);
+
+                de.tip = tip;
+                de.br_elem = broj;
+            } else if (konstanta.konstantaTip == KonstantaEnum.KR_VOID) {
+                // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
+                Identifikaror identifikator = (Identifikaror) de.children.get(0);
+                Tip tipFunkcije = new FunkcijaTip(new Tip[0], de.ntip);
+                Tip tipDeklarirane = lokalniDjelokrug.tipDeklaracije(identifikator.vrijednost);
+
+                if (tipDeklarirane != null) {
+                    assertOrError(tipDeklarirane.equals(tipFunkcije), de);
+                } else {
+                    zabiljeziDeklaraciju(identifikator.vrijednost, tipFunkcije);
+                }
+
+                de.tip = tipFunkcije;
+            }
+        } else if (de.children.get(2) instanceof ListaParametara) {
+            // <izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA
+            Identifikaror identifikator = (Identifikaror) de.children.get(0);
+            ListaParametara listaParametara = (ListaParametara) de.children.get(2);
+            Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
+            Tip tipDeklarirane = lokalniDjelokrug.tipDeklaracije(identifikator.vrijednost);
+
+            provjeri(listaParametara);
+            if (tipDeklarirane != null) {
+                assertOrError(tipDeklarirane.equals(tipFunkcije), de);
+            } else {
+                zabiljeziDeklaraciju(identifikator.vrijednost, tipFunkcije);
+            }
+
+            de.tip = tipFunkcije;
+        }
+    }
+
+    public void provjeri(Inicijalizator ic) {
+        if (ic.children.get(0) instanceof IzrazPridruzivanja) {
+            // <inicijalizator> ::= <izraz_pridruzivanja>
+            IzrazPridruzivanja izrazPridruzivanja = (IzrazPridruzivanja) ic.children.get(0);
+
+            provjeri(izrazPridruzivanja);
+
+            Konstanta nizZnakova = izrazPridruzivanja.generira(KonstantaEnum.NIZ_ZNAKOVA);
+            if (nizZnakova != null) {
+                ic.br_elem = nizZnakova.vrijednost.length() + 1;
+                Tip[] tipovi = new Tip[ic.br_elem];
+                for (int i = 0; i < ic.br_elem; i++) {
+                    tipovi[i] = new Tip(TipEnum.CHAR);
+                }
+                ic.tipovi = tipovi;
+            } else {
+                ic.tip = izrazPridruzivanja.tip;
+            }
+        } else {
+            // <inicijalizator> ::= L_VIT_ZAGRADA <lista_izraza_pridruzivanja> D_VIT_ZAGRADA
+            ListaIzrazaPridruzivanja listaIzrazaPridruzivanja = (ListaIzrazaPridruzivanja) ic.children.get(1);
+
+            provjeri(listaIzrazaPridruzivanja);
+
+            ic.br_elem = listaIzrazaPridruzivanja.br_elem;
+            ic.tipovi = listaIzrazaPridruzivanja.tipovi;
+        }
+    }
+
+    public void provjeri(ListaIzrazaPridruzivanja lp) {
+        if (lp.children.get(0) instanceof IzrazPridruzivanja) {
+            // <lista_izraza_pridruzivanja> ::= <izraz_pridruzivanja>
+            IzrazPridruzivanja izrazPridruzivanja = (IzrazPridruzivanja) lp.children.get(0);
+
+            provjeri(izrazPridruzivanja);
+
+            Tip[] tipovi = { izrazPridruzivanja.tip };
+            lp.tipovi = tipovi;
+            lp.br_elem = 1;
+        } else {
+            // <lista_izraza_pridruzivanja> ::= <lista_izraza_pridruzivanja> ZAREZ
+            // <izraz_pridruzivanja>
+            ListaIzrazaPridruzivanja listaIzrazaPridruzivanja = (ListaIzrazaPridruzivanja) lp.children.get(0);
+            IzrazPridruzivanja izrazPridruzivanja = (IzrazPridruzivanja) lp.children.get(2);
+
+            provjeri(listaIzrazaPridruzivanja);
+            provjeri(izrazPridruzivanja);
+
+            Tip[] tipovi = new Tip[listaIzrazaPridruzivanja.br_elem + 1];
+            for (int i = 0; i < listaIzrazaPridruzivanja.tipovi.length; i++) {
+                tipovi[i] = listaIzrazaPridruzivanja.tipovi[i];
+            }
+            tipovi[listaIzrazaPridruzivanja.tipovi.length] = izrazPridruzivanja.tip;
+
+            lp.tipovi = tipovi;
+            lp.br_elem = listaIzrazaPridruzivanja.br_elem + 1;
+        }
+    }
+
+    public void zabiljeziDeklaraciju(String ime, Tip tip) {
+        lokalniDjelokrug.zabiljeziDeklaraciju(ime, tip);
     }
 
 }

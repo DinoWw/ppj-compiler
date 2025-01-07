@@ -1,5 +1,8 @@
 package lab3.znakovi;
 
-public class ListaIzrazaPridruzivanja extends Znak {
+import lab3.tip.Tip;
 
+public class ListaIzrazaPridruzivanja extends Znak {
+   public int br_elem;
+   public Tip[] tipovi;
 }
