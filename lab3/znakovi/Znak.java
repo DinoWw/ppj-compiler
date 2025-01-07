@@ -10,9 +10,9 @@ public abstract class Znak extends Node {
       if(children.size() > 1)
          return null;
       if(children.size() == 0 ){
-         if(this instanceof GenerickaKonstanta){
-            if( ((GenerickaKonstanta) this ).konstantaTip == k ) {
-               return (GenerickaKonstanta) this;
+         if(this instanceof Konstanta){
+            if( ((Konstanta) this ).konstantaTip == k ) {
+               return (Konstanta) this;
             }
             else {
                return null;
