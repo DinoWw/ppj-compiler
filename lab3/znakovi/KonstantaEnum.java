@@ -13,5 +13,6 @@ public enum KonstantaEnum {
     KR_VOID,
     KR_CHAR,
     KR_INT,
-    
+    KR_WHILE,
+    KR_FOR, KR_CONTINUE, KR_RETURN, KR_BREAK,
 }

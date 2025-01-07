@@ -1,5 +1,7 @@
 package lab3;
 
+import java.util.Arrays;
+
 import lab3.tip.*;
 
 import lab3.znakovi.*;
@@ -614,7 +616,7 @@ public class SemantickiAnalizator {
             provjeri(naredba);
         }
         else if(na.children.length == 7) {
-            // <izraz_naredba> ::= <izraz> TOCKAZAREZ
+            // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>1 KR_ELSE <naredba>2
             Izraz izraz = (Izraz) na.children[2];
             Naredba naredba1 = (Naredba) na.children[4];
             Naredba naredba2 = (Naredba) na.children[6];
@@ -629,13 +631,241 @@ public class SemantickiAnalizator {
     public void provjeri(NaredbaPetlje na) {
         GenerickaKonstanta kljucnaRijec = (GenerickaKonstanta) na.children[0];
         if(kljucnaRijec.konstantaTip == KonstantaEnum.KR_WHILE) {
+            // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
+            Izraz izraz = (Izraz) na.children[2];
+            Naredba naredba = (Naredba) na.children[4];
 
+            provjeri(izraz);
+            assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izraz.tip, new Tip(TipEnum.INT)), na);
+            provjeri(naredba);
+        }
+        else if(kljucnaRijec.konstantaTip == KonstantaEnum.KR_FOR && na.children.length == 6){
+            // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba>1 <izraz_naredba>2 D_ZAGRADA <naredba>
+            IzrazNaredba izrazNaredba1 = (IzrazNaredba) na.children[2];
+            IzrazNaredba izrazNaredba2 = (IzrazNaredba) na.children[3];
+            Naredba naredba = (Naredba) na.children[5];
+
+            provjeri(izrazNaredba1);
+            provjeri(izrazNaredba2);
+            assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izrazNaredba2.tip, new Tip(TipEnum.INT)), na);
+            provjeri(naredba);
+        }
+        else if(kljucnaRijec.konstantaTip == KonstantaEnum.KR_FOR && na.children.length == 7) {
+            // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba>1 <izraz_naredba>2 <izraz> D_ZAGRADA <naredba>
+            IzrazNaredba izrazNaredba1 = (IzrazNaredba) na.children[2];
+            IzrazNaredba izrazNaredba2 = (IzrazNaredba) na.children[3];
+            Izraz izraz = (Izraz) na.children[4];
+            Naredba naredba = (Naredba) na.children[6];
+            
+            provjeri(izrazNaredba1);
+            provjeri(izrazNaredba2);
+            assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izrazNaredba2.tip, new Tip(TipEnum.INT)), na);
+            provjeri(izraz);
+            provjeri(naredba);
         }
     }
 
+    public void provjeri(NaredbaSkoka na) {
+        KonstantaEnum kljucnaRijec =  ( (GenerickaKonstanta) na.children[0] ).konstantaTip;
+
+        if(kljucnaRijec == KonstantaEnum.KR_CONTINUE || kljucnaRijec == KonstantaEnum.KR_BREAK){
+            // <naredba_skoka> ::= (KR_CONTINUE | KR_BREAK) TOCKAZAREZ
+
+            // TODO: naredba se nalazi unutar petlje ili unutar bloka koji je ugnijeˇzden u petlji
+            throw new UnsupportedOperationException();
+            
+        }
+        else if(kljucnaRijec == KonstantaEnum.KR_RETURN && na.children.length == 2) {
+            // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
+            
+            // TODO: naredba se nalazi unutar funkcije tipa funkcija(params → void)
+            throw new UnsupportedOperationException();
+
+            
+        }
+        else if(kljucnaRijec == KonstantaEnum.KR_RETURN && na.children.length == 3) {
+            // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
+            // Izraz izraz = (Izraz) na.children[1];
+            
+            // TODO: naredba se nalazi unutar funkcije tipa funkcija(params → pov ) 
+            throw new UnsupportedOperationException();
+            //assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izraz.tip, .l..), na);
+        }
+    }
+
+    public void provjeri(PrijevodnaJedinica pi) {
+        if(pi.children[0] instanceof VanjskaDeklaracija) {
+            // <prijevodna_jedinica> ::= <vanjska_deklaracija>
+            VanjskaDeklaracija vanjskaDeklaracija = (VanjskaDeklaracija) pi.children[0];
+
+            provjeri(vanjskaDeklaracija);
+        }
+        else if(pi.children[0] instanceof PrijevodnaJedinica) {
+            // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>
+            PrijevodnaJedinica prijevodnaJedinica = (PrijevodnaJedinica) pi.children[0];
+            VanjskaDeklaracija vanjskaDeklaracija = (VanjskaDeklaracija) pi.children[1];
+
+            provjeri(prijevodnaJedinica);
+            provjeri(vanjskaDeklaracija);
+        }
+    }
+
+    public void provjeri(DefinicijaFunkcije de) {
+        if(de.children[3] instanceof GenerickaKonstanta){
+            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
+            // TODO: implement
+            throw new UnsupportedOperationException();
+
+        }
+        else if(de.children[3] instanceof ListaParametara) {
+            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA <slozena_naredba>
+            // TODO: implement
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public void provjeri(ListaParametara lp) {
+        if(lp.children[0] instanceof DeklaracijaParametra){
+            // <lista_parametara> ::= <deklaracija_parametra>
+            DeklaracijaParametra deklaracijaParametra = (DeklaracijaParametra) lp.children[0];
+
+            provjeri(deklaracijaParametra);
+
+            Tip[] tipovi = {deklaracijaParametra.tip};
+            lp.tipovi = tipovi;
+            String[] imena = {deklaracijaParametra.ime};
+            lp.imena = imena;
+        }
+        else if(lp.children[0] instanceof ListaParametara) {
+            // <lista_parametara> ::= <lista_parametara> ZAREZ <deklaracija_parametra>
+            ListaParametara listaParametara = (ListaParametara) lp.children[0];
+            DeklaracijaParametra deklaracijaParametra = (DeklaracijaParametra) lp.children[2];
+
+            provjeri(listaParametara);
+            provjeri(deklaracijaParametra);
+            assertOrError(Arrays.stream(listaParametara.imena).anyMatch(deklaracijaParametra.ime::equals), lp); // TODO: validate
+
+            Tip[] tipovi = new Tip[listaParametara.tipovi.length + 1];
+            String[] imena = new String[listaParametara.imena.length + 1];
+            for(int i = 0; i < listaParametara.tipovi.length; i++) {
+                tipovi[i] = listaParametara.tipovi[i];
+                imena[i] = listaParametara.imena[i];
+            }
+            tipovi[listaParametara.tipovi.length] = deklaracijaParametra.tip;
+            imena[listaParametara.imena.length] = deklaracijaParametra.ime;
+
+            lp.tipovi = tipovi;
+            lp.imena = imena;
+        }
+    }
+
+    public void provjeri(DeklaracijaParametra de) {
+        if(de.children.length == 2){
+            // <deklaracija_parametra> ::= <ime_tipa> IDN
+            ImeTipa imeTipa = (ImeTipa) de.children[0];
+            Identifikaror identifikator = (Identifikaror) de.children[0];
+
+            provjeri(imeTipa);
+            assertOrError( !imeTipa.tip.equals(new Tip(TipEnum.VOID)), de);
+
+            de.tip = imeTipa.tip;
+            de.ime = identifikator.vrijednost;
+        }
+        else if(de.children.length == 4) {
+            // <deklaracija_parametra> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA
+            ImeTipa imeTipa = (ImeTipa) de.children[0];
+            Identifikaror identifikator = (Identifikaror) de.children[0];
+
+            provjeri(imeTipa);
+            assertOrError( !imeTipa.tip.equals(new KompozitniTip(TipEnum.NIZ, new Tip(TipEnum.VOID))), de);
+
+            de.tip = imeTipa.tip;
+            de.ime = identifikator.vrijednost;
+        }
+    }
+
+    public void provjeri(ListaDeklaracija ld) {
+        if(ld.children[0] instanceof Deklaracija){
+            // <lista_deklaracija> ::= <deklaracija>
+            Deklaracija deklaracija = (Deklaracija) ld.children[0];
+
+            provjeri(deklaracija);
+        }
+        else if(ld.children[0] instanceof ListaDeklaracija) {
+            // <lista_deklaracija> ::= <lista_deklaracija> <deklaracija>
+            ListaDeklaracija listaDeklaracija = (ListaDeklaracija) ld.children[0];
+            Deklaracija deklaracija = (Deklaracija) ld.children[1];
+            
+            provjeri(listaDeklaracija);
+            provjeri(deklaracija);
+        }
+    }
+
+    public void provjeri(Deklaracija de) {
+        // <deklaracija> ::= <ime_tipa> <lista_init_deklaratora> TOCKAZAREZ
+        ImeTipa imeTipa = (ImeTipa) de.children[0];
+        ListaInitDeklaratora listaInitDeklaratora = (ListaInitDeklaratora) de.children[1];
+
+        provjeri(imeTipa);
+        listaInitDeklaratora.ntip = imeTipa.tip;
+        provjeri(listaInitDeklaratora);
+
+    }
     
+    public void provjeri(ListaInitDeklaratora ld) {
+        if(ld.children[0] instanceof InitDeklarator){
+            // <lista_init_deklaratora> ::= <init_deklarator>
+            InitDeklarator initDeklarator = (InitDeklarator) ld.children[0];
+    
+            initDeklarator.ntip = ld.ntip;
+            provjeri(initDeklarator);
+        }
+        else if (ld.children[0] instanceof ListaInitDeklaratora) {
+            // <lista_init_deklaratora>1 ::= <lista_init_deklaratora>2 ZAREZ <init_deklarator>
+            ListaInitDeklaratora listaInitDeklaratora = (ListaInitDeklaratora) ld.children[0];
+            InitDeklarator initDeklarator = (InitDeklarator) ld.children[2];
+    
+            listaInitDeklaratora.ntip = ld.ntip;
+            provjeri(listaInitDeklaratora);
+            initDeklarator.ntip = ld.ntip;
+            provjeri(initDeklarator);
+        }
 
+    }
 
+    public void provjeri(InitDeklarator de) {
+        if(de.children.length == 1) {
+            // <init_deklarator> ::= <izravni_deklarator>
+            IzravniDeklarator izravniDeklarator = (IzravniDeklarator) de.children[0];
+
+            izravniDeklarator.ntip = de.ntip;
+            provjeri(izravniDeklarator);
+            assertOrError( !Tip.isConstT(izravniDeklarator.tip), de);
+            assertOrError( !Tip.isNizConstT(izravniDeklarator.tip), de);
+        }
+        else if(de.children.length == 3) {
+            // <init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>
+            IzravniDeklarator izravniDeklarator = (IzravniDeklarator) de.children[0];
+            Inicijaliztor inicijalizator = (Inicijaliztor) de.children[2];
+
+            izravniDeklarator.ntip = de.ntip;
+            provjeri(izravniDeklarator);
+            provjeri(inicijalizator);
+            if(Tip.isT(izravniDeklarator.tip) || Tip.isConstT(izravniDeklarator.tip)){
+                assertOrError(Tip.seMozeImplicitnoPretvoritiUT(inicijalizator.tip), de);
+            }
+            else if(Tip.isNizT(izravniDeklarator.tip) || Tip.isNizConstT(izravniDeklarator.tip)){
+                assertOrError(inicijalizator.br_elem <= izravniDeklarator.br_elem, de);
+                for(Tip u : inicijalizator.tipovi) {
+                    assertOrError(Tip.seMozeImplicitnoPretvoritiUT(u), de);
+                }
+            }
+            else {
+                // TODO: ispuni error;
+                ispisiError();
+            }
+        }
+    }
     // TODO: remove
     public void provjeri(Znak iz){
         throw new UnsupportedOperationException();
