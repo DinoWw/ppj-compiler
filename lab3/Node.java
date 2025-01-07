@@ -5,6 +5,7 @@ import lab3.znakovi.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.function.Consumer;
 
 //import static java.util.Map.entry;
 
@@ -112,7 +113,6 @@ public abstract class Node {
         // entry("<primarni_izraz>", new PrimarniIzraz())
 
         // );
-
     }
 
 }

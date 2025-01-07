@@ -7,7 +7,7 @@ public class FunkcijaTip extends Tip {
     public Tip[] args;
     public Tip rval;
 
-    FunkcijaTip(Tip[] args, Tip rval){
+    public FunkcijaTip(Tip[] args, Tip rval){
         super(TipEnum.FUNKCIJA);
         if(args.length == 1 && args[0].equals(new Tip(TipEnum.VOID))){
             this.args = new Tip[0];
@@ -25,6 +25,8 @@ public class FunkcijaTip extends Tip {
 
     @Override
     public boolean equals(Tip tip){
+        if( ! (tip instanceof FunkcijaTip))
+            return false;
         throw new UnsupportedOperationException();
     }
 

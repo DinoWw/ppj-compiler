@@ -7,6 +7,7 @@ public class Tip {
         this.tip = tip;
     }
 
+    // TODO: implement
     public boolean equals(Tip tip){
         throw new UnsupportedOperationException();
     }
