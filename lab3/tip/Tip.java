@@ -37,35 +37,53 @@ public class Tip {
 
     // there must be a better way to do this...
     public static boolean isX(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (!(tip instanceof KompozitniTip))
+            return isT(tip);
+        else {
+            if (((KompozitniTip) tip).tip == TipEnum.CONST)
+                return isT(((KompozitniTip) tip).subTip);
+            return false;
+        }
     }
 
     public static boolean isT(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (tip.tip == TipEnum.INT || tip.tip == TipEnum.CHAR)
+            return true;
+        return false;
     }
 
     public static boolean isNizX(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (tip instanceof KompozitniTip &&
+                tip.tip == TipEnum.NIZ &&
+                isX(((KompozitniTip) tip).subTip))
+            return true;
+        return false;
     }
 
     public static boolean isNizT(Tip tip) {
-        throw new UnsupportedOperationException();
-    }
-
-    public static boolean isConstX(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (tip instanceof KompozitniTip &&
+                tip.tip == TipEnum.NIZ &&
+                isT(((KompozitniTip) tip).subTip))
+            return true;
+        return false;
     }
 
     public static boolean isConstT(Tip tip) {
-        throw new UnsupportedOperationException();
-    }
-
-    public static boolean isNizConstX(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (tip instanceof KompozitniTip &&
+                tip.tip == TipEnum.CONST &&
+                isT(((KompozitniTip) tip).subTip))
+            return true;
+        return false;
     }
 
     public static boolean isNizConstT(Tip tip) {
-        throw new UnsupportedOperationException();
+        if (tip instanceof KompozitniTip &&
+                ((KompozitniTip) tip).subTip instanceof KompozitniTip &&
+                tip.tip == TipEnum.NIZ &&
+                ((KompozitniTip) tip).subTip.tip == TipEnum.CONST &&
+                isT(((KompozitniTip) ((KompozitniTip) tip).subTip).subTip))
+            return true;
+        return false;
     }
 
     // TODO: promjenit ime, al ne znam opce u sta
@@ -154,7 +172,8 @@ public class Tip {
 
     // u T
     public static boolean seMozeImplicitnoPretvoritiUT(Tip t) {
+        return (seMozeImplicitnoPretvoritiIzU(t, new Tip(TipEnum.CHAR))
+                || seMozeImplicitnoPretvoritiIzU(t, new Tip(TipEnum.INT)));
 
-        throw new UnsupportedOperationException();
     }
 }
