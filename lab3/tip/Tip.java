@@ -1,5 +1,10 @@
 package lab3.tip;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import static java.util.Map.entry;
+
 public class Tip {
     TipEnum tip;
 
@@ -18,13 +23,16 @@ public class Tip {
             case "KR_INT":
                 this.tip = TipEnum.INT;
                 break;
+            case "KR_CONST":
+                this.tip = TipEnum.CONST;
+                break;
             default:
                 this.tip = null;
         }
     }
 
     public boolean equals(Tip tip) {
-        throw new UnsupportedOperationException();
+        return this.tip == tip.tip;
     }
 
     // there must be a better way to do this...
@@ -61,12 +69,92 @@ public class Tip {
     }
 
     // TODO: promjenit ime, al ne znam opce u sta
+    // str 41
+
+    /// int -> int, const(int)
+    /// char -> char, const(char), int, const(int)
+    /// const int -> int, const(int)
+    /// const char -> char, int, const(char), const(int)
+    /// niz char -> niz(const(char))
+    /// niz int -> niz(const(int))
+
     public static boolean seMozeImplicitnoPretvoritiIzU(Tip t1, Tip t2) {
-        throw new UnsupportedOperationException();
+        // refleksivnost
+        if (t1.equals(t2) && t2.equals(t1)) {
+            return true;
+        }
+
+        if (!(t1 instanceof KompozitniTip) && t1.tip == TipEnum.INT) {
+            // int -> const(int)
+            if (t2 instanceof KompozitniTip && t2.tip == TipEnum.CONST
+                    && ((KompozitniTip) t2).subTip.tip == TipEnum.INT)
+                return true;
+        }
+        if (!(t1 instanceof KompozitniTip) && t1.tip == TipEnum.CHAR) {
+            // char -> const(char)
+            if (t2 instanceof KompozitniTip && t2.tip == TipEnum.CONST
+                    && ((KompozitniTip) t2).subTip.tip == TipEnum.CHAR)
+                return true;
+
+            // char -> const(int)
+            if (t2 instanceof KompozitniTip && t2.tip == TipEnum.CONST
+                    && ((KompozitniTip) t2).subTip.tip == TipEnum.INT)
+                return true;
+
+            // char -> int
+            if (!(t2 instanceof KompozitniTip) && t2.tip == TipEnum.INT)
+                return true;
+        }
+        if ((t1 instanceof KompozitniTip) && t1.tip == TipEnum.CONST
+                && ((KompozitniTip) t1).subTip.tip == TipEnum.INT) {
+            // const(int) -> int
+            if (!(t2 instanceof KompozitniTip) && t2.tip == TipEnum.INT)
+                return true;
+
+        }
+        if ((t1 instanceof KompozitniTip) && t1.tip == TipEnum.CONST
+                && ((KompozitniTip) t1).subTip.tip == TipEnum.CHAR) {
+            // const(char) -> char
+            if (!(t2 instanceof KompozitniTip) && t2.tip == TipEnum.CHAR)
+                return true;
+
+            // const(char) -> int
+            if (!(t2 instanceof KompozitniTip) && t2.tip == TipEnum.INT)
+                return true;
+
+            // const(char) -> const(int)
+            if (t2 instanceof KompozitniTip && t2.tip == TipEnum.CONST
+                    && ((KompozitniTip) t2).subTip.tip == TipEnum.INT)
+                return true;
+        }
+
+        if ((t1 instanceof KompozitniTip) && t1.tip == TipEnum.NIZ
+                && ((KompozitniTip) t1).subTip.tip == TipEnum.CHAR) {
+            // niz((char)) -> niz(const(char))
+            if ((t2 instanceof KompozitniTip) && ((KompozitniTip) t2 instanceof KompozitniTip) &&
+                    t2.tip == TipEnum.NIZ &&
+                    ((KompozitniTip) t2).subTip.tip == TipEnum.CONST &&
+                    ((KompozitniTip) ((KompozitniTip) t2).subTip).subTip.tip == TipEnum.CHAR)
+                return true;
+        }
+
+        if ((t1 instanceof KompozitniTip) && t1.tip == TipEnum.NIZ
+                && ((KompozitniTip) t1).subTip.tip == TipEnum.INT) {
+            // niz((int)) -> niz(const(int))
+            if ((t2 instanceof KompozitniTip) && ((KompozitniTip) t2 instanceof KompozitniTip) &&
+                    t2.tip == TipEnum.NIZ &&
+                    ((KompozitniTip) t2).subTip.tip == TipEnum.CONST &&
+                    ((KompozitniTip) ((KompozitniTip) t2).subTip).subTip.tip == TipEnum.INT)
+                return true;
+        }
+
+        return false;
+
     }
 
     // u T
     public static boolean seMozeImplicitnoPretvoritiUT(Tip t) {
+
         throw new UnsupportedOperationException();
     }
 }

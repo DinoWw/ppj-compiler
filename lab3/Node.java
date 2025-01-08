@@ -107,11 +107,6 @@ public abstract class Node {
                 return null;
         }
 
-        // public static Map<String,Node> map = Map.ofEntries(
-
-        // entry("<primarni_izraz>", new PrimarniIzraz())
-
-        // );
     }
 
     @Override
