@@ -15,6 +15,8 @@ public class SemantickiAnalizator {
 
     public static void main(String[] args) throws IOException {
 
+        // TODO vidjet kako i kad se seta l_izraz u tablici znakova
+
         // parsiraj input u stablo
         // not tested
 
@@ -51,7 +53,7 @@ public class SemantickiAnalizator {
                 parent = s.pop();
                 String[] linel = line.strip().split(" ");
 
-                GenerickaKonstanta gk = new GenerickaKonstanta(linel[0], Integer.parseInt(linel[1]), linel[2]);
+                Konstanta gk = new Konstanta(linel[0], Integer.parseInt(linel[1]), linel[2]);
                 parent.children.add(gk);
 
                 s.push(parent);
@@ -90,30 +92,37 @@ public class SemantickiAnalizator {
     }
 
     private void provjeri(PrimarniIzraz iz) {
-        if (iz.children.get(0) instanceof Identifikator) {
-            Identifikator idn = (Identifikator) iz.children.get(0);
-            // TODO: scopeovi, str51 upute
-            // provjeri dal je iz.children.get(0).znak.ime deklarirano
-            iz.tip = idn.tip;
-            iz.l_izraz = idn.l_izraz;
-        } else if (iz.children.get(0) instanceof GenerickaKonstanta) {
-            GenerickaKonstanta c = (GenerickaKonstanta) iz.children.get(0);
+        if (iz.children.get(0) instanceof Konstanta) {
+            Konstanta c = (Konstanta) iz.children.get(0);
 
-            if (c.konstantaTip == KonstantaEnum.BROJ) {
-                /// TODO: napisi konstruktor ovog tipa
-                /// ramislit sta s nizovima i konstantama,
-                /// moze kao drugi argument primat Tip, al to je malo ruzno
+            if(c.konstantaTip == KonstantaEnum.IDN){
+                // <primarni_izraz> ::= IDN
+                Konstanta idn = (Konstanta) iz.children.get(0);
+                
+                assertOrError(lokalniDjelokrug.sadrziIdentifikator(idn.vrijednost), iz);
+                Identifikator identifikator = lokalniDjelokrug.identifikator(idn.vrijednost);
+                iz.tip = identifikator.tip;
+                iz.l_izraz = identifikator.l_izraz;
+            }
+            else if (c.konstantaTip == KonstantaEnum.BROJ) {
+                // <primarni_izraz> ::= BROJ
+                // TODO upute
                 iz.tip = new Tip(TipEnum.INT);
                 iz.l_izraz = false;
             } else if (c.konstantaTip == KonstantaEnum.ZNAK) {
+                // <primarni_izraz> ::= ZNAK
+                // TODO upute
                 iz.tip = new Tip(TipEnum.CHAR);
                 iz.l_izraz = false;
             } else if (c.konstantaTip == KonstantaEnum.NIZ_ZNAKOVA) {
+                // <primarni_izraz> ::= NIZ_ZNAKOVA
+                // TODO upute
                 iz.tip = new KompozitniTip(TipEnum.NIZ, new KompozitniTip(TipEnum.CONST, new Tip(TipEnum.CHAR)));
                 iz.l_izraz = false;
             } else if (c.konstantaTip == KonstantaEnum.L_ZAGRADA) {
-                assertOrError(iz.children.get(2) instanceof GenerickaKonstanta
-                        && ((GenerickaKonstanta) iz.children.get(2)).konstantaTip == KonstantaEnum.D_ZAGRADA,
+                // <<primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
+                assertOrError(iz.children.get(2) instanceof Konstanta
+                        && ((Konstanta) iz.children.get(2)).konstantaTip == KonstantaEnum.D_ZAGRADA,
                         iz);
                 // ^ TODO: provjeri dal se error treba referirati na iz ili iz.children.get(2)
 
@@ -151,8 +160,8 @@ public class SemantickiAnalizator {
         }
         if (iz.children.get(0) instanceof PostfiksIzraz) {
             PostfiksIzraz postfiksIzraz = (PostfiksIzraz) iz.children.get(0);
-            if (iz.children.get(1) instanceof GenerickaKonstanta) {
-                GenerickaKonstanta k1 = (GenerickaKonstanta) iz.children.get(1);
+            if (iz.children.get(1) instanceof Konstanta) {
+                Konstanta k1 = (Konstanta) iz.children.get(1);
                 if (k1.konstantaTip == KonstantaEnum.L_UGL_ZAGRADA) {
                     // <postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA
                     Izraz izraz = (Izraz) iz.children.get(2);
@@ -239,7 +248,7 @@ public class SemantickiAnalizator {
 
             ui.tip = postfiksIzraz.tip;
             ui.l_izraz = postfiksIzraz.l_izraz;
-        } else if (ui.children.get(0) instanceof GenerickaKonstanta) {
+        } else if (ui.children.get(0) instanceof Konstanta) {
             // <unarni_izraz> ::= (OP_INC | OP_DEC) <unarni_izraz>
             // zasigurno je OP_INC ili OP_DEC prema gramatickim pravilima pa je provjera
             // suvisna
@@ -273,7 +282,7 @@ public class SemantickiAnalizator {
 
             iz.tip = unarniIzraz.tip;
             iz.l_izraz = unarniIzraz.l_izraz;
-        } else if (iz.children.get(0) instanceof GenerickaKonstanta) {
+        } else if (iz.children.get(0) instanceof Konstanta) {
             // zasigurno L_ZAGRADA
             // <cast_izraz> ::= L_ZAGRADA <ime_tipa> D_ZAGRADA <cast_izraz>
             ImeTipa imeTipa = (ImeTipa) iz.children.get(1);
@@ -296,7 +305,7 @@ public class SemantickiAnalizator {
             provjeri(specifikatorTipa);
 
             iz.tip = specifikatorTipa.tip;
-        } else if (iz.children.get(0) instanceof GenerickaKonstanta) { // KR_CONST
+        } else if (iz.children.get(0) instanceof Konstanta) { // KR_CONST
             // <ime_tipa> ::= KR_CONST <specifikator_tipa>
             SpecifikatorTipa specifikatorTipa = (SpecifikatorTipa) iz.children.get(1);
 
@@ -308,8 +317,8 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(SpecifikatorTipa iz) {
-        if (iz.children.get(0) instanceof GenerickaKonstanta) {
-            GenerickaKonstanta konstanta = (GenerickaKonstanta) iz.children.get(0);
+        if (iz.children.get(0) instanceof Konstanta) {
+            Konstanta konstanta = (Konstanta) iz.children.get(0);
             switch (konstanta.konstantaTip) {
                 case KonstantaEnum.KR_VOID:
                     // <specifikator_tipa> ::= KR_VOID
@@ -646,7 +655,7 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(IzrazNaredba na) {
-        if (na.children.get(0) instanceof GenerickaKonstanta) {
+        if (na.children.get(0) instanceof Konstanta) {
             // <izraz_naredba> ::= TOCKAZAREZ
             na.tip = new Tip(TipEnum.INT);
         } else if (na.children.get(0) instanceof Izraz) {
@@ -683,7 +692,7 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(NaredbaPetlje na) {
-        GenerickaKonstanta kljucnaRijec = (GenerickaKonstanta) na.children.get(0);
+        Konstanta kljucnaRijec = (Konstanta) na.children.get(0);
         if (kljucnaRijec.konstantaTip == KonstantaEnum.KR_WHILE) {
             // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
             Izraz izraz = (Izraz) na.children.get(2);
@@ -720,7 +729,7 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(NaredbaSkoka na) {
-        KonstantaEnum kljucnaRijec = ((GenerickaKonstanta) na.children.get(0)).konstantaTip;
+        KonstantaEnum kljucnaRijec = ((Konstanta) na.children.get(0)).konstantaTip;
 
         if (kljucnaRijec == KonstantaEnum.KR_CONTINUE || kljucnaRijec == KonstantaEnum.KR_BREAK) {
             // <naredba_skoka> ::= (KR_CONTINUE | KR_BREAK) TOCKAZAREZ
@@ -774,7 +783,7 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(DefinicijaFunkcije de) {
-        if (de.children.get(3) instanceof GenerickaKonstanta) {
+        if (de.children.get(3) instanceof Konstanta) {
             // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA
             // <slozena_naredba>
             // TODO: implement
@@ -827,7 +836,7 @@ public class SemantickiAnalizator {
         if (de.children.size() == 2) {
             // <deklaracija_parametra> ::= <ime_tipa> IDN
             ImeTipa imeTipa = (ImeTipa) de.children.get(0);
-            Identifikator identifikator = (Identifikator) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(0);
 
             provjeri(imeTipa);
             assertOrError(!imeTipa.tip.equals(new Tip(TipEnum.VOID)), de);
@@ -837,7 +846,7 @@ public class SemantickiAnalizator {
         } else if (de.children.size() == 4) {
             // <deklaracija_parametra> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA
             ImeTipa imeTipa = (ImeTipa) de.children.get(0);
-            Identifikator identifikator = (Identifikator) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(0);
 
             provjeri(imeTipa);
             assertOrError(!imeTipa.tip.equals(new KompozitniTip(TipEnum.NIZ, new Tip(TipEnum.VOID))), de);
@@ -929,54 +938,54 @@ public class SemantickiAnalizator {
     public void provjeri(IzravniDeklarator de) {
         if (de.children.size() == 1) {
             // <izravni_deklarator> ::= IDN
-            Identifikaror identifikator = (Identifikaror) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(0);
 
             assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
-            assertOrError(lokalniDjelokrug.sadrziDeklaraciju(identifikator.vrijednost), de);
-            zabiljeziDeklaraciju(identifikator.vrijednost, de.ntip);
+            assertOrError(lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost), de);
+            zabiljeziIdentifikator(identifikator.vrijednost, de.ntip);
 
             de.tip = de.ntip;
-        } else if (de.children.get(2) instanceof GenerickaKonstanta) {
-            GenerickaKonstanta konstanta = (GenerickaKonstanta) de.children.get(2);
+        } else if (de.children.get(2) instanceof Konstanta) {
+            Konstanta konstanta = (Konstanta) de.children.get(2);
             if (konstanta.konstantaTip == KonstantaEnum.BROJ) {
                 // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
-                Identifikaror identifikator = (Identifikaror) de.children.get(0);
+                Konstanta identifikator = (Konstanta) de.children.get(0);
                 int broj = Integer.parseInt(konstanta.vrijednost);
 
                 assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
-                assertOrError(lokalniDjelokrug.sadrziDeklaraciju(identifikator.vrijednost), de);
+                assertOrError(lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost), de);
                 assertOrError(broj >= 0 && broj < 1024, de);
                 Tip tip = new KompozitniTip(TipEnum.NIZ, de.ntip);
-                zabiljeziDeklaraciju(identifikator.vrijednost, tip);
+                zabiljeziIdentifikator(identifikator.vrijednost, tip);
 
                 de.tip = tip;
                 de.br_elem = broj;
             } else if (konstanta.konstantaTip == KonstantaEnum.KR_VOID) {
                 // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
-                Identifikaror identifikator = (Identifikaror) de.children.get(0);
+                Konstanta identifikator = (Konstanta) de.children.get(0);
                 Tip tipFunkcije = new FunkcijaTip(new Tip[0], de.ntip);
-                Tip tipDeklarirane = lokalniDjelokrug.tipDeklaracije(identifikator.vrijednost);
+                Tip tipDeklarirane = lokalniDjelokrug.tipIdentifikatora(identifikator.vrijednost);
 
-                if (tipDeklarirane != null) {
+                if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {
                     assertOrError(tipDeklarirane.equals(tipFunkcije), de);
                 } else {
-                    zabiljeziDeklaraciju(identifikator.vrijednost, tipFunkcije);
+                    zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);
                 }
 
                 de.tip = tipFunkcije;
             }
         } else if (de.children.get(2) instanceof ListaParametara) {
             // <izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA
-            Identifikaror identifikator = (Identifikaror) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(0);
             ListaParametara listaParametara = (ListaParametara) de.children.get(2);
             Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
-            Tip tipDeklarirane = lokalniDjelokrug.tipDeklaracije(identifikator.vrijednost);
+            Tip tipDeklarirane = lokalniDjelokrug.tipIdentifikatora(identifikator.vrijednost);
 
             provjeri(listaParametara);
-            if (tipDeklarirane != null) {
+            if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {
                 assertOrError(tipDeklarirane.equals(tipFunkcije), de);
             } else {
-                zabiljeziDeklaraciju(identifikator.vrijednost, tipFunkcije);
+                zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);
             }
 
             de.tip = tipFunkcije;
@@ -1042,8 +1051,9 @@ public class SemantickiAnalizator {
         }
     }
 
-    public void zabiljeziDeklaraciju(String ime, Tip tip) {
-        lokalniDjelokrug.zabiljeziDeklaraciju(ime, tip);
+    public void zabiljeziIdentifikator(String ime, Tip tip) {
+        lokalniDjelokrug.zabiljeziIdentifikator(ime, tip);
     }
+
 
 }
