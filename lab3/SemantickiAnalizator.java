@@ -115,45 +115,65 @@ public class SemantickiAnalizator {
                 iz.l_izraz = identifikator.l_izraz;
             } else if (c.konstantaTip == KonstantaEnum.BROJ) {
                 // <primarni_izraz> ::= BROJ
-                // TODO upute
+                try {
+                    Integer.parseInt(c.vrijednost.substring(1, c.vrijednost.length() - 1));
+                }
+                catch (Exception e) {
+                    ispisiError();  // integer izvan range-a (32 bit)
+                }
+
                 iz.tip = new Tip(TipEnum.INT);
                 iz.l_izraz = false;
             } else if (c.konstantaTip == KonstantaEnum.ZNAK) {
                 // <primarni_izraz> ::= ZNAK
-                // TODO upute
-                iz.tip = new Tip(TipEnum.CHAR);
-                iz.l_izraz = false;
+                // TODO: provjerit metodu
+                String chr = c.vrijednost.substring(1, c.vrijednost.length() - 1);
+                if(chr.equals("\\t") || chr.equals("\\n") || chr.equals("\\0") 
+                || chr.equals("\\'") || chr.equals("\\\"") || chr.equals("\\\\")
+                || chr.length() == 1 && ((int)chr.charAt(0)) >= 0 && ((int)chr.charAt(0)) < 128){
+                    iz.tip = new Tip(TipEnum.CHAR);
+                    iz.l_izraz = false;
+                }
+                else {
+                    ispisiError();  // TODO invalid char
+                }
+
             } else if (c.konstantaTip == KonstantaEnum.NIZ_ZNAKOVA) {
                 // <primarni_izraz> ::= NIZ_ZNAKOVA
-                // TODO upute
+                String str = c.vrijednost.substring(1, c.vrijednost.length() - 1);
+                for(int i = 0; i < str.length(); i ++){
+                    if(str.charAt(i) == '\\') {
+                        i++;
+                        try {
+                            char a = str.charAt(i);
+                            if(a != 't' && a != 'n' && a != '0' && a != '\'' && a != '"' && a != '\\') {
+                                ispisiError("krivi niz znakova");   // TODO
+                            }
+                        }
+                        catch (IndexOutOfBoundsException e) {
+                            ispisiError("krivi niz znakova");   // TODO
+                        }
+                    }
+                    if( ! ( ((int)str.charAt(i)) >= 0 && ((int)str.charAt(i)) < 128 ) ){
+                        ispisiError("krivi niz znakova");   // TODO uredi ispis prema uputama
+                    }
+                }
                 iz.tip = new KompozitniTip(TipEnum.NIZ, new KompozitniTip(TipEnum.CONST, new Tip(TipEnum.CHAR)));
                 iz.l_izraz = false;
             } else if (c.konstantaTip == KonstantaEnum.L_ZAGRADA) {
                 // <<primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
-                assertOrError(iz.children.get(2) instanceof Konstanta
-                        && ((Konstanta) iz.children.get(2)).konstantaTip == KonstantaEnum.D_ZAGRADA,
-                        iz);
-                // ^ TODO: provjeri dal se error treba referirati na iz ili iz.children.get(2)
-
-                // TODO: provjeri dal je ovaj check nepotreban, mozda se prethodni korak analize
-                // trebao pobrinuti da je tako
-                assertOrError(iz.children.get(1) instanceof Izraz, iz);
-
                 Izraz izraz = (Izraz) iz.children.get(1);
+
                 provjeri(izraz);
 
                 iz.tip = izraz.tip;
                 iz.l_izraz = izraz.l_izraz;
             } else {
-                // TODO: throw error
-                // cini mi se da je zapravo unreachable code
+                // Unreachable code
             }
 
         } else {
-            // throw error
-            // alternativno, stavit sam jedan throw na dno, a returnat ak se sve odvije kak
-            // spada
-            // also unreachable code
+            // Unreachable code
         }
 
     }
