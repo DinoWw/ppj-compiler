@@ -157,7 +157,7 @@ public class Konstanta extends Znak {
 
     @Override
     public String toString() {
-        return this.konstantaTip + " " + this.lineN + " " + this.vrijednost;
+        return this.konstantaTip.toString() + "(" + this.lineN + "," + this.vrijednost + ")";
     }
 
 }

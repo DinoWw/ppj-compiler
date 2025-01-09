@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 public abstract class Node {
 
+    public Node parent = null;
     public ArrayList<Node> children = new ArrayList<>();
 
     /// prone to change, it would be useful if this method was just polymorphised
@@ -111,7 +112,15 @@ public abstract class Node {
 
     @Override
     public String toString() {
-        return this.getClass().toString();
+        return "<" + camelToSnake(this.getClass().getSimpleName()) + ">";
+    }
+
+    // https://www.geeksforgeeks.org/convert-camel-case-string-to-snake-case-in-java/
+    public static String camelToSnake(String str) {
+        String regex = "([a-z])([A-Z]+)";
+        String replacement = "$1_$2";
+        str = str.replaceAll(regex, replacement).toLowerCase();
+        return str;
     }
 
 }

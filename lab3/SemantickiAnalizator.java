@@ -54,6 +54,7 @@ public class SemantickiAnalizator {
                 String[] linel = line.strip().split(" ");
 
                 Konstanta gk = new Konstanta(linel[0], Integer.parseInt(linel[1]), linel[2]);
+                gk.parent = parent; // hopefully this is fine
                 parent.children.add(gk);
 
                 s.push(parent);
@@ -79,32 +80,40 @@ public class SemantickiAnalizator {
     /// NAPUTCI za pisanje provjeri funkcija
     /// - ne zaboravit imat base case gdje se ispise error.
 
-    // TODO: ispise gresku ako je condition false, koristi mistake za formatiranje
-    // pogreske
     private void assertOrError(boolean condition, Node mistake) {
-        ispisiError();
-        throw new UnsupportedOperationException();
+        if (!condition) {
+            ispisiError(mistake);
+            // TODO: stop everything
+        }
     }
 
-    private void ispisiError() {
-        // TODO: implement
-        throw new UnsupportedOperationException();
+    // TODO: check if works
+    private void ispisiError(Node mistake) {
+        Node parent = mistake.parent;
+
+        System.out.printf(parent.toString() + " ::=");
+
+        for (Node child : parent.children) {
+            System.out.printf(" " + child.toString());
+        }
+
+        System.out.printf("\n");
+
     }
 
     private void provjeri(PrimarniIzraz iz) {
         if (iz.children.get(0) instanceof Konstanta) {
             Konstanta c = (Konstanta) iz.children.get(0);
 
-            if(c.konstantaTip == KonstantaEnum.IDN){
+            if (c.konstantaTip == KonstantaEnum.IDN) {
                 // <primarni_izraz> ::= IDN
                 Konstanta idn = (Konstanta) iz.children.get(0);
-                
+
                 assertOrError(lokalniDjelokrug.sadrziIdentifikator(idn.vrijednost), iz);
                 Identifikator identifikator = lokalniDjelokrug.identifikator(idn.vrijednost);
                 iz.tip = identifikator.tip;
                 iz.l_izraz = identifikator.l_izraz;
-            }
-            else if (c.konstantaTip == KonstantaEnum.BROJ) {
+            } else if (c.konstantaTip == KonstantaEnum.BROJ) {
                 // <primarni_izraz> ::= BROJ
                 // TODO upute
                 iz.tip = new Tip(TipEnum.INT);
@@ -930,7 +939,7 @@ public class SemantickiAnalizator {
                 }
             } else {
                 // TODO: ispuni error;
-                ispisiError();
+                // ispisiError();
             }
         }
     }
@@ -1054,6 +1063,5 @@ public class SemantickiAnalizator {
     public void zabiljeziIdentifikator(String ime, Tip tip) {
         lokalniDjelokrug.zabiljeziIdentifikator(ime, tip);
     }
-
 
 }

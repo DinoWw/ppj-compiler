@@ -1,10 +1,5 @@
 package lab3.tip;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-import static java.util.Map.entry;
-
 public class Tip {
     TipEnum tip;
 
