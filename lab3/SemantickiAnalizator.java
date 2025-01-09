@@ -195,9 +195,9 @@ public class SemantickiAnalizator {
                     // <postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA
                     Izraz izraz = (Izraz) iz.children.get(2);
                     provjeri(postfiksIzraz);
-                    assertOrError(Tip.isNizX(postfiksIzraz.tip), k1);
+                    assertOrError(Tip.isNizX(postfiksIzraz.tip), iz);
                     provjeri(izraz);
-                    assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izraz.tip, new Tip(TipEnum.INT)), izraz);
+                    assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izraz.tip, new Tip(TipEnum.INT)), iz);
 
                     Tip X = ((KompozitniTip) postfiksIzraz.tip).subTip;
                     iz.tip = X;
@@ -206,9 +206,9 @@ public class SemantickiAnalizator {
                     // <postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA
 
                     provjeri(postfiksIzraz);
-                    assertOrError(postfiksIzraz.tip instanceof FunkcijaTip, k1);
+                    assertOrError(postfiksIzraz.tip instanceof FunkcijaTip, iz);
                     FunkcijaTip funkcijaTip = (FunkcijaTip) postfiksIzraz.tip;
-                    assertOrError(funkcijaTip.isVoidFunction(), k1);
+                    assertOrError(funkcijaTip.isVoidFunction(), iz);
 
                     iz.tip = funkcijaTip.rval;
                     iz.l_izraz = false;
@@ -218,12 +218,12 @@ public class SemantickiAnalizator {
                     ListaArgumenata listaArgumenata = (ListaArgumenata) iz.children.get(2);
                     provjeri(postfiksIzraz);
                     provjeri(listaArgumenata);
-                    assertOrError(postfiksIzraz.tip instanceof FunkcijaTip, k1);
+                    assertOrError(postfiksIzraz.tip instanceof FunkcijaTip, iz);
                     FunkcijaTip funkcijaTip = (FunkcijaTip) postfiksIzraz.tip;
-                    assertOrError(funkcijaTip.isVoidFunction(), k1);
-                    assertOrError(listaArgumenata.tipovi.length == funkcijaTip.args.length, k1);
+                    assertOrError(funkcijaTip.isVoidFunction(), iz);
+                    assertOrError(listaArgumenata.tipovi.length == funkcijaTip.args.length, iz);
                     for (int i = 0; i < listaArgumenata.tipovi.length; i++) {
-                        assertOrError(listaArgumenata.tipovi[i].equals(funkcijaTip.args[i]), k1);
+                        assertOrError(listaArgumenata.tipovi[i].equals(funkcijaTip.args[i]), iz);
                     }
 
                     iz.tip = funkcijaTip.rval;
@@ -232,8 +232,8 @@ public class SemantickiAnalizator {
                 } else if (k1.konstantaTip == KonstantaEnum.OP_INC || k1.konstantaTip == KonstantaEnum.OP_DEC) {
                     // <postfiks_izraz> ::= <postfiks_izraz> (OP_INC | OP_DEC)
                     provjeri(postfiksIzraz);
-                    assertOrError(postfiksIzraz.l_izraz == true, k1);
-                    assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(postfiksIzraz.tip, new Tip(TipEnum.INT)), k1);
+                    assertOrError(postfiksIzraz.l_izraz == true, iz);
+                    assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(postfiksIzraz.tip, new Tip(TipEnum.INT)), iz);
 
                     iz.tip = new Tip(TipEnum.INT);
                     iz.l_izraz = false;
