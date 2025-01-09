@@ -145,7 +145,7 @@ public class SemantickiAnalizator {
                     Integer.parseInt(c.vrijednost.substring(1, c.vrijednost.length() - 1));
                 }
                 catch (Exception e) {
-                    ispisiError();  // integer izvan range-a (32 bit)
+                    ispisiError(iz);  // integer izvan range-a (32 bit)
                 }
 
                 iz.tip = new Tip(TipEnum.INT);
@@ -161,7 +161,7 @@ public class SemantickiAnalizator {
                     iz.l_izraz = false;
                 }
                 else {
-                    ispisiError();  // TODO invalid char
+                    ispisiError(iz);  // invalid char
                 }
 
             } else if (c.konstantaTip == KonstantaEnum.NIZ_ZNAKOVA) {
@@ -173,15 +173,15 @@ public class SemantickiAnalizator {
                         try {
                             char a = str.charAt(i);
                             if(a != 't' && a != 'n' && a != '0' && a != '\'' && a != '"' && a != '\\') {
-                                ispisiError("krivi niz znakova");   // TODO
+                                ispisiError(iz);
                             }
                         }
                         catch (IndexOutOfBoundsException e) {
-                            ispisiError("krivi niz znakova");   // TODO
+                            ispisiError(iz);
                         }
                     }
                     if( ! ( ((int)str.charAt(i)) >= 0 && ((int)str.charAt(i)) < 128 ) ){
-                        ispisiError("krivi niz znakova");   // TODO uredi ispis prema uputama
+                        ispisiError(iz);
                     }
                 }
                 iz.tip = new KompozitniTip(TipEnum.NIZ, new KompozitniTip(TipEnum.CONST, new Tip(TipEnum.CHAR)));
