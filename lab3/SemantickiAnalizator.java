@@ -3,6 +3,7 @@ package lab3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -11,7 +12,11 @@ import lab3.znakovi.*;
 
 public class SemantickiAnalizator {
 
+    // TODO incijializirati
     private Djelokrug lokalniDjelokrug;
+    private Djelokrug globalniDjelokrug;
+
+    private ArrayList<Identifikator> deklariraneFunkcije;
 
     public static void main(String[] args) throws IOException {
 
@@ -77,8 +82,29 @@ public class SemantickiAnalizator {
         System.out.println("--- no more children");
     }
 
-    /// NAPUTCI za pisanje provjeri funkcija
-    /// - ne zaboravit imat base case gdje se ispise error.
+    private void deklarirajFunkciju(String ime, FunkcijaTip tip){
+        /// TODO
+        /// zapisat ju u this.deklariraneFunkcije, ne bacit error ako je vec zapisana jer je to dozvoljeno
+        /// zapisat ju u lokalniDjelokrug
+        /// pazit za lokalniDjelokrug, funkcije i varijable smiju imat ista imena pa ih se nemre spremat u isti map
+
+        throw new UnsupportedOperationException();
+    }
+
+    private void definirajFunkciju(String ime, FunkcijaTip tip){
+        /// TODO
+        /// deklariaj ju, ne trbea pazit da smo u globalnom djelokrugu, prosli korak prevodjenja se pobrinuo za to
+        deklarirajFunkciju(ime, tip);
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean postojiDefiniranaFunkcija(String ime) {
+        /// TODO
+        /// nije svaka deklarirana funkcija i implementirana
+        /// treba mozda napravit subklasu Identifikatora koji je za funkcije i ima boolean definirana
+
+        throw new UnsupportedOperationException();
+    }
 
     private void assertOrError(boolean condition, Node mistake) {
         if (!condition) {
@@ -632,6 +658,7 @@ public class SemantickiAnalizator {
     }
 
     public void provjeri(SlozenaNaredba na) {
+
         if (na.children.get(1) instanceof ListaNaredbi) {
             // <slozena_naredba> ::= L_VIT_ZAGRADA <lista_naredbi> D_VIT_ZAGRADA
             ListaNaredbi listaNaredbi = (ListaNaredbi) na.children.get(1);
@@ -667,7 +694,13 @@ public class SemantickiAnalizator {
     public void provjeri(Naredba na) {
         if (na.children.get(0) instanceof SlozenaNaredba) {
             SlozenaNaredba naredba = (SlozenaNaredba) na.children.get(0);
+            // slozena naredba u novom djelokrugu
+            lokalniDjelokrug = new Djelokrug(lokalniDjelokrug);
+            if(na.parent instanceof NaredbaPetlje){
+                lokalniDjelokrug.tipDjelokruga = TipDjelokruga.PETLJA;
+            }
             provjeri(naredba);
+            lokalniDjelokrug = lokalniDjelokrug.ugnjezdujuciDjelokrug;
         } else if (na.children.get(0) instanceof IzrazNaredba) {
             IzrazNaredba naredba = (IzrazNaredba) na.children.get(0);
             provjeri(naredba);
@@ -763,23 +796,19 @@ public class SemantickiAnalizator {
         if (kljucnaRijec == KonstantaEnum.KR_CONTINUE || kljucnaRijec == KonstantaEnum.KR_BREAK) {
             // <naredba_skoka> ::= (KR_CONTINUE | KR_BREAK) TOCKAZAREZ
 
-            // TODO: naredba se nalazi unutar petlje ili unutar bloka koji je ugnijeˇzden u
-            // petlji
-            throw new UnsupportedOperationException();
+            assertOrError(lokalniDjelokrug.jeUnutarPetlje(), na);
 
         } else if (kljucnaRijec == KonstantaEnum.KR_RETURN && na.children.size() == 2) {
             // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
-
-            // TODO: naredba se nalazi unutar funkcije tipa funkcija(params → void)
-            throw new UnsupportedOperationException();
+            
+            assertOrError(lokalniDjelokrug.jeUnutarFunkcijePovratneVrijednosti(new Tip(TipEnum.VOID)), na);
 
         } else if (kljucnaRijec == KonstantaEnum.KR_RETURN && na.children.size() == 3) {
             // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
-            // Izraz izraz = (Izraz) na.children.get(1);
+            Izraz izraz = (Izraz) na.children.get(1);
 
-            // TODO: naredba se nalazi unutar funkcije tipa funkcija(params → pov )
-            throw new UnsupportedOperationException();
-            // assertOrError(Tip.seMozeImplicitnoPretvoritiIzU(izraz.tip, .l..), na);
+            provjeri(izraz);
+            assertOrError(Tip.seMozeImplicitnoPretvoritiIzU( izraz.tip, lokalniDjelokrug.povratniTipUgnjezdujuceFunkcije() ), na);
         }
     }
 
@@ -813,16 +842,50 @@ public class SemantickiAnalizator {
 
     public void provjeri(DefinicijaFunkcije de) {
         if (de.children.get(3) instanceof Konstanta) {
-            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA
-            // <slozena_naredba>
-            // TODO: implement
-            throw new UnsupportedOperationException();
+            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
+            ImeTipa imeTipa = (ImeTipa) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(1);
+            SlozenaNaredba slozenaNaredba = (SlozenaNaredba) de.children.get(5);
+
+            provjeri(imeTipa);
+            assertOrError( ! Tip.isConstT(imeTipa.tip), de);
+            assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
+            Identifikator funkcija = globalniDjelokrug.lokalIdentifikator(identifikator.vrijednost);
+            FunkcijaTip tipFunkcije = new FunkcijaTip(new Tip[0], imeTipa.tip);
+            if(funkcija != null) {
+                assertOrError(funkcija.tip.equals(tipFunkcije), de);
+            }
+            definirajFunkciju(identifikator.vrijednost, tipFunkcije);
+            lokalniDjelokrug = new Djelokrug(lokalniDjelokrug);
+            lokalniDjelokrug.setFunkcija(tipFunkcije);
+            provjeri(slozenaNaredba);
+            lokalniDjelokrug = lokalniDjelokrug.ugnjezdujuciDjelokrug;
 
         } else if (de.children.get(3) instanceof ListaParametara) {
-            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara>
-            // D_ZAGRADA <slozena_naredba>
-            // TODO: implement
-            throw new UnsupportedOperationException();
+            // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA <slozena_naredba>
+            ImeTipa imeTipa = (ImeTipa) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(1);
+            ListaParametara listaParametara = (ListaParametara) de.children.get(3);
+            SlozenaNaredba slozenaNaredba = (SlozenaNaredba) de.children.get(5);
+
+            provjeri(imeTipa);
+            assertOrError( ! Tip.isConstT(imeTipa.tip), de);
+            assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
+            provjeri(listaParametara);
+            Identifikator funkcija = globalniDjelokrug.lokalIdentifikator(identifikator.vrijednost);
+            FunkcijaTip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, imeTipa.tip);
+            if(funkcija != null) {
+                assertOrError(funkcija.tip.equals(tipFunkcije), de);
+            }
+            definirajFunkciju(identifikator.vrijednost, tipFunkcije);
+            lokalniDjelokrug = new Djelokrug(lokalniDjelokrug);
+            lokalniDjelokrug.setFunkcija(tipFunkcije);
+            for(int i = 0; i < listaParametara.tipovi.length; i++) {
+                lokalniDjelokrug.zabiljeziIdentifikator(listaParametara.imena[i], listaParametara.tipovi[i]);
+            }
+            provjeri(slozenaNaredba);
+            lokalniDjelokrug = lokalniDjelokrug.ugnjezdujuciDjelokrug;
+            provjeri(slozenaNaredba);
         }
     }
 
@@ -958,8 +1021,7 @@ public class SemantickiAnalizator {
                     assertOrError(Tip.seMozeImplicitnoPretvoritiUT(u), de);
                 }
             } else {
-                // TODO: ispuni error;
-                // ispisiError();
+                ispisiError(de);
             }
         }
     }
