@@ -12,14 +12,13 @@ public class SemantickiAnalizator {
 
     public static void main(String[] args) throws IOException {
 
-
         // ---- parsiraj input u stablo ---- \\
         // not tested
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line = reader.readLine();
         int spaceCount = 0;
-        int newSpaceCount;
+        int newSpaceCount = 0;
         Stack<Node> s = new Stack<Node>();
         Node parent = null;
 
@@ -30,18 +29,23 @@ public class SemantickiAnalizator {
             // System.out.println(line);
             if (line.strip().startsWith("<")) {
                 Node newnode = Node.createNode(line.strip()); // child node
-                newSpaceCount = line.replaceAll("^\\s+", "").length();
+                newSpaceCount = line.length() - line.replaceAll(" ", "").length();
 
                 if (spaceCount > newSpaceCount) {
-                    for (int i = 0; i < newSpaceCount - spaceCount; i++) {
+                    for (int i = 0; i < spaceCount - newSpaceCount + 1; i++) {
                         s.pop();
                     }
+                }
+                if (spaceCount < newSpaceCount) {
+
                 }
 
                 spaceCount = newSpaceCount;
 
                 parent = s.pop();
                 parent.children.add(newnode);
+                System.out.println("parent --" + parent.toString() + " child -- " +
+                        newnode.toString());
                 s.push(parent);
                 s.push(newnode); // current level
 
@@ -56,14 +60,13 @@ public class SemantickiAnalizator {
                 s.push(parent);
             }
         }
-        postfiksObidji(root); // for testing
+        // postfiksObidji(root); // for testing
 
         // ---- obidji stablo ---- \\
 
         Analizator analizator = new Analizator();
 
-        analizator.analiziraj( (PrijevodnaJedinica) root );
-
+        analizator.analiziraj((PrijevodnaJedinica) root);
 
     }
 
@@ -75,6 +78,7 @@ public class SemantickiAnalizator {
         }
         System.out.println("--- no more children");
     }
+
     // for testing
     private static void postfiksObidji(Node node) {
         System.out.println(node.toString());
