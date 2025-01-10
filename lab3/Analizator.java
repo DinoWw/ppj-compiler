@@ -792,7 +792,7 @@ public class Analizator {
             provjeri(imeTipa);
             assertOrError( ! Tip.isConstT(imeTipa.tip), de);
             assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
-            Identifikator funkcija = globalniDjelokrug.lokalIdentifikator(identifikator.vrijednost);
+            Identifikator funkcija = globalniDjelokrug.lokalniIdentifikator(identifikator.vrijednost);
             FunkcijaTip tipFunkcije = new FunkcijaTip(new Tip[0], imeTipa.tip);
             if(funkcija != null) {
                 assertOrError(funkcija.tip.equals(tipFunkcije), de);
@@ -814,7 +814,7 @@ public class Analizator {
             assertOrError( ! Tip.isConstT(imeTipa.tip), de);
             assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
             provjeri(listaParametara);
-            Identifikator funkcija = globalniDjelokrug.lokalIdentifikator(identifikator.vrijednost);
+            Identifikator funkcija = globalniDjelokrug.lokalniIdentifikator(identifikator.vrijednost);
             FunkcijaTip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, imeTipa.tip);
             if(funkcija != null) {
                 assertOrError(funkcija.tip.equals(tipFunkcije), de);
@@ -997,7 +997,7 @@ public class Analizator {
                 // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
                 Konstanta identifikator = (Konstanta) de.children.get(0);
                 Tip tipFunkcije = new FunkcijaTip(new Tip[0], de.ntip);
-                Tip tipDeklarirane = lokalniDjelokrug.tipIdentifikatora(identifikator.vrijednost);
+                Tip tipDeklarirane = lokalniDjelokrug.identifikator(identifikator.vrijednost).tip;
 
                 if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {
                     assertOrError(tipDeklarirane.equals(tipFunkcije), de);
@@ -1012,7 +1012,7 @@ public class Analizator {
             Konstanta identifikator = (Konstanta) de.children.get(0);
             ListaParametara listaParametara = (ListaParametara) de.children.get(2);
             Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
-            Tip tipDeklarirane = lokalniDjelokrug.tipIdentifikatora(identifikator.vrijednost);
+            Tip tipDeklarirane = lokalniDjelokrug.identifikator(identifikator.vrijednost).tip;
 
             provjeri(listaParametara);
             if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {

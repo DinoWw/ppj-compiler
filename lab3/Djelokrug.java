@@ -13,6 +13,7 @@ import lab3.tip.TipEnum;
 /// 
 public class Djelokrug {
    private Map<String, Identifikator> identifikatori;
+   private Map<String, Identifikator> funkcije;
    public Djelokrug ugnjezdujuciDjelokrug;
 
    public TipDjelokruga tipDjelokruga;
@@ -39,7 +40,7 @@ public class Djelokrug {
    }
 
    public boolean sadrziLokalniIdentifikator(String ime){
-      return lokalIdentifikator(ime) != null;
+      return lokalniIdentifikator(ime) != null;
    }
 
    public boolean sadrziIdentifikator(String ime){
@@ -59,6 +60,10 @@ public class Djelokrug {
       return id;
    }
 
+   public Identifikator lokalniIdentifikator(String ime) {
+      return identifikatori.get(ime);
+   }
+   
    public boolean jeUnutarFunkcijePovratneVrijednosti(Tip rval) {
       if(tipDjelokruga == TipDjelokruga.FUNKCIJA && povratniTip.equals(rval)) {
          return true;
@@ -94,16 +99,8 @@ public class Djelokrug {
          return false;
       }
    }
-
-   public Identifikator lokalIdentifikator(String ime) {
-      return identifikatori.get(ime);
-   }
-
-   public void zabiljeziIdentifikator(String ime, Tip tip){
-      throw new UnsupportedOperationException();
-   }
    
-   public Tip tipIdentifikatora(String ime) {
-      throw new UnsupportedOperationException();
+   public void zabiljeziIdentifikator(String ime, Tip tip){
+      identifikatori.put(ime, new Identifikator(tip, ime));
    }
 }

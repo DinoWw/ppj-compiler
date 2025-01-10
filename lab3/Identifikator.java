@@ -1,9 +1,24 @@
 package lab3;
 
-import lab3.tip.Tip;
+import lab3.tip.*;
+import lab3.tip.TipEnum;
 
 public class Identifikator {
    public Tip tip;
    public String ime;
-   public boolean l_izraz; // TODO: u konstruktoru setat ovisno o tipu (const ili ne (zapravo prouci upute, mozda je dublje od tog))
+   public boolean l_izraz;
+
+   public Identifikator(Tip tip, String ime) {
+      this.tip = tip;
+      this.ime = ime;
+      if(tip instanceof KompozitniTip && ((KompozitniTip) tip).tip == TipEnum.CONST || tip instanceof FunkcijaTip){
+         l_izraz = false;
+      }
+      else {
+         l_izraz = true;
+      }
+   }
+
+
+
 }
