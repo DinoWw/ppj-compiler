@@ -27,20 +27,18 @@ public class SemantickiAnalizator {
 
         while (null != (line = reader.readLine()) && line.length() != 0) {
             // System.out.println(line);
+            newSpaceCount = line.length() - line.replaceAll("^\\s+", "").length();
+
+            if (spaceCount > newSpaceCount) {
+                for (int i = 0; i < spaceCount - newSpaceCount; i++) {
+                    s.pop();
+                }
+            }
+
+            spaceCount = newSpaceCount;
+
             if (line.strip().startsWith("<")) {
                 Node newnode = Node.createNode(line.strip()); // child node
-                newSpaceCount = line.length() - line.replaceAll(" ", "").length();
-
-                if (spaceCount > newSpaceCount) {
-                    for (int i = 0; i < spaceCount - newSpaceCount + 1; i++) {
-                        s.pop();
-                    }
-                }
-                if (spaceCount < newSpaceCount) {
-
-                }
-
-                spaceCount = newSpaceCount;
 
                 parent = s.pop();
                 parent.children.add(newnode);
@@ -50,6 +48,8 @@ public class SemantickiAnalizator {
                 s.push(newnode); // current level
 
             } else {
+                // spaceCount = spaceCount + 1;
+
                 parent = s.pop();
                 String[] linel = line.strip().split(" ");
 
@@ -60,7 +60,7 @@ public class SemantickiAnalizator {
                 s.push(parent);
             }
         }
-        // postfiksObidji(root); // for testing
+        postfiksObidji(root); // for testing
 
         // ---- obidji stablo ---- \\
 
