@@ -313,15 +313,15 @@ public class Analizator {
         if (iz.children.get(0) instanceof Konstanta) {
             Konstanta konstanta = (Konstanta) iz.children.get(0);
             switch (konstanta.konstantaTip) {
-                case KonstantaEnum.KR_VOID:
+                case KR_VOID:
                     // <specifikator_tipa> ::= KR_VOID
                     iz.tip = new Tip(TipEnum.VOID);
                     break;
-                case KonstantaEnum.KR_CHAR:
+                case KR_CHAR:
                     // <specifikator_tipa> ::= KR_CHAR
                     iz.tip = new Tip(TipEnum.CHAR);
                     break;
-                case KonstantaEnum.KR_INT:
+                case KR_INT:
                     // <specifikator_tipa> ::= KR_INT
                     iz.tip = new Tip(TipEnum.INT);
                     break;
