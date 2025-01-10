@@ -2,10 +2,7 @@ package lab3;
 
 import lab3.znakovi.*;
 
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.function.Consumer;
 
 //import static java.util.Map.entry;
 

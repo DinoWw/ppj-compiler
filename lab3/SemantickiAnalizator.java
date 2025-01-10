@@ -3,12 +3,10 @@ package lab3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
-import lab3.tip.*;
-import lab3.znakovi.*;
+import lab3.znakovi.Konstanta;
+import lab3.znakovi.PrijevodnaJedinica;
 
 public class SemantickiAnalizator {
 

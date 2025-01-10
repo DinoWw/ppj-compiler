@@ -1,5 +1,4 @@
 package lab3;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import lab3.tip.*;
@@ -10,8 +9,6 @@ public class Analizator {
     // TODO incijializirati
     private Djelokrug lokalniDjelokrug;
     private Djelokrug globalniDjelokrug;
-
-    private ArrayList<Identifikator> deklariraneFunkcije;
 
     public Analizator(){
 
@@ -25,27 +22,26 @@ public class Analizator {
 
 
     private void deklarirajFunkciju(String ime, FunkcijaTip tip){
-        /// TODO
-        /// zapisat ju u this.deklariraneFunkcije, ne bacit error ako je vec zapisana jer je to dozvoljeno
-        /// zapisat ju u lokalniDjelokrug
-        /// pazit za lokalniDjelokrug, funkcije i varijable smiju imat ista imena pa ih se nemre spremat u isti map
-
+        lokalniDjelokrug.zabiljeziIdentifikator(ime, tip);
+        
         throw new UnsupportedOperationException();
     }
 
     private void definirajFunkciju(String ime, FunkcijaTip tip){
-        /// TODO
-        /// deklariaj ju, ne trbea pazit da smo u globalnom djelokrugu, prosli korak prevodjenja se pobrinuo za to
         deklarirajFunkciju(ime, tip);
+        /// definirajFunkciju ce se jedino ikad zvati iz globalnog djelokruga 
+        /// tako da ce globalniDjelokrug.funkcija(ime) zasigurno postojati 
+        /// iako deklarirajFunkciju radi nad lokalnim djelokrugom
+        globalniDjelokrug.funkcija(ime).definirana = true;
         throw new UnsupportedOperationException();
     }
 
     public boolean postojiDefiniranaFunkcija(String ime) {
-        /// TODO
-        /// nije svaka deklarirana funkcija i implementirana
-        /// treba mozda napravit subklasu Identifikatora koji je za funkcije i ima boolean definirana
+        return globalniDjelokrug.funkcija(ime).definirana;
+    }
 
-        throw new UnsupportedOperationException();
+    public boolean postojiDeklariranaFunkcija(String ime) {
+        return lokalniDjelokrug.funkcija(ime) != null;
     }
 
     private void assertOrError(boolean condition, Node mistake) {
@@ -77,8 +73,8 @@ public class Analizator {
                 // <primarni_izraz> ::= IDN
                 Konstanta idn = (Konstanta) iz.children.get(0);
 
-                assertOrError(lokalniDjelokrug.sadrziIdentifikator(idn.vrijednost), iz);
-                Identifikator identifikator = lokalniDjelokrug.identifikator(idn.vrijednost);
+                assertOrError(lokalniDjelokrug.sadrziVarijablu(idn.vrijednost), iz);
+                Identifikator identifikator = lokalniDjelokrug.varijabla(idn.vrijednost);
                 iz.tip = identifikator.tip;
                 iz.l_izraz = identifikator.l_izraz;
             } else if (c.konstantaTip == KonstantaEnum.BROJ) {
@@ -792,7 +788,7 @@ public class Analizator {
             provjeri(imeTipa);
             assertOrError( ! Tip.isConstT(imeTipa.tip), de);
             assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
-            Identifikator funkcija = globalniDjelokrug.lokalniIdentifikator(identifikator.vrijednost);
+            Identifikator funkcija = globalniDjelokrug.lokalnaVarijabla(identifikator.vrijednost);
             FunkcijaTip tipFunkcije = new FunkcijaTip(new Tip[0], imeTipa.tip);
             if(funkcija != null) {
                 assertOrError(funkcija.tip.equals(tipFunkcije), de);
@@ -814,7 +810,7 @@ public class Analizator {
             assertOrError( ! Tip.isConstT(imeTipa.tip), de);
             assertOrError( ! postojiDefiniranaFunkcija(identifikator.vrijednost), de);
             provjeri(listaParametara);
-            Identifikator funkcija = globalniDjelokrug.lokalniIdentifikator(identifikator.vrijednost);
+            Identifikator funkcija = globalniDjelokrug.lokalnaVarijabla(identifikator.vrijednost);
             FunkcijaTip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, imeTipa.tip);
             if(funkcija != null) {
                 assertOrError(funkcija.tip.equals(tipFunkcije), de);
@@ -974,7 +970,7 @@ public class Analizator {
             Konstanta identifikator = (Konstanta) de.children.get(0);
 
             assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
-            assertOrError(lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost), de);
+            assertOrError(lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
             zabiljeziIdentifikator(identifikator.vrijednost, de.ntip);
 
             de.tip = de.ntip;
@@ -986,7 +982,7 @@ public class Analizator {
                 int broj = Integer.parseInt(konstanta.vrijednost);
 
                 assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
-                assertOrError(lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost), de);
+                assertOrError(lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
                 assertOrError(broj >= 0 && broj < 1024, de);
                 Tip tip = new KompozitniTip(TipEnum.NIZ, de.ntip);
                 zabiljeziIdentifikator(identifikator.vrijednost, tip);
@@ -997,9 +993,9 @@ public class Analizator {
                 // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
                 Konstanta identifikator = (Konstanta) de.children.get(0);
                 Tip tipFunkcije = new FunkcijaTip(new Tip[0], de.ntip);
-                Tip tipDeklarirane = lokalniDjelokrug.identifikator(identifikator.vrijednost).tip;
+                Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
 
-                if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {
+                if (lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost)) {
                     assertOrError(tipDeklarirane.equals(tipFunkcije), de);
                 } else {
                     zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);
@@ -1012,10 +1008,10 @@ public class Analizator {
             Konstanta identifikator = (Konstanta) de.children.get(0);
             ListaParametara listaParametara = (ListaParametara) de.children.get(2);
             Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
-            Tip tipDeklarirane = lokalniDjelokrug.identifikator(identifikator.vrijednost).tip;
+            Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
 
             provjeri(listaParametara);
-            if (lokalniDjelokrug.sadrziLokalniIdentifikator(identifikator.vrijednost)) {
+            if (lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost)) {
                 assertOrError(tipDeklarirane.equals(tipFunkcije), de);
             } else {
                 zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);

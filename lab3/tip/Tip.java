@@ -1,7 +1,7 @@
 package lab3.tip;
 
 public class Tip {
-    TipEnum tip;
+    public TipEnum tip;
 
     public Tip(TipEnum tip) {
         this.tip = tip;

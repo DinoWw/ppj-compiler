@@ -12,8 +12,8 @@ import lab3.tip.TipEnum;
 /// Varijabla extends Deklaracija
 /// 
 public class Djelokrug {
-   private Map<String, Identifikator> identifikatori;
-   private Map<String, Identifikator> funkcije;
+   private Map<String, Identifikator> variajble;
+   private Map<String, IdentifikatorFunkcije> funkcije;
    public Djelokrug ugnjezdujuciDjelokrug;
 
    public TipDjelokruga tipDjelokruga;
@@ -21,14 +21,14 @@ public class Djelokrug {
    public Tip povratniTip; // samo za tipDjelokruga == FUNKCIJA
 
    public Djelokrug(Djelokrug ugnjezdujuciDjelokrug) {
-      identifikatori = new HashMap<String, Identifikator>();
+      variajble = new HashMap<String, Identifikator>();
       this.ugnjezdujuciDjelokrug = ugnjezdujuciDjelokrug;
       this.povratniTip = new Tip(TipEnum.VOID);
       this.tipDjelokruga = TipDjelokruga.OBICNI_BLOK;
    }
 
    public Djelokrug() {
-      identifikatori = new HashMap<String, Identifikator>();
+      variajble = new HashMap<String, Identifikator>();
       this.ugnjezdujuciDjelokrug = null;
       this.povratniTip = new Tip(TipEnum.VOID);
       this.tipDjelokruga = TipDjelokruga.OBICNI_BLOK;
@@ -39,29 +39,42 @@ public class Djelokrug {
       povratniTip = fTip.rval;
    }
 
-   public boolean sadrziLokalniIdentifikator(String ime){
-      return lokalniIdentifikator(ime) != null;
+   public boolean sadrziLokalnuVarijablu(String ime){
+      return lokalnaVarijabla(ime) != null;
    }
 
-   public boolean sadrziIdentifikator(String ime){
-      return identifikator(ime) != null;
+   public boolean sadrziVarijablu(String ime){
+      return varijabla(ime) != null;
    }
 
-   public Identifikator identifikator(String ime) {
-      Identifikator id = identifikatori.get(ime);
+   public Identifikator varijabla(String ime) {
+      Identifikator id = variajble.get(ime);
       if(id == null) {
          if(ugnjezdujuciDjelokrug == null) {
             return null;
          }
          else {
-            return ugnjezdujuciDjelokrug.identifikator(ime);
+            return ugnjezdujuciDjelokrug.varijabla(ime);
          }
       }
       return id;
    }
 
-   public Identifikator lokalniIdentifikator(String ime) {
-      return identifikatori.get(ime);
+   public IdentifikatorFunkcije funkcija(String ime) {
+      IdentifikatorFunkcije id = funkcije.get(ime);
+      if(id == null) {
+         if(ugnjezdujuciDjelokrug == null) {
+            return null;
+         }
+         else {
+            return ugnjezdujuciDjelokrug.funkcija(ime);
+         }
+      }
+      return id;
+   }
+
+   public Identifikator lokalnaVarijabla(String ime) {
+      return variajble.get(ime);
    }
    
    public boolean jeUnutarFunkcijePovratneVrijednosti(Tip rval) {
@@ -101,6 +114,11 @@ public class Djelokrug {
    }
    
    public void zabiljeziIdentifikator(String ime, Tip tip){
-      identifikatori.put(ime, new Identifikator(tip, ime));
+      if(tip instanceof FunkcijaTip) {
+         funkcije.put(ime, new IdentifikatorFunkcije((FunkcijaTip) tip, ime));
+      }
+      else {
+         variajble.put(ime, new Identifikator(tip, ime));
+      }
    }
 }

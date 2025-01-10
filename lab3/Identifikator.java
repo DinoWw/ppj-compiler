@@ -11,7 +11,7 @@ public class Identifikator {
    public Identifikator(Tip tip, String ime) {
       this.tip = tip;
       this.ime = ime;
-      if(tip instanceof KompozitniTip && ((KompozitniTip) tip).tip == TipEnum.CONST || tip instanceof FunkcijaTip){
+      if(tip instanceof KompozitniTip || tip instanceof FunkcijaTip){
          l_izraz = false;
       }
       else {
