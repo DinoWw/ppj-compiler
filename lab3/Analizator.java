@@ -751,6 +751,7 @@ public class Analizator {
     }
 
     public void provjeri(PrijevodnaJedinica pi) {
+        System.out.println(pi.children);
         if (pi.children.get(0) instanceof VanjskaDeklaracija) {
             // <prijevodna_jedinica> ::= <vanjska_deklaracija>
             VanjskaDeklaracija vanjskaDeklaracija = (VanjskaDeklaracija) pi.children.get(0);

@@ -56,7 +56,7 @@ public class SemantickiAnalizator {
                 s.push(parent);
             }
         }
-        // obidji(root); // for testing
+        postfiksObidji(root); // for testing
 
         // ---- obidji stablo ---- \\
 
@@ -74,6 +74,18 @@ public class SemantickiAnalizator {
             obidji(n);
         }
         System.out.println("--- no more children");
+    }
+    // for testing
+    private static void postfiksObidji(Node node) {
+        System.out.println(node.toString());
+        System.out.println("djeca:");
+        for (Node n : node.children) {
+            System.out.println(n.toString());
+        }
+        System.out.println("--- no more children");
+        for (Node n : node.children) {
+            obidji(n);
+        }
     }
 
 }
