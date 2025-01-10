@@ -12,8 +12,8 @@ import lab3.tip.TipEnum;
 /// Varijabla extends Deklaracija
 /// 
 public class Djelokrug {
-   private Map<String, Identifikator> variajble;
-   private Map<String, IdentifikatorFunkcije> funkcije;
+   public Map<String, Identifikator> varijable;          // TODO change to public
+   public Map<String, IdentifikatorFunkcije> funkcije;   // TODO change to public
    public Djelokrug ugnjezdujuciDjelokrug;
 
    public TipDjelokruga tipDjelokruga;
@@ -21,14 +21,16 @@ public class Djelokrug {
    public Tip povratniTip; // samo za tipDjelokruga == FUNKCIJA
 
    public Djelokrug(Djelokrug ugnjezdujuciDjelokrug) {
-      variajble = new HashMap<String, Identifikator>();
+      varijable = new HashMap<String, Identifikator>();
+      funkcije = new HashMap<String, IdentifikatorFunkcije>();
       this.ugnjezdujuciDjelokrug = ugnjezdujuciDjelokrug;
       this.povratniTip = new Tip(TipEnum.VOID);
       this.tipDjelokruga = TipDjelokruga.OBICNI_BLOK;
    }
 
    public Djelokrug() {
-      variajble = new HashMap<String, Identifikator>();
+      varijable = new HashMap<String, Identifikator>();
+      funkcije = new HashMap<String, IdentifikatorFunkcije>();
       this.ugnjezdujuciDjelokrug = null;
       this.povratniTip = new Tip(TipEnum.VOID);
       this.tipDjelokruga = TipDjelokruga.OBICNI_BLOK;
@@ -48,7 +50,7 @@ public class Djelokrug {
    }
 
    public Identifikator varijabla(String ime) {
-      Identifikator id = variajble.get(ime);
+      Identifikator id = varijable.get(ime);
       if(id == null) {
          if(ugnjezdujuciDjelokrug == null) {
             return null;
@@ -74,7 +76,7 @@ public class Djelokrug {
    }
 
    public Identifikator lokalnaVarijabla(String ime) {
-      return variajble.get(ime);
+      return varijable.get(ime);
    }
    
    public boolean jeUnutarFunkcijePovratneVrijednosti(Tip rval) {
@@ -118,7 +120,7 @@ public class Djelokrug {
          funkcije.put(ime, new IdentifikatorFunkcije((FunkcijaTip) tip, ime));
       }
       else {
-         variajble.put(ime, new Identifikator(tip, ime));
+         varijable.put(ime, new Identifikator(tip, ime));
       }
    }
 }

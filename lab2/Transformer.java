@@ -13,6 +13,7 @@ public class Transformer{
 
    private ArrayList<Stavka> stavkas;
    private String[] ulZnakovi;
+   private Stavka startStavka;
 
    public Transformer(ArrayList<Stavka> stavkas, String[] ulZnakovi){
       this.stavkas = stavkas;
@@ -22,6 +23,7 @@ public class Transformer{
    static boolean zavrsni(String s){
       return s.startsWith("<");
    }
+
 
    public Map<Stavka, Map<String, Stavka[]>> ENKAtoENKAMap(eNKA enka){
 
@@ -158,11 +160,17 @@ public class Transformer{
 
       ArrayList<TransitionSet> dkaList = new ArrayList<TransitionSet>();
 
-      for(Stavka s : stavkas){
-         Set<Stavka> ss = new HashSet<Stavka>();
-         ss.add(s);
-         dkaList.add(new TransitionSet(ss, new HashMap <String, Set<Stavka>>()));
-      }
+      // for(Stavka s : stavkas){
+      //    Set<Stavka> ss = new HashSet<Stavka>();
+      //    ss.add(s);
+      //    dkaList.add(new TransitionSet(ss, new HashMap <String, Set<Stavka>>()));
+      // }
+
+      // add initial state
+      Set<Stavka> ss = new HashSet<Stavka>();
+      ss.add(startStavka);
+      dkaList.add(new TransitionSet(ss, new HashMap <String, Set<Stavka>>()));
+
       for(int stateIndex = 0; stateIndex < dkaList.size(); stateIndex++){
          TransitionSet ts = dkaList.get(stateIndex);
          // empty state
@@ -177,7 +185,7 @@ public class Transformer{
          for(String a : ulZnakovi){
             Set<Stavka> stateTo = new HashSet<Stavka>();
             for(Stavka s : ts.stateFrom){
-               stateTo.addAll(nka.get(s).get(a));  // TODO: check if you can addAll(set)
+               stateTo.addAll(nka.get(s).get(a));
             }
             // check if stateTo already exists
             boolean exists = false;
