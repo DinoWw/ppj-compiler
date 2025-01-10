@@ -84,7 +84,7 @@ public class SemantickiAnalizator {
         }
         System.out.println("--- no more children");
         for (Node n : node.children) {
-            obidji(n);
+            postfiksObidji(n);
         }
     }
 
