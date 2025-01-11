@@ -886,7 +886,7 @@ public class Analizator {
         } else if (de.children.size() == 4) {
             // <deklaracija_parametra> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA
             ImeTipa imeTipa = (ImeTipa) de.children.get(0);
-            Konstanta identifikator = (Konstanta) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(1);
 
             provjeri(imeTipa);
             assertOrError(!imeTipa.tip.equals(new KompozitniTip(TipEnum.NIZ, new Tip(TipEnum.VOID))), de);
