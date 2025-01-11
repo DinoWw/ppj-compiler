@@ -166,7 +166,18 @@ public class Tip {
     }
 
     public boolean seMozePretvoritiIzU(Tip t1, Tip t2) {
-        throw new UnsupportedOperationException();
+        if (seMozeImplicitnoPretvoritiIzU(t1, t2))
+            return true;
+
+        if (t1.tip == TipEnum.INT && t2.tip == TipEnum.CHAR ||
+                t1.tip == TipEnum.INT && t2.equals(new KompozitniTip("KR_CONST", "KR_CHAR")) ||
+                t1.equals(new KompozitniTip("KR_CONST", "KR_INT"))
+                        && t2.equals(new KompozitniTip("KR_CONST", "KR_CHAR"))
+                ||
+                t1.equals(new KompozitniTip("KR_CONST", "KR_INT")) && t2.tip == TipEnum.CHAR)
+            return true;
+
+        return false;
     }
 
     // u T
