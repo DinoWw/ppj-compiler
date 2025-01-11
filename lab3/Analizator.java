@@ -978,7 +978,7 @@ public class Analizator {
             Konstanta identifikator = (Konstanta) de.children.get(0);
 
             assertOrError( ! de.ntip.equals(new Tip(TipEnum.VOID)), de);
-            assertOrError(lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
+            assertOrError( ! lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
             zabiljeziIdentifikator(identifikator.vrijednost, de.ntip);
 
             de.tip = de.ntip;

@@ -35,9 +35,9 @@ public class KompozitniTip extends Tip {
 
     @Override
     public boolean equals(Tip tip) {
-        if (!(tip instanceof KompozitniTip))
+        if (!(tip instanceof KompozitniTip)) {
             return false;
-
+        }
         else {
             return this.tip == tip.tip && ((KompozitniTip) tip).subTip.equals(this.subTip);
         }
