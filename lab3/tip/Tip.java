@@ -165,6 +165,10 @@ public class Tip {
 
     }
 
+    public boolean seMozePretvoritiIzU(Tip t1, Tip t2) {
+        throw new UnsupportedOperationException();
+    }
+
     // u T
     public static boolean seMozeImplicitnoPretvoritiUT(Tip t) {
         return (seMozeImplicitnoPretvoritiIzU(t, new Tip(TipEnum.CHAR))
