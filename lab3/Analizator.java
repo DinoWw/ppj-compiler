@@ -187,7 +187,6 @@ public class Analizator {
                     provjeri(listaArgumenata);
                     assertOrError(postfiksIzraz.tip instanceof FunkcijaTip, iz);
                     FunkcijaTip funkcijaTip = (FunkcijaTip) postfiksIzraz.tip;
-                    assertOrError(funkcijaTip.isVoidFunction(), iz);
                     assertOrError(listaArgumenata.tipovi.length == funkcijaTip.args.length, iz);
                     for (int i = 0; i < listaArgumenata.tipovi.length; i++) {
                         assertOrError(listaArgumenata.tipovi[i].equals(funkcijaTip.args[i]), iz);
