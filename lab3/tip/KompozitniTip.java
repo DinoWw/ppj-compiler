@@ -19,7 +19,7 @@ public class KompozitniTip extends Tip {
             throw new Error("Unsupported composite type");
         }
         this.subTip = new Tip(subTip);
-        System.err.println(this.tip.toString() + " " + this.subTip.tip.toString());
+        // System.err.println(this.tip.toString() + " " + this.subTip.tip.toString());
     }
 
     public KompozitniTip(String nadTip, String tip, String subTip) {
@@ -28,9 +28,9 @@ public class KompozitniTip extends Tip {
             throw new Error("Unsupported composite type");
         }
         this.subTip = new KompozitniTip(tip, subTip);
-        System.err.println(
-                this.tip.toString() + " " + this.subTip.tip.toString() + " "
-                        + ((KompozitniTip) this.subTip).subTip.tip.toString());
+        // System.err.println(
+        //         this.tip.toString() + " " + this.subTip.tip.toString() + " "
+        //                 + ((KompozitniTip) this.subTip).subTip.tip.toString());
     }
 
     @Override

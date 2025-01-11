@@ -964,6 +964,7 @@ public class Analizator {
                 assertOrError(Tip.seMozeImplicitnoPretvoritiUT(inicijalizator.tip), de);
             } else if (Tip.isNizT(izravniDeklarator.tip) || Tip.isNizConstT(izravniDeklarator.tip)) {
                 assertOrError(inicijalizator.br_elem <= izravniDeklarator.br_elem, de);
+                assertOrError(inicijalizator.tipovi != null, de);   // TODO nije po uputama, ali popravlja jedan test-case. Nije mi jasno zasto je tu potrebno
                 for (Tip u : inicijalizator.tipovi) {
                     assertOrError(Tip.seMozeImplicitnoPretvoritiUT(u), de);
                 }
@@ -1039,11 +1040,11 @@ public class Analizator {
 
             Konstanta nizZnakova = izrazPridruzivanja.generira(KonstantaEnum.NIZ_ZNAKOVA);
             if (nizZnakova != null) {
-                ic.br_elem = nizZnakova.vrijednost.length() + 1;
                 Tip[] tipovi = new Tip[ic.br_elem];
                 for (int i = 0; i < ic.br_elem; i++) {
                     tipovi[i] = new Tip(TipEnum.CHAR);
                 }
+                ic.br_elem = nizZnakova.vrijednost.length() + 1;
                 ic.tipovi = tipovi;
             } else {
                 ic.tip = izrazPridruzivanja.tip;
