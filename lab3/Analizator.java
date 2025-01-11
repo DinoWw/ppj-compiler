@@ -82,7 +82,7 @@ public class Analizator {
             } else if (c.konstantaTip == KonstantaEnum.BROJ) {
                 // <primarni_izraz> ::= BROJ
                 try {
-                    Integer.parseInt(c.vrijednost.substring(1, c.vrijednost.length() - 1));
+                    Integer.parseInt(c.vrijednost);
                 }
                 catch (Exception e) {
                     ispisiError(iz);  // integer izvan range-a (32 bit)
