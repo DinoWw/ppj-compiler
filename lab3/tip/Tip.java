@@ -165,7 +165,7 @@ public class Tip {
 
     }
 
-    public boolean seMozePretvoritiIzU(Tip t1, Tip t2) {
+    public static boolean seMozePretvoritiIzU(Tip t1, Tip t2) {
         if (seMozeImplicitnoPretvoritiIzU(t1, t2))
             return true;
 

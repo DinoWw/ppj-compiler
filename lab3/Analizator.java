@@ -285,8 +285,6 @@ public class Analizator {
 
             provjeri(imeTipa);
             provjeri(castIzraz);
-            System.out.println(castIzraz.tip.tip);
-            System.out.println(imeTipa.tip.tip);
             assertOrError(Tip.seMozePretvoritiIzU(castIzraz.tip, imeTipa.tip), iz);
 
             iz.tip = imeTipa.tip;
