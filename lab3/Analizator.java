@@ -65,6 +65,8 @@ public class Analizator {
 
         System.out.printf("\n");
 
+        // izadji iz programa
+        System.exit(0);
     }
 
     private void provjeri(PrimarniIzraz iz) {
