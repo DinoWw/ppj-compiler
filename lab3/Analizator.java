@@ -161,6 +161,7 @@ public class Analizator {
                 if (k1.konstantaTip == KonstantaEnum.L_UGL_ZAGRADA) {
                     // <postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA
                     Izraz izraz = (Izraz) iz.children.get(2);
+                    
                     provjeri(postfiksIzraz);
                     assertOrError(Tip.isNizX(postfiksIzraz.tip), iz);
                     provjeri(izraz);
@@ -887,9 +888,9 @@ public class Analizator {
             Konstanta identifikator = (Konstanta) de.children.get(1);
 
             provjeri(imeTipa);
-            assertOrError(!imeTipa.tip.equals(new KompozitniTip(TipEnum.NIZ, new Tip(TipEnum.VOID))), de);
+            assertOrError(!imeTipa.tip.equals(new Tip(TipEnum.VOID)), de);
 
-            de.tip = imeTipa.tip;
+            de.tip = new KompozitniTip(TipEnum.NIZ, imeTipa.tip);
             de.ime = identifikator.vrijednost;
         }
     }
@@ -989,9 +990,9 @@ public class Analizator {
                 Konstanta identifikator = (Konstanta) de.children.get(0);
                 int broj = Integer.parseInt(konstanta.vrijednost);
 
-                assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
-                assertOrError(lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
-                assertOrError(broj >= 0 && broj < 1024, de);
+                assertOrError( ! de.ntip.equals(new Tip(TipEnum.VOID)), de);
+                assertOrError( ! lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
+                assertOrError(broj >= 0 && broj < 1024, de);    // TODO fix this check
                 Tip tip = new KompozitniTip(TipEnum.NIZ, de.ntip);
                 zabiljeziIdentifikator(identifikator.vrijednost, tip);
 
