@@ -19,6 +19,7 @@ public class Analizator {
         // System.out.println("ANALIZIRAM");
         provjeri(prijevodnaJedinica);
         // TODO provjere nakon stabla
+        // TODO zaustaviti program nakon greske
     }
 
 
@@ -976,7 +977,7 @@ public class Analizator {
             // <izravni_deklarator> ::= IDN
             Konstanta identifikator = (Konstanta) de.children.get(0);
 
-            assertOrError(!de.ntip.equals(new Tip(TipEnum.VOID)), de);
+            assertOrError( ! de.ntip.equals(new Tip(TipEnum.VOID)), de);
             assertOrError(lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
             zabiljeziIdentifikator(identifikator.vrijednost, de.ntip);
 

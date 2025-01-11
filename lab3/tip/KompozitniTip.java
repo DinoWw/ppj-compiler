@@ -39,17 +39,7 @@ public class KompozitniTip extends Tip {
             return false;
 
         else {
-            // const int
-            if (tip.tip != this.tip || ((KompozitniTip) tip).subTip != this.subTip)
-                return false;
-
-            // niz const int
-            if (((KompozitniTip) tip).subTip instanceof KompozitniTip && this.subTip instanceof KompozitniTip) {
-                if (((KompozitniTip) ((KompozitniTip) tip).subTip).subTip != ((KompozitniTip) this.subTip).subTip)
-                    return false;
-            }
-
-            return true;
+            return this.tip == tip.tip && ((KompozitniTip) tip).subTip.equals(this.subTip);
         }
     }
 }
