@@ -16,6 +16,7 @@ public class Analizator {
     }
 
     public void analiziraj(PrijevodnaJedinica prijevodnaJedinica) {
+        // System.out.println("ANALIZIRAM");
         provjeri(prijevodnaJedinica);
         // TODO provjere nakon stabla
     }
@@ -72,9 +73,7 @@ public class Analizator {
             if (c.konstantaTip == KonstantaEnum.IDN) {
                 // <primarni_izraz> ::= IDN
                 Konstanta idn = (Konstanta) iz.children.get(0);
-                System.out.println(c.vrijednost);
-                System.out.println(c.lineN);
-                System.out.println(lokalniDjelokrug.varijable);
+                
                 assertOrError(lokalniDjelokrug.sadrziVarijablu(idn.vrijednost), iz);
                 Identifikator identifikator = lokalniDjelokrug.varijabla(idn.vrijednost);
                 iz.tip = identifikator.tip;
@@ -825,7 +824,6 @@ public class Analizator {
             }
             provjeri(slozenaNaredba);
             lokalniDjelokrug = lokalniDjelokrug.ugnjezdujuciDjelokrug;
-            provjeri(slozenaNaredba);
         }
     }
 
