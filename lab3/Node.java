@@ -109,15 +109,12 @@ public abstract class Node {
 
     @Override
     public String toString() {
-        return "<" + camelToSnake(this.getClass().getSimpleName()) + ">";
+        return "<" + pascalToSnake(this.getClass().getSimpleName()) + ">";
     }
 
     // https://www.geeksforgeeks.org/convert-camel-case-string-to-snake-case-in-java/
-    public static String camelToSnake(String str) {
-        String regex = "([a-z])([A-Z]+)";
-        String replacement = "$1_$2";
-        str = str.replaceAll(regex, replacement).toLowerCase();
-        return str;
+    public static String pascalToSnake(String str) {
+        return str.replaceAll("([a-z])([A-Z])", "$1_$2").replaceAll("([A-Z])([A-Z])", "$1_$2").toLowerCase();
     }
 
 }
