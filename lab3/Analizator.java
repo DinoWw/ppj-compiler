@@ -989,16 +989,20 @@ public class Analizator {
             if (konstanta.konstantaTip == KonstantaEnum.BROJ) {
                 // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
                 Konstanta identifikator = (Konstanta) de.children.get(0);
-                int broj = Integer.parseInt(konstanta.vrijednost);
 
                 assertOrError( ! de.ntip.equals(new Tip(TipEnum.VOID)), de);
                 assertOrError( ! lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost), de);
-                assertOrError(broj >= 0 && broj < 1024, de);    // TODO fix this check
+                try {
+                    Integer.parseInt(konstanta.vrijednost);
+                }
+                catch (Exception e) {
+                    ispisiError(de);  // integer izvan range-a (32 bit)
+                }
                 Tip tip = new KompozitniTip(TipEnum.NIZ, de.ntip);
                 zabiljeziIdentifikator(identifikator.vrijednost, tip);
 
                 de.tip = tip;
-                de.br_elem = broj;
+                de.br_elem = Integer.parseInt(konstanta.vrijednost);
             } else if (konstanta.konstantaTip == KonstantaEnum.KR_VOID) {
                 // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
                 Konstanta identifikator = (Konstanta) de.children.get(0);
