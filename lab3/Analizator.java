@@ -1015,16 +1015,16 @@ public class Analizator {
             // <izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA
             Konstanta identifikator = (Konstanta) de.children.get(0);
             ListaParametara listaParametara = (ListaParametara) de.children.get(2);
-            Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
-            Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
-
+            
             provjeri(listaParametara);
+            Tip tipFunkcije = new FunkcijaTip(listaParametara.tipovi, de.ntip);
             if (lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost)) {
+                Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
                 assertOrError(tipDeklarirane.equals(tipFunkcije), de);
             } else {
                 zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);
             }
-
+            
             de.tip = tipFunkcije;
         }
     }
