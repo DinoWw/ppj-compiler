@@ -6,16 +6,17 @@ import lab3.znakovi.*;
 
 public class Analizator {
    
-    // TODO incijializirati
     private Djelokrug lokalniDjelokrug;
     private Djelokrug globalniDjelokrug;
 
     public Analizator(){
+        globalniDjelokrug = new Djelokrug();
+        lokalniDjelokrug = globalniDjelokrug;
 
     }
 
     public void analiziraj(PrijevodnaJedinica prijevodnaJedinica) {
-        // TODO vidjet kako i kad se seta l_izraz u tablici znakova
+        // System.out.println("ANALIZIRAM");
         provjeri(prijevodnaJedinica);
         // TODO provjere nakon stabla
     }
@@ -23,8 +24,6 @@ public class Analizator {
 
     private void deklarirajFunkciju(String ime, FunkcijaTip tip){
         lokalniDjelokrug.zabiljeziIdentifikator(ime, tip);
-        
-        throw new UnsupportedOperationException();
     }
 
     private void definirajFunkciju(String ime, FunkcijaTip tip){
@@ -33,10 +32,13 @@ public class Analizator {
         /// tako da ce globalniDjelokrug.funkcija(ime) zasigurno postojati 
         /// iako deklarirajFunkciju radi nad lokalnim djelokrugom
         globalniDjelokrug.funkcija(ime).definirana = true;
-        throw new UnsupportedOperationException();
     }
 
     public boolean postojiDefiniranaFunkcija(String ime) {
+        IdentifikatorFunkcije funkcija = globalniDjelokrug.funkcija(ime);
+        if( funkcija == null ) {
+            return false;
+        }
         return globalniDjelokrug.funkcija(ime).definirana;
     }
 
@@ -53,11 +55,10 @@ public class Analizator {
 
     // TODO: check if works
     private void ispisiError(Node mistake) {
-        Node parent = mistake.parent;
 
-        System.out.printf(parent.toString() + " ::=");
+        System.out.printf(mistake.toString() + " ::=");
 
-        for (Node child : parent.children) {
+        for (Node child : mistake.children) {
             System.out.printf(" " + child.toString());
         }
 
@@ -72,7 +73,7 @@ public class Analizator {
             if (c.konstantaTip == KonstantaEnum.IDN) {
                 // <primarni_izraz> ::= IDN
                 Konstanta idn = (Konstanta) iz.children.get(0);
-
+                
                 assertOrError(lokalniDjelokrug.sadrziVarijablu(idn.vrijednost), iz);
                 Identifikator identifikator = lokalniDjelokrug.varijabla(idn.vrijednost);
                 iz.tip = identifikator.tip;
@@ -151,7 +152,7 @@ public class Analizator {
             iz.tip = izraz.tip;
             iz.l_izraz = izraz.l_izraz;
         }
-        if (iz.children.get(0) instanceof PostfiksIzraz) {
+        else if (iz.children.get(0) instanceof PostfiksIzraz) {
             PostfiksIzraz postfiksIzraz = (PostfiksIzraz) iz.children.get(0);
             if (iz.children.get(1) instanceof Konstanta) {
                 Konstanta k1 = (Konstanta) iz.children.get(1);
@@ -751,7 +752,6 @@ public class Analizator {
     }
 
     public void provjeri(PrijevodnaJedinica pi) {
-        System.out.println(pi.children);
         if (pi.children.get(0) instanceof VanjskaDeklaracija) {
             // <prijevodna_jedinica> ::= <vanjska_deklaracija>
             VanjskaDeklaracija vanjskaDeklaracija = (VanjskaDeklaracija) pi.children.get(0);
@@ -824,7 +824,6 @@ public class Analizator {
             }
             provjeri(slozenaNaredba);
             lokalniDjelokrug = lokalniDjelokrug.ugnjezdujuciDjelokrug;
-            provjeri(slozenaNaredba);
         }
     }
 
@@ -846,8 +845,15 @@ public class Analizator {
 
             provjeri(listaParametara);
             provjeri(deklaracijaParametra);
-            assertOrError(Arrays.stream(listaParametara.imena).anyMatch(deklaracijaParametra.ime::equals), lp); // TODO:
-                                                                                                                // validate
+            assertOrError(! Arrays.stream(listaParametara.imena).anyMatch(deklaracijaParametra.ime::equals), lp);
+            // boolean anyEqual = false;    // if anyMatch above does not work :)
+            // for(String ime : listaParametara.imena) {
+            //     if( ime.equals(deklaracijaParametra.ime) ){
+            //         anyEqual = true;
+            //         break;
+            //     }
+            // }
+            // assertOrError(anyEqual, lp);
 
             Tip[] tipovi = new Tip[listaParametara.tipovi.length + 1];
             String[] imena = new String[listaParametara.imena.length + 1];
@@ -867,7 +873,7 @@ public class Analizator {
         if (de.children.size() == 2) {
             // <deklaracija_parametra> ::= <ime_tipa> IDN
             ImeTipa imeTipa = (ImeTipa) de.children.get(0);
-            Konstanta identifikator = (Konstanta) de.children.get(0);
+            Konstanta identifikator = (Konstanta) de.children.get(1);
 
             provjeri(imeTipa);
             assertOrError(!imeTipa.tip.equals(new Tip(TipEnum.VOID)), de);

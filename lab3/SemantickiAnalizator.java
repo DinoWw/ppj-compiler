@@ -42,8 +42,8 @@ public class SemantickiAnalizator {
 
                 parent = s.pop();
                 parent.children.add(newnode);
-                System.out.println("parent --" + parent.toString() + " child -- " +
-                        newnode.toString());
+                // System.out.println("parent --" + parent.toString() + " child -- " +
+                //         newnode.toString());
                 s.push(parent);
                 s.push(newnode); // current level
 
@@ -60,7 +60,7 @@ public class SemantickiAnalizator {
                 s.push(parent);
             }
         }
-        postfiksObidji(root); // for testing
+        // postfiksObidji(root); // for testing
 
         // ---- obidji stablo ---- \\
 

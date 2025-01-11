@@ -103,8 +103,6 @@ public class Syntaxer {
          children.add(stackElem.node);
          
       }
-      System.out.println("stack poslje redukcije:");
-      System.out.println(stack);
 
       SyntaxTreeNode newNode = new SyntaxTreeNode(left, children.toArray(new SyntaxTreeNode[0]));
       System.out.println("REDUKCIJA USPJESNA DO POLA:");
@@ -122,6 +120,8 @@ public class Syntaxer {
       Integer nextStateIndex = nextAction.nextState;
       stack.push(new StackElem(nextStateIndex, left, newNode));
 
+      System.out.println("stack poslje redukcije:");
+      System.out.println(stack);
    }
 
    private void odbij(){
