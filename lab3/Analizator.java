@@ -76,9 +76,8 @@ public class Analizator {
             if (c.konstantaTip == KonstantaEnum.IDN) {
                 // <primarni_izraz> ::= IDN
                 Konstanta idn = (Konstanta) iz.children.get(0);
-                
-                assertOrError(lokalniDjelokrug.sadrziVarijablu(idn.vrijednost), iz);
-                Identifikator identifikator = lokalniDjelokrug.varijabla(idn.vrijednost);
+                assertOrError(lokalniDjelokrug.sadrziDeklaraciju(idn.vrijednost), iz);
+                Identifikator identifikator = lokalniDjelokrug.deklaracija(idn.vrijednost);
                 iz.tip = identifikator.tip;
                 iz.l_izraz = identifikator.l_izraz;
             } else if (c.konstantaTip == KonstantaEnum.BROJ) {
@@ -1003,9 +1002,9 @@ public class Analizator {
                 // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
                 Konstanta identifikator = (Konstanta) de.children.get(0);
                 Tip tipFunkcije = new FunkcijaTip(new Tip[0], de.ntip);
-                Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
-
+                
                 if (lokalniDjelokrug.sadrziLokalnuVarijablu(identifikator.vrijednost)) {
+                    Tip tipDeklarirane = lokalniDjelokrug.varijabla(identifikator.vrijednost).tip;
                     assertOrError(tipDeklarirane.equals(tipFunkcije), de);
                 } else {
                     zabiljeziIdentifikator(identifikator.vrijednost, tipFunkcije);

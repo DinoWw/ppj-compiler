@@ -49,6 +49,19 @@ public class Djelokrug {
       return varijabla(ime) != null;
    }
 
+   public boolean sadrziDeklaraciju(String ime){
+      return sadrziVarijablu(ime) || funkcija(ime) != null;
+   }
+
+   /// tu je zbog produkcije <primarni_izraz> ::= IDN
+   /// onemogucava razlikovanje izmedju varijable i istoimene funkcije
+   public Identifikator deklaracija(String ime) {
+      if(funkcija(ime) != null) {
+         return funkcija(ime);
+      }
+      return varijabla(ime);
+   }
+
    public Identifikator varijabla(String ime) {
       Identifikator id = varijable.get(ime);
       if(id == null) {
